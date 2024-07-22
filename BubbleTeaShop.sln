@@ -4,7 +4,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EB36040F-91F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app-host", "app-host", "{CE3E5AE9-0F6B-4DD8-A3F9-17CFAEC4DD26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleTeaShop", "src\app-host\BubbleTeaShop\BubbleTeaShop.csproj", "{BCDBE483-CB1C-4255-8E66-D8B93BA8AAE9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppHost", "src\app-host\AppHost\AppHost.csproj", "{BCDBE483-CB1C-4255-8E66-D8B93BA8AAE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
