@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Catalog.API.Database.Migrations
 {
     [DbContext(typeof(CatalogDbContext))]
-    [Migration("20240731074457_Initial")]
-    partial class Initial
+    [Migration("20240731111944_CreateDatabase")]
+    partial class CreateDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,7 +35,7 @@ namespace Catalog.API.Database.Migrations
 
                     b.Property<Guid>("IngredientsId")
                         .HasColumnType("uuid")
-                        .HasColumnName("ingredients_id");
+                        .HasColumnName("ingredient_id");
 
                     b.HasKey("BubbleTeaId", "IngredientsId")
                         .HasName("pk_bubble_tea_ingredients");

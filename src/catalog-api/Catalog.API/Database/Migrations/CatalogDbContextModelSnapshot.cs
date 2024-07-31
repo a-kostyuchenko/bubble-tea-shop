@@ -32,7 +32,7 @@ namespace Catalog.API.Database.Migrations
 
                     b.Property<Guid>("IngredientsId")
                         .HasColumnType("uuid")
-                        .HasColumnName("ingredients_id");
+                        .HasColumnName("ingredient_id");
 
                     b.HasKey("BubbleTeaId", "IngredientsId")
                         .HasName("pk_bubble_tea_ingredients");

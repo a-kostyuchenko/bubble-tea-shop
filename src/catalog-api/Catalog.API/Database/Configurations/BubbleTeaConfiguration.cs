@@ -40,6 +40,8 @@ internal sealed class BubbleTeaConfiguration : IEntityTypeConfiguration<BubbleTe
             .UsingEntity(joinBuilder =>
             {
                 joinBuilder.ToTable(TableNames.BubbleTeaIngredients);
+                
+                joinBuilder.Property("IngredientsId").HasColumnName("ingredient_id");
             });
     }
 }
