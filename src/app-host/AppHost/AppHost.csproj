@@ -7,10 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Aspirant.Hosting" />
         <PackageReference Include="Aspire.Hosting.AppHost" />
         <PackageReference Include="Aspire.Hosting.PostgreSQL" />
         <PackageReference Include="Aspire.Hosting.RabbitMQ" />
         <PackageReference Include="Aspire.Hosting.Redis" />
+        <PackageReference Include="AspNetCore.HealthChecks.NpgSql" />
+        <PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" />
+        <PackageReference Include="AspNetCore.HealthChecks.Redis" />
+        <PackageReference Include="AspNetCore.HealthChecks.Uris" />
     </ItemGroup>
 
     <ItemGroup>
