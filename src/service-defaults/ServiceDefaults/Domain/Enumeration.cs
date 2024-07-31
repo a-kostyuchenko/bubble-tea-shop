@@ -16,7 +16,7 @@ public abstract class Enumeration<TEnum>() : IEquatable<Enumeration<TEnum>>
     }
 
     public int Id { get; protected init; }
-    public string Name { get; protected set; }
+    public string Name { get; protected init; }
 
     public static bool operator ==(Enumeration<TEnum>? a, Enumeration<TEnum>? b)
     {

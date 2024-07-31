@@ -9,6 +9,7 @@
         <PackageReference Include="EFCore.NamingConventions" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
         <PackageReference Include="Swashbuckle.AspNetCore"/>
+        <PackageReference Include="Ulid" />
     </ItemGroup>
 
     <ItemGroup>

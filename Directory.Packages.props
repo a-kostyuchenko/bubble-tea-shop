@@ -22,6 +22,7 @@
     <PackageVersion Include="Asp.Versioning.Http" Version="$(AspVersioningVersion)" />
     <PackageVersion Include="Asp.Versioning.Mvc.ApiExplorer" Version="$(AspVersioningVersion)" />
     <PackageVersion Include="Asp.Versioning.Http.Client" Version="$(AspVersioningVersion)" />
+    <PackageVersion Include="Ulid" Version="1.3.3" />
   </ItemGroup>
   <ItemGroup>
     <PackageVersion Include="MediatR" Version="12.4.0" />

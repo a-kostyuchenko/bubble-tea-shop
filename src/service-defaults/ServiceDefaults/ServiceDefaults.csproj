@@ -19,6 +19,7 @@
         <PackageReference Include="OpenTelemetry.Instrumentation.Http" />
         <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" />
         <PackageReference Include="AspNetCore.HealthChecks.Uris" />
+        <PackageReference Include="Ulid" />
     </ItemGroup>
 
 </Project>
