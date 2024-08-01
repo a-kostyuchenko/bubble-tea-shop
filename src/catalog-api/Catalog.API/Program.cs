@@ -3,10 +3,12 @@ using Asp.Versioning.Builder;
 using Catalog.API;
 using Catalog.API.Database;
 using Catalog.API.Database.Constants;
+using Catalog.API.EventBus;
 using Catalog.API.Extensions;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using ServiceDefaults;
 using ServiceDefaults.Endpoints;
 
@@ -16,6 +18,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.AddServiceDefaults();
+
+builder.Services.TryAddScoped<IEventBus, EventBus>();
 
 builder.Services.AddMediatR(configuration =>
 {

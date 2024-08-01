@@ -10,6 +10,7 @@
         <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
         <PackageReference Include="EFCore.NamingConventions" />
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+        <PackageReference Include="MassTransit" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
           <PrivateAssets>all</PrivateAssets>
@@ -21,6 +22,10 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\service-defaults\ServiceDefaults\ServiceDefaults.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Features\" />
     </ItemGroup>
 
 </Project>

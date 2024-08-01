@@ -6,7 +6,7 @@ using ServiceDefaults.Domain;
 using ServiceDefaults.Endpoints;
 using ServiceDefaults.Messaging;
 
-namespace Catalog.API.Ingredients;
+namespace Catalog.API.Features.Ingredients;
 
 public static class CreateIngredient
 {
