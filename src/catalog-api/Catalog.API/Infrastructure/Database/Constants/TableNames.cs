@@ -1,4 +1,4 @@
-namespace Catalog.API.Database.Constants;
+namespace Catalog.API.Infrastructure.Database.Constants;
 
 internal static class TableNames
 {

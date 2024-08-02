@@ -1,8 +1,9 @@
 using Asp.Versioning;
 using Catalog.API.Database;
-using Catalog.API.Database.Constants;
-using Catalog.API.EventBus;
-using Catalog.API.Outbox;
+using Catalog.API.Infrastructure.Database;
+using Catalog.API.Infrastructure.Database.Constants;
+using Catalog.API.Infrastructure.EventBus;
+using Catalog.API.Infrastructure.Outbox;
 using FluentValidation;
 using Hangfire;
 using Hangfire.MemoryStorage;
@@ -66,7 +67,7 @@ public static class DependencyInjection
             });
         });
         
-        services.TryAddScoped<IEventBus, EventBus.EventBus>();
+        services.TryAddScoped<IEventBus, EventBus>();
     }
     
     private static void AddApiVersioning(this IServiceCollection services)

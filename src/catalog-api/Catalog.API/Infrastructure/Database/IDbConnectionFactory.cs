@@ -1,6 +1,6 @@
 using System.Data.Common;
 
-namespace Catalog.API.Database;
+namespace Catalog.API.Infrastructure.Database;
 
 public interface IDbConnectionFactory
 {

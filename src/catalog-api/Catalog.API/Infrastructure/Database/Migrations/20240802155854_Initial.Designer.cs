@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Catalog.API.Database;
+using Catalog.API.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;

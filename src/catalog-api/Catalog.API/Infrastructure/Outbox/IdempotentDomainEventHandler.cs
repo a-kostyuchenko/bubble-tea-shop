@@ -1,10 +1,10 @@
 using System.Data.Common;
-using Catalog.API.Database;
+using Catalog.API.Infrastructure.Database;
 using Dapper;
 using ServiceDefaults.Domain;
 using ServiceDefaults.Messaging;
 
-namespace Catalog.API.Outbox;
+namespace Catalog.API.Infrastructure.Outbox;
 
 internal sealed class IdempotentDomainEventHandler<TDomainEvent>(
     IDomainEventHandler<TDomainEvent> decorated,

@@ -1,4 +1,4 @@
-using Catalog.API.Outbox;
+using Catalog.API.Infrastructure.Outbox;
 using Hangfire;
 
 namespace Catalog.API.Extensions;

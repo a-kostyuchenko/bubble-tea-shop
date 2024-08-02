@@ -1,4 +1,4 @@
-namespace Catalog.API.Outbox;
+namespace Catalog.API.Infrastructure.Outbox;
 
 public sealed class OutboxMessage
 {

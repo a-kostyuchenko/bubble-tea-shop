@@ -2,7 +2,7 @@ using System.Collections.Concurrent;
 using System.Reflection;
 using ServiceDefaults.Messaging;
 
-namespace Catalog.API.Outbox;
+namespace Catalog.API.Infrastructure.Outbox;
 
 public static class DomainEventHandlersFactory
 {

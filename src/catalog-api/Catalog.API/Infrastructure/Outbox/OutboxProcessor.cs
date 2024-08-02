@@ -1,14 +1,14 @@
 using System.Data;
 using System.Data.Common;
-using Catalog.API.Database;
-using Catalog.API.Serialization;
+using Catalog.API.Infrastructure.Database;
+using Catalog.API.Infrastructure.Serialization;
 using Dapper;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using ServiceDefaults.Domain;
 using ServiceDefaults.Messaging;
 
-namespace Catalog.API.Outbox;
+namespace Catalog.API.Infrastructure.Outbox;
 
 internal sealed class OutboxProcessor(
     IDbConnectionFactory dbConnectionFactory,

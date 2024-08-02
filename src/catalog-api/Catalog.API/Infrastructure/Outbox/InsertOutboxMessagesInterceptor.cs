@@ -1,10 +1,10 @@
-using Catalog.API.Serialization;
+using Catalog.API.Infrastructure.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Newtonsoft.Json;
 using ServiceDefaults.Domain;
 
-namespace Catalog.API.Outbox;
+namespace Catalog.API.Infrastructure.Outbox;
 
 public class InsertOutboxMessagesInterceptor : SaveChangesInterceptor
 {

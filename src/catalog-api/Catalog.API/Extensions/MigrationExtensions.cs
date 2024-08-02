@@ -1,4 +1,5 @@
 using Catalog.API.Database;
+using Catalog.API.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.API.Extensions;

@@ -1,9 +1,9 @@
-using Catalog.API.Database.Constants;
 using Catalog.API.Entities.BubbleTeas;
+using Catalog.API.Infrastructure.Database.Constants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Catalog.API.Database.Configurations;
+namespace Catalog.API.Infrastructure.Database.Configurations;
 
 internal sealed class BubbleTeaConfiguration : IEntityTypeConfiguration<BubbleTea>
 {

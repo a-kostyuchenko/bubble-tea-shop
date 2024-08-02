@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Catalog.API.Serialization;
+namespace Catalog.API.Infrastructure.Serialization;
 
 public static class SerializerSettings
 {

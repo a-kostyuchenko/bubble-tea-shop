@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Catalog.API.Outbox;
+namespace Catalog.API.Infrastructure.Outbox;
 
 internal sealed class OutboxMessageConsumerConfiguration 
     : IEntityTypeConfiguration<OutboxMessageConsumer>

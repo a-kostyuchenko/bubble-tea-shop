@@ -1,9 +1,9 @@
-using Catalog.API.Database.Constants;
 using Catalog.API.Entities.BubbleTeas;
 using Catalog.API.Entities.Ingredients;
+using Catalog.API.Infrastructure.Database.Constants;
 using Microsoft.EntityFrameworkCore;
 
-namespace Catalog.API.Database;
+namespace Catalog.API.Infrastructure.Database;
 
 internal sealed class CatalogDbContext(DbContextOptions<CatalogDbContext> options) : DbContext(options)
 {

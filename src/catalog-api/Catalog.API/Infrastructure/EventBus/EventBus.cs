@@ -1,7 +1,7 @@
 using MassTransit;
 using ServiceDefaults.Messaging;
 
-namespace Catalog.API.EventBus;
+namespace Catalog.API.Infrastructure.EventBus;
 
 internal sealed class EventBus(IBus bus) : IEventBus
 {

@@ -1,5 +1,6 @@
 using Catalog.API.Database;
 using Catalog.API.Entities.Ingredients;
+using Catalog.API.Infrastructure.Database;
 using FluentValidation;
 using MediatR;
 using ServiceDefaults.Domain;
