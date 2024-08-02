@@ -1,4 +1,4 @@
-namespace Catalog.API.EventBus;
+namespace ServiceDefaults.Messaging;
 
 public abstract class IntegrationEvent(Guid id, DateTime occurredOnUtc) : IIntegrationEvent
 {

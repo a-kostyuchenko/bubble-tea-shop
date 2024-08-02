@@ -1,14 +1,10 @@
 using Asp.Versioning;
 using Asp.Versioning.Builder;
-using Catalog.API;
 using Catalog.API.Database;
 using Catalog.API.Database.Constants;
-using Catalog.API.EventBus;
 using Catalog.API.Extensions;
-using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using ServiceDefaults;
 using ServiceDefaults.Endpoints;
 
@@ -16,29 +12,6 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.AddServiceDefaults();
-
-builder.Services.TryAddScoped<IEventBus, EventBus>();
-
-builder.Services.AddMediatR(configuration =>
-{
-    configuration.RegisterServicesFromAssembly(AssemblyReference.Assembly);
-});
-
-builder.Services.AddValidatorsFromAssembly(AssemblyReference.Assembly, includeInternalTypes: true);
-
-builder.Services.AddApiVersioning(options =>
-{
-    options.DefaultApiVersion = new ApiVersion(1);
-    options.ApiVersionReader = new UrlSegmentApiVersionReader();
-}).AddApiExplorer(options =>
-{
-    options.GroupNameFormat = "'v'V";
-    options.SubstituteApiVersionInUrl = true;
-});
-
-builder.Services.AddEndpoints(AssemblyReference.Assembly);
 
 builder.AddNpgsqlDbContext<CatalogDbContext>(
     "catalog-db",
@@ -50,6 +23,20 @@ builder.AddNpgsqlDbContext<CatalogDbContext>(
         optionsBuilder.UseNpgsql(contextOptionsBuilder =>
             contextOptionsBuilder.MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Catalog));
     });
+
+builder.AddServiceDefaults();
+
+builder.Services.ConfigureServices(builder.Configuration);
+
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1);
+    options.ApiVersionReader = new UrlSegmentApiVersionReader();
+}).AddApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'V";
+    options.SubstituteApiVersionInUrl = true;
+});
 
 WebApplication app = builder.Build();
 
@@ -69,6 +56,8 @@ if (app.Environment.IsDevelopment())
     
     app.ApplyMigrations();
 }
+
+app.UseBackgroundJobs();
 
 app.UseExceptionHandler();
 

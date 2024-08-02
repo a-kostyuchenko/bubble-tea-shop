@@ -8,14 +8,19 @@
         <PackageReference Include="Asp.Versioning.Http" />
         <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" />
         <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
+        <PackageReference Include="Dapper" />
         <PackageReference Include="EFCore.NamingConventions" />
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+        <PackageReference Include="Hangfire.AspNetCore" />
+        <PackageReference Include="Hangfire.PostgreSql" />
         <PackageReference Include="MassTransit" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Newtonsoft.Json" />
+        <PackageReference Include="Scrutor" />
         <PackageReference Include="Swashbuckle.AspNetCore"/>
         <PackageReference Include="Ulid" />
     </ItemGroup>

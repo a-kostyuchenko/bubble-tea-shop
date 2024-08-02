@@ -1,4 +1,4 @@
-namespace Catalog.API.EventBus;
+namespace ServiceDefaults.Messaging;
 
 public interface IIntegrationEventHandler<in TIntegrationEvent> : IIntegrationEventHandler
     where TIntegrationEvent : IIntegrationEvent
