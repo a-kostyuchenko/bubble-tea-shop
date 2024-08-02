@@ -1,3 +1,5 @@
+using ServiceDefaults.Messaging;
+
 namespace Catalog.API.EventBus;
 
 public interface IEventBus

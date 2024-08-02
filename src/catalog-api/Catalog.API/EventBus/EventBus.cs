@@ -1,4 +1,5 @@
 using MassTransit;
+using ServiceDefaults.Messaging;
 
 namespace Catalog.API.EventBus;
 
