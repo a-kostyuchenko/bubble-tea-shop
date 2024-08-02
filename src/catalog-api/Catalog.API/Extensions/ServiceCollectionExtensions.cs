@@ -3,9 +3,8 @@ using Catalog.API.EventBus;
 using Catalog.API.Outbox;
 using FluentValidation;
 using Hangfire;
-using Hangfire.PostgreSql;
+using Hangfire.MemoryStorage;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Npgsql;
 using ServiceDefaults.Endpoints;
 using ServiceDefaults.Messaging;
 
@@ -17,21 +16,14 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        string databaseConnection = configuration.GetConnectionString("catalog-db");
-        
         services.AddDomainEventHandlers();
         
-        NpgsqlDataSource npgsqlDataSource = new NpgsqlDataSourceBuilder(databaseConnection).Build();
-        
-        services.AddHangfire(config => config.UsePostgreSqlStorage(
-            options => options.UseNpgsqlConnection(databaseConnection)));
+        services.TryAddScoped<IDbConnectionFactory, DbConnectionFactory>();
+
+        services.AddHangfire(globalConfiguration => globalConfiguration.UseMemoryStorage());
 
         services.AddHangfireServer(options =>
             options.SchedulePollingInterval = TimeSpan.FromSeconds(1));
-        
-        services.TryAddSingleton(npgsqlDataSource);
-        
-        services.TryAddScoped<IDbConnectionFactory, DbConnectionFactory>();
 
         services.TryAddScoped<IEventBus, EventBus.EventBus>();
         

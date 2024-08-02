@@ -390,3 +390,6 @@ dotnet_diagnostic.S4035.severity = none
 
 # S1135
 dotnet_diagnostic.S1135.severity = none
+
+# S125
+dotnet_diagnostic.S125.severity = none

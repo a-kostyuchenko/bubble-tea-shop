@@ -3,8 +3,11 @@ using Asp.Versioning.Builder;
 using Catalog.API.Database;
 using Catalog.API.Database.Constants;
 using Catalog.API.Extensions;
+using Catalog.API.Outbox;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using ServiceDefaults;
 using ServiceDefaults.Endpoints;
 
@@ -13,20 +16,36 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.AddServiceDefaults();
+
 builder.AddNpgsqlDbContext<CatalogDbContext>(
     "catalog-db",
     _ => {},
     optionsBuilder =>
     {
         optionsBuilder.UseSnakeCaseNamingConvention();
-
+        
         optionsBuilder.UseNpgsql(contextOptionsBuilder =>
             contextOptionsBuilder.MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Catalog));
     });
 
-builder.AddServiceDefaults();
+builder.AddNpgsqlDataSource("catalog-db");
 
 builder.Services.ConfigureServices(builder.Configuration);
+
+builder.Services.TryAddSingleton<InsertOutboxMessagesInterceptor>();
+
+
+builder.Services.AddMassTransit(configurator =>
+{
+    configurator.SetKebabCaseEndpointNameFormatter();
+    
+    configurator.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host(builder.Configuration.GetConnectionString("queue")!);
+        cfg.ConfigureEndpoints(context);
+    });
+});
 
 builder.Services.AddApiVersioning(options =>
 {
