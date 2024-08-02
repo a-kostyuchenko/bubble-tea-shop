@@ -50,7 +50,7 @@ public static class DependencyInjection
         
         services.Configure<OutboxOptions>(configuration.GetSection(OutboxOptions.ConfigurationSection));
         
-        // services.TryAddScoped<IOutboxProcessor, OutboxProcessor>();
+        services.TryAddScoped<IOutboxProcessor, OutboxProcessor>();
     }
     
     private static void AddMessageQueue(this IServiceCollection services, IConfiguration configuration)
@@ -108,8 +108,6 @@ public static class DependencyInjection
 
     public static void AddDatabase(this WebApplicationBuilder builder)
     {
-        // builder.AddNpgsqlDataSource("catalog-db");
-
         builder.AddNpgsqlDbContext<CatalogDbContext>(
             "catalog-db",
             _ => {},
@@ -123,7 +121,9 @@ public static class DependencyInjection
                         Schemas.Catalog));
             });
         
-        // builder.Services.TryAddScoped<IDbConnectionFactory, DbConnectionFactory>();
+        builder.AddNpgsqlDataSource("catalog-db");
+        
+        builder.Services.TryAddScoped<IDbConnectionFactory, DbConnectionFactory>();
         
         builder.Services.TryAddSingleton<InsertOutboxMessagesInterceptor>();
     }

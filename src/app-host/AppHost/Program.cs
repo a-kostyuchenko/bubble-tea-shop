@@ -3,13 +3,16 @@ using Aspirant.Hosting;
 
 IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(args);
 
-IResourceBuilder<PostgresServerResource> database = builder
-    .AddPostgres("postgres")
+IResourceBuilder<ParameterResource> pgUser = builder.AddParameter("DatabaseUser");
+IResourceBuilder<ParameterResource> pgPassword = builder.AddParameter("DatabasePassword", secret: true);
+
+IResourceBuilder<PostgresServerResource> databaseServer = builder
+    .AddPostgres("database-server", pgUser, pgPassword)
     .WithDataVolume()
-    .WithPgAdmin()
-    .WithHealthCheck();
+    .WithHealthCheck()
+    .WithPgAdmin();
     
-IResourceBuilder<PostgresDatabaseResource> catalogDb = database.AddDatabase("catalog-db");
+IResourceBuilder<PostgresDatabaseResource> catalogDb = databaseServer.AddDatabase("catalog-db");
 
 IResourceBuilder<RabbitMQServerResource> queue = builder
     .AddRabbitMQ("queue")
