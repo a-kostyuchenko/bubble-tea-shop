@@ -1,5 +1,4 @@
 using Asp.Versioning;
-using Catalog.API.Database;
 using Catalog.API.Infrastructure.Database;
 using Catalog.API.Infrastructure.Database.Constants;
 using Catalog.API.Infrastructure.EventBus;
