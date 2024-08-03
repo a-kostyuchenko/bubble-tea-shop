@@ -46,13 +46,15 @@ public static class GetIngredient
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapGet("ingredients/{id:guid}", Handler)
-                .WithName(nameof(GetIngredient));
+            app.MapGet("ingredients/{ingredientId:guid}", Handler)
+                .WithTags(nameof(Ingredient))
+                .WithName(nameof(GetIngredient))
+                .Produces<Response>();
         }
 
-        private static async Task<IResult> Handler(ISender sender, Guid id)
+        private static async Task<IResult> Handler(ISender sender, Guid ingredientId)
         {
-            var query = new Query(id);
+            var query = new Query(ingredientId);
             
             Result<Response> result = await sender.Send(query);
 

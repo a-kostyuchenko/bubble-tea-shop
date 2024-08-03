@@ -9,16 +9,15 @@ using ServiceDefaults.Messaging;
 
 namespace Catalog.API.Features.Ingredients;
 
-public static class UpdateIngredient
+public static class DeleteIngredient
 {
-    public sealed record Command(Guid IngredientId, string Name) : ICommand;
+    public sealed record Command(Guid IngredientId) : ICommand;
     
     public sealed class Validator : AbstractValidator<Command>
     {
         public Validator()
         {
             RuleFor(c => c.IngredientId).NotEmpty();
-            RuleFor(c => c.Name).NotEmpty().MaximumLength(300);
         }
     }
 
@@ -33,9 +32,9 @@ public static class UpdateIngredient
             {
                 return Result.Failure(IngredientErrors.NotFound(request.IngredientId));
             }
-            
-            ingredient.Update(request.Name);
 
+            dbContext.Remove(ingredient);
+            
             await dbContext.SaveChangesAsync(cancellationToken);
 
             return Result.Success();
@@ -46,20 +45,18 @@ public static class UpdateIngredient
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPut("ingredients/{ingredientId:guid}", Handler)
+            app.MapDelete("ingredients/{ingredientId:guid}", Handler)
                 .WithTags(nameof(Ingredient))
-                .WithName(nameof(UpdateIngredient));
+                .WithName(nameof(DeleteIngredient));
         }
 
-        private static async Task<IResult> Handler(ISender sender, Guid ingredientId, Request request)
+        private static async Task<IResult> Handler(ISender sender, Guid ingredientId)
         {
-            var command = new Command(ingredientId, request.Name);
+            var command = new Command(ingredientId);
             
             Result result = await sender.Send(command);
 
             return result.Match(Results.NoContent, ApiResults.Problem);
         }
-
-        private sealed record Request(string Name);
     }
 }

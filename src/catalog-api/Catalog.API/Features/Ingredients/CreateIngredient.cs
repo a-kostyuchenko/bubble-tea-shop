@@ -44,6 +44,7 @@ public static class CreateIngredient
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
             app.MapPost("ingredients", Handler)
+                .WithTags(nameof(Ingredient))
                 .WithName(nameof(CreateIngredient));
         }
 

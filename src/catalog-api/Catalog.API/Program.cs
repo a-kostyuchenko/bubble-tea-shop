@@ -8,7 +8,7 @@ using ServiceDefaults.Endpoints;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options => options.CustomSchemaIds(s => s.FullName?.Replace("+", ".")));
 
 builder.AddDatabase();
 builder.AddServiceDefaults();
