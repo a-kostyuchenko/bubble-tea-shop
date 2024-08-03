@@ -17,4 +17,14 @@ public sealed class Ingredient : Entity
             Name = name,
         });
     }
+    
+    public void Update(string name)
+    {
+        if (Name == name)
+        {
+            return;
+        }
+        
+        Name = name;
+    }
 }

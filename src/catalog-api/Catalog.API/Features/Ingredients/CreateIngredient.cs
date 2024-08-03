@@ -43,7 +43,8 @@ public static class CreateIngredient
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPost("ingredients", Handler);
+            app.MapPost("ingredients", Handler)
+                .WithName(nameof(CreateIngredient));
         }
 
         private static async Task<IResult> Handler(ISender sender, Request request)
