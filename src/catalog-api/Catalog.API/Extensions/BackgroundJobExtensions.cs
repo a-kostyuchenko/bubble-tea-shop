@@ -1,3 +1,4 @@
+using Catalog.API.Infrastructure.Inbox;
 using Catalog.API.Infrastructure.Outbox;
 using Hangfire;
 
@@ -13,6 +14,11 @@ public static class BackgroundJobExtensions
             "catalog-outbox-processor", 
             processor => processor.ProcessAsync(),
             app.Configuration["Outbox:Schedule"]);
+        
+        jobClient.AddOrUpdate<IInboxProcessor>(
+            "catalog-inbox-processor", 
+            processor => processor.ProcessAsync(),
+            app.Configuration["Inbox:Schedule"]);
         
         return app;
     }

@@ -2,6 +2,7 @@ using Asp.Versioning;
 using Catalog.API.Infrastructure.Database;
 using Catalog.API.Infrastructure.Database.Constants;
 using Catalog.API.Infrastructure.EventBus;
+using Catalog.API.Infrastructure.Inbox;
 using Catalog.API.Infrastructure.Outbox;
 using FluentValidation;
 using Hangfire;
@@ -22,6 +23,7 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddDomainEventHandlers();
+        services.AddIntegrationEventHandlers();
         services.AddApplication();
         services.AddEndpoints(AssemblyReference.Assembly);
         services.AddMessageQueue(configuration);
@@ -49,8 +51,10 @@ public static class DependencyInjection
             options.SchedulePollingInterval = TimeSpan.FromSeconds(1));
         
         services.Configure<OutboxOptions>(configuration.GetSection(OutboxOptions.ConfigurationSection));
+        services.Configure<InboxOptions>(configuration.GetSection(InboxOptions.ConfigurationSection));
         
         services.TryAddScoped<IOutboxProcessor, OutboxProcessor>();
+        services.TryAddScoped<IInboxProcessor, InboxProcessor>();
     }
     
     private static void AddMessageQueue(this IServiceCollection services, IConfiguration configuration)
@@ -103,6 +107,31 @@ public static class DependencyInjection
             Type idempotentHandler = typeof(IdempotentDomainEventHandler<>).MakeGenericType(domainEvent);
 
             services.Decorate(domainEventHandler, idempotentHandler);
+        }
+    }
+    
+    private static void AddIntegrationEventHandlers(this IServiceCollection services)
+    {
+        Type[] integrationEventHandlers = AssemblyReference.Assembly
+            .GetTypes()
+            .Where(type => type.IsAssignableTo(typeof(IIntegrationEventHandler)) &&
+                           !type.IsAssignableTo(typeof(IdempotentIntegrationEventHandler<>)))
+            .ToArray();
+
+        foreach (Type integrationEventHandler in integrationEventHandlers)
+        {
+            services.TryAddScoped(integrationEventHandler);
+
+            Type integrationEvent = integrationEventHandler
+                .GetInterfaces()
+                .Single(i => i.IsGenericType)
+                .GetGenericArguments()
+                .Single();
+
+            Type idempotentHandler =
+                typeof(IdempotentIntegrationEventHandler<>).MakeGenericType(integrationEvent);
+
+            services.Decorate(integrationEventHandler, idempotentHandler);
         }
     }
 
