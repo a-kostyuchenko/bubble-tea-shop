@@ -46,7 +46,8 @@ public static class UpdateIngredient
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPut("ingredients/{id:guid}", Handler);
+            app.MapPut("ingredients/{id:guid}", Handler)
+                .WithName(nameof(UpdateIngredient));
         }
 
         private static async Task<IResult> Handler(ISender sender, Guid id, Request request)

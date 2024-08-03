@@ -53,7 +53,9 @@ public static class CreateIngredient
             
             Result<Guid> result = await sender.Send(command);
 
-            return result.Match(Results.Ok, ApiResults.Problem);
+            return result.Match(
+                ingredientId => Results.CreatedAtRoute(nameof(GetIngredient), new { ingredientId }, ingredientId),
+                ApiResults.Problem);
         }
 
         private sealed record Request(string Name);
