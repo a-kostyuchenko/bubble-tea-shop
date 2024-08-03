@@ -11,6 +11,7 @@ using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Npgsql;
 using ServiceDefaults.Endpoints;
 using ServiceDefaults.Messaging;
 
@@ -137,6 +138,8 @@ public static class DependencyInjection
 
     public static void AddDatabase(this WebApplicationBuilder builder)
     {
+        builder.Services.TryAddSingleton<InsertOutboxMessagesInterceptor>();
+        
         builder.AddNpgsqlDbContext<CatalogDbContext>(
             "catalog-db",
             _ => {},
@@ -148,12 +151,16 @@ public static class DependencyInjection
                     contextOptionsBuilder.MigrationsHistoryTable(
                         HistoryRepository.DefaultTableName,
                         Schemas.Catalog));
+
+                // TODO: find a better way to add interceptors
+                optionsBuilder.AddInterceptors(
+                    builder.Services
+                        .BuildServiceProvider()
+                        .GetRequiredService<InsertOutboxMessagesInterceptor>());
             });
         
         builder.AddNpgsqlDataSource("catalog-db");
         
         builder.Services.TryAddScoped<IDbConnectionFactory, DbConnectionFactory>();
-        
-        builder.Services.TryAddSingleton<InsertOutboxMessagesInterceptor>();
     }
 }

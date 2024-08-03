@@ -10,8 +10,8 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.AddServiceDefaults();
 builder.AddDatabase();
+builder.AddServiceDefaults();
 builder.Services.AddCatalogServices(builder.Configuration);
 
 WebApplication app = builder.Build();
