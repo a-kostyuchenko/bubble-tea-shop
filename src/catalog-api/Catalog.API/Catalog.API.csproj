@@ -36,8 +36,4 @@
       <ProjectReference Include="..\..\service-defaults\ServiceDefaults\ServiceDefaults.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Features\" />
-    </ItemGroup>
-
 </Project>
