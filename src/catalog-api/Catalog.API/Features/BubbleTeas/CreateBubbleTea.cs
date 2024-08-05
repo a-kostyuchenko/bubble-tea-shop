@@ -1,5 +1,4 @@
 using Catalog.API.Entities.BubbleTeas;
-using Catalog.API.Entities.Ingredients;
 using Catalog.API.Infrastructure.Database;
 using FluentValidation;
 using MediatR;
@@ -18,6 +17,9 @@ public static class CreateBubbleTea
         public Validator()
         {
             RuleFor(c => c.Name).NotEmpty().MaximumLength(300);
+            RuleFor(c => c.TeaType).NotEmpty().MaximumLength(100);
+            RuleFor(c => c.Price).GreaterThanOrEqualTo(0);
+            RuleFor(c => c.Currency).NotEmpty().MaximumLength(3);
         }
     }
 
@@ -25,13 +27,14 @@ public static class CreateBubbleTea
     {
         public async Task<Result<Guid>> Handle(Command request, CancellationToken cancellationToken)
         {
-            // TODO: Validate TeaType
-            
+            var teaTypeResult = Result.Create(TeaType.FromName(request.TeaType));
             Result<Money> moneyResult = Money.Create(request.Price, Currency.FromCode(request.Currency));
+            
+            var inspectResult = Result.Inspect(teaTypeResult, moneyResult);
 
-            if (moneyResult.IsFailure)
+            if (inspectResult.IsFailure)
             {
-                return Result.Failure<Guid>(moneyResult.Error);
+                return Result.Failure<Guid>(inspectResult.Error);
             }
             
             Result<BubbleTea> bubbleTeaResult = BubbleTea.Create(
