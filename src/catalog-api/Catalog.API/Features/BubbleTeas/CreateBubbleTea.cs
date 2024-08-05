@@ -39,7 +39,7 @@ public static class CreateBubbleTea
             
             Result<BubbleTea> bubbleTeaResult = BubbleTea.Create(
                 request.Name,
-                TeaType.FromName(request.Name)!,
+                teaTypeResult.Value,
                 moneyResult.Value);
 
             if (bubbleTeaResult.IsFailure)
@@ -71,7 +71,7 @@ public static class CreateBubbleTea
             Result<Guid> result = await sender.Send(command);
 
             return result.Match(
-                ingredientId => Results.CreatedAtRoute("", new { ingredientId }, ingredientId),
+                bubbleTeaId => Results.CreatedAtRoute(nameof(GetBubbleTea), new { bubbleTeaId }, bubbleTeaId),
                 ApiResults.Problem);
         }
 

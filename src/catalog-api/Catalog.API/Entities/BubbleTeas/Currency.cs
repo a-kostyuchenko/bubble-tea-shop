@@ -9,8 +9,12 @@ public sealed class Currency : Enumeration<Currency>
     public static readonly Currency Usd = new(1, "US Dollar", "USD");
     public static readonly Currency Eur = new(2, "Euro", "EUR");
     public static readonly Currency Kzt = new(3, "Kazakhstani Tenge", "KZT");
+    
+    public static readonly Error NotSupported = Error.Problem(
+        "Currency.NotSupported",
+        "The specified currency is not supported");
 
-    private static readonly IFormatProvider NumberFormat = new CultureInfo("en-US");
+    public static readonly IFormatProvider NumberFormat = new CultureInfo("en-US");
     
     private Currency(int value, string name, string code)
         : base(value, name) =>

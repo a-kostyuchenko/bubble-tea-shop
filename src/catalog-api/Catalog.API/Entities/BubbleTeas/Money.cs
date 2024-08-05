@@ -25,8 +25,13 @@ public sealed record Money
         "Money.InvalidCurrency",
         "Currency is invalid");
     
-    public static Result<Money> Create(decimal amount, Currency currency)
+    public static Result<Money> Create(decimal amount, Currency? currency)
     {
+        if (currency is null)
+        {
+            return Result.Failure<Money>(Currency.NotSupported);
+        }
+        
         if (amount < decimal.Zero)
         {
             return Result.Failure<Money>(NegativeAmount);
@@ -69,6 +74,5 @@ public sealed record Money
     public static Money Zero(Currency currency) => new(decimal.Zero, currency);
 
     public bool IsZero() => this == Zero(Currency);
-    
-    public string Format() => Currency.Format(Amount);
+    public string Format(IFormatProvider numberFormat) => Currency.Format(Amount, numberFormat);
 }

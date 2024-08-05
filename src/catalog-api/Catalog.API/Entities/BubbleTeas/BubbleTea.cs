@@ -26,6 +26,18 @@ public sealed class BubbleTea : Entity
         });
     }
     
+    public void Update(string name, TeaType teaType, Money price)
+    {
+        if (Name == name && TeaType == teaType && Price == price)
+        {
+            return;
+        }
+        
+        Name = name;
+        TeaType = teaType;
+        Price = price;
+    }
+    
     public void AddIngredient(Ingredient ingredient)
     {
         _ingredients.Add(ingredient);
