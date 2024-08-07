@@ -7,7 +7,7 @@ using ServiceDefaults.Messaging;
 
 namespace ServiceDefaults.Behaviors;
 
-internal sealed class ValidationBehavior<TRequest, TResponse>(
+public sealed class ValidationBehavior<TRequest, TResponse>(
     IEnumerable<IValidator<TRequest>> validators)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IBaseCommand

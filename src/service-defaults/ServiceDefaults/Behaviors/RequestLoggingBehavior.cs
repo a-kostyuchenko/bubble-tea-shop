@@ -5,7 +5,7 @@ using ServiceDefaults.Domain;
 
 namespace ServiceDefaults.Behaviors;
 
-internal sealed class RequestLoggingBehavior<TRequest, TResponse>(
+public sealed class RequestLoggingBehavior<TRequest, TResponse>(
     ILogger<RequestLoggingBehavior<TRequest, TResponse>> logger)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : class

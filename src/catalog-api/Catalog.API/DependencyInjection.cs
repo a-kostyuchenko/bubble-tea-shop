@@ -11,6 +11,7 @@ using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using ServiceDefaults.Behaviors;
 using ServiceDefaults.Endpoints;
 using ServiceDefaults.Messaging;
 
@@ -38,6 +39,9 @@ public static class DependencyInjection
         services.AddMediatR(cfg =>
         {
             cfg.RegisterServicesFromAssembly(AssemblyReference.Assembly);
+            
+            cfg.AddOpenBehavior(typeof(RequestLoggingBehavior<,>));
+            cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
 
         services.AddValidatorsFromAssembly(AssemblyReference.Assembly, includeInternalTypes: true);
@@ -157,6 +161,8 @@ public static class DependencyInjection
                         .BuildServiceProvider()
                         .GetRequiredService<InsertOutboxMessagesInterceptor>());
             });
+        
+        builder.EnrichNpgsqlDbContext<CatalogDbContext>();
         
         builder.AddNpgsqlDataSource("catalog-db");
         
