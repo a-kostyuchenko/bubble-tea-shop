@@ -1,13 +1,13 @@
 using System.Data;
 using System.Data.Common;
-using Catalog.API.Infrastructure.Database;
-using Catalog.API.Infrastructure.Serialization;
+using Cart.API.Infrastructure.Database;
+using Cart.API.Infrastructure.Serialization;
 using Dapper;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using ServiceDefaults.Messaging;
 
-namespace Catalog.API.Infrastructure.Inbox;
+namespace Cart.API.Infrastructure.Inbox;
 
 internal sealed class InboxProcessor(
     IDbConnectionFactory dbConnectionFactory,
@@ -15,7 +15,7 @@ internal sealed class InboxProcessor(
     IOptions<InboxOptions> inboxOptions,
     ILogger<InboxProcessor> logger) : IInboxProcessor
 {
-    private const string ServiceName = "Catalog.API";
+    private const string ServiceName = "Cart.API";
     
     public async Task ProcessAsync()
     {
@@ -77,7 +77,7 @@ internal sealed class InboxProcessor(
              SELECT
                 id AS {nameof(InboxMessageResponse.Id)},
                 content AS {nameof(InboxMessageResponse.Content)}
-             FROM catalog.inbox_messages
+             FROM cart.inbox_messages
              WHERE processed_on_utc IS NULL
              ORDER BY occurred_on_utc
              LIMIT {inboxOptions.Value.BatchSize}
@@ -99,7 +99,7 @@ internal sealed class InboxProcessor(
     {
         const string sql =
             $"""
-             UPDATE catalog.inbox_messages
+             UPDATE cart.inbox_messages
              SET processed_on_utc = @ProcessedOnUtc,
                  error = @Error
              WHERE id = @Id
