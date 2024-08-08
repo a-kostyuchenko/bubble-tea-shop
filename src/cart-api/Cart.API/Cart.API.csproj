@@ -35,8 +35,4 @@
       <ProjectReference Include="..\..\service-defaults\ServiceDefaults\ServiceDefaults.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Infrastructure\Database\Configurations\" />
-    </ItemGroup>
-
 </Project>

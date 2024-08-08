@@ -1,5 +1,6 @@
 using Asp.Versioning;
 using Asp.Versioning.Builder;
+using Cart.API;
 using ServiceDefaults;
 using ServiceDefaults.Endpoints;
 
@@ -8,6 +9,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => options.CustomSchemaIds(s => s.FullName?.Replace("+", ".")));
 
+builder.AddDatabase();
 builder.AddServiceDefaults();
 
 WebApplication app = builder.Build();
