@@ -2,6 +2,7 @@ using Asp.Versioning;
 using Asp.Versioning.Builder;
 using Catalog.API;
 using Catalog.API.Extensions;
+using Catalog.API.Infrastructure.Database;
 using ServiceDefaults;
 using ServiceDefaults.Endpoints;
 
@@ -30,7 +31,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
     
-    app.ApplyMigrations();
+    app.ApplyMigrations<CatalogDbContext>();
 }
 
 app.UseBackgroundJobs();

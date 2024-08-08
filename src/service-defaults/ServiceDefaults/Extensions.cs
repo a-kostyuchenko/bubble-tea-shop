@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
@@ -112,5 +113,14 @@ public static class Extensions
         }
 
         return app;
+    }
+    
+    public static void ApplyMigrations<TDbContext>(this WebApplication app) where TDbContext : DbContext
+    {
+        using IServiceScope scope = app.Services.CreateScope();
+
+        TDbContext dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
+
+        dbContext.Database.Migrate();
     }
 }

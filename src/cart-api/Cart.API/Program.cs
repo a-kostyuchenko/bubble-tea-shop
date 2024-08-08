@@ -2,6 +2,7 @@ using Asp.Versioning;
 using Asp.Versioning.Builder;
 using Cart.API;
 using Cart.API.Extensions;
+using Cart.API.Infrastructure.Database;
 using ServiceDefaults;
 using ServiceDefaults.Endpoints;
 
@@ -25,15 +26,17 @@ RouteGroupBuilder versionedGroup = app
     .MapGroup("api/v{version:apiVersion}")
     .WithApiVersionSet(apiVersionSet);
 
-app.UseBackgroundJobs();
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
     
-    app.ApplyMigrations();
+    app.ApplyMigrations<CartDbContext>();
 }
+
+app.UseBackgroundJobs();
+
+app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 
