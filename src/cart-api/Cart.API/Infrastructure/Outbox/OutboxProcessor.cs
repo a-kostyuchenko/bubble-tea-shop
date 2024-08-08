@@ -16,7 +16,7 @@ internal sealed class OutboxProcessor(
     IOptions<OutboxOptions> outboxOptions,
     ILogger<OutboxProcessor> logger) : IOutboxProcessor
 {
-    private const string ServiceName = "Cart.API";
+    private const string ServiceName = "ShoppingCart.API";
     
     public async Task ProcessAsync()
     {

@@ -2,6 +2,7 @@ using Catalog.API.Entities.BubbleTeas;
 using Catalog.API.Infrastructure.Database.Constants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ServiceDefaults.Domain;
 
 namespace Catalog.API.Infrastructure.Database.Configurations;
 

@@ -1,7 +1,6 @@
 using System.Globalization;
-using ServiceDefaults.Domain;
 
-namespace Catalog.API.Entities.BubbleTeas;
+namespace ServiceDefaults.Domain;
 
 public sealed class Currency : Enumeration<Currency>
 {

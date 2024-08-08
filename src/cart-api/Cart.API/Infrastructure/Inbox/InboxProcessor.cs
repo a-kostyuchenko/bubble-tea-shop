@@ -15,7 +15,7 @@ internal sealed class InboxProcessor(
     IOptions<InboxOptions> inboxOptions,
     ILogger<InboxProcessor> logger) : IInboxProcessor
 {
-    private const string ServiceName = "Cart.API";
+    private const string ServiceName = "ShoppingCart.API";
     
     public async Task ProcessAsync()
     {

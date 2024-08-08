@@ -1,6 +1,4 @@
-using ServiceDefaults.Domain;
-
-namespace Catalog.API.Entities.BubbleTeas;
+namespace ServiceDefaults.Domain;
 
 public sealed record Money
 {
