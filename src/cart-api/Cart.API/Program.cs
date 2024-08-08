@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using Asp.Versioning.Builder;
 using Cart.API;
+using Cart.API.Extensions;
 using ServiceDefaults;
 using ServiceDefaults.Endpoints;
 
@@ -10,6 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => options.CustomSchemaIds(s => s.FullName?.Replace("+", ".")));
 
 builder.AddDatabase();
+builder.Services.AddCartServices(builder.Configuration);
 builder.AddServiceDefaults();
 
 WebApplication app = builder.Build();
@@ -23,10 +25,14 @@ RouteGroupBuilder versionedGroup = app
     .MapGroup("api/v{version:apiVersion}")
     .WithApiVersionSet(apiVersionSet);
 
+app.UseBackgroundJobs();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    
+    app.ApplyMigrations();
 }
 
 app.UseHttpsRedirection();

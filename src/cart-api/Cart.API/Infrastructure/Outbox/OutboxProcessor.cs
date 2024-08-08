@@ -78,7 +78,7 @@ internal sealed class OutboxProcessor(
              SELECT
                 id AS {nameof(OutboxMessageResponse.Id)},
                 content AS {nameof(OutboxMessageResponse.Content)}
-             FROM catalog.outbox_messages
+             FROM cart.outbox_messages
              WHERE processed_on_utc IS NULL
              ORDER BY occurred_on_utc
              LIMIT {outboxOptions.Value.BatchSize}
@@ -100,7 +100,7 @@ internal sealed class OutboxProcessor(
     {
         const string sql =
             $"""
-            UPDATE catalog.outbox_messages
+            UPDATE cart.outbox_messages
             SET processed_on_utc = @ProcessedOnUtc,
                 error = @Error
             WHERE id = @Id
