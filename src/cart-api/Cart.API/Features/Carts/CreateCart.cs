@@ -27,6 +27,20 @@ public static class CreateCart
         public Validator()
         {
             RuleFor(c => c.Customer).NotEmpty().MaximumLength(300);
+            
+            RuleForEach(c => c.Items)
+                .ChildRules(item =>
+                {
+                    item.RuleFor(i => i.ProductId).NotEmpty();
+                    item.RuleFor(i => i.Quantity).GreaterThan(0);
+                    item.RuleFor(i => i.ProductName).NotEmpty().MaximumLength(300);
+                    item.RuleFor(i => i.Price).GreaterThan(0);
+                    item.RuleFor(i => i.Currency).NotEmpty().MaximumLength(3);
+                    item.RuleFor(i => i.Size).NotEmpty().MaximumLength(50);
+                    item.RuleFor(i => i.SugarLevel).NotEmpty().MaximumLength(50);
+                    item.RuleFor(i => i.IceLevel).NotEmpty().MaximumLength(50);
+                    item.RuleFor(i => i.Temperature).NotEmpty().MaximumLength(50);
+                });
         }
     }
 
