@@ -1,14 +1,39 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.7"/>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+        <PackageReference Include="Asp.Versioning.Http" />
+        <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" />
+        <PackageReference Include="Aspire.Npgsql" />
+        <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
+        <PackageReference Include="Dapper" />
+        <PackageReference Include="EFCore.NamingConventions" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+        <PackageReference Include="Hangfire.AspNetCore" />
+        <PackageReference Include="Hangfire.MemoryStorage" />
+        <PackageReference Include="Hangfire.PostgreSql" />
+        <PackageReference Include="MassTransit" />
+        <PackageReference Include="MassTransit.RabbitMQ" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Newtonsoft.Json" />
+        <PackageReference Include="Scrutor" />
+        <PackageReference Include="Swashbuckle.AspNetCore"/>
+        <PackageReference Include="Ulid" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\contracts\BubbleTeaShop.Contracts\BubbleTeaShop.Contracts.csproj" />
+        <ProjectReference Include="..\..\service-defaults\ServiceDefaults\ServiceDefaults.csproj" />
     </ItemGroup>
 
 </Project>
