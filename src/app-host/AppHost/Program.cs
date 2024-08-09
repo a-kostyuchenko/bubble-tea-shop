@@ -14,6 +14,7 @@ IResourceBuilder<PostgresServerResource> databaseServer = builder
     
 IResourceBuilder<PostgresDatabaseResource> catalogDb = databaseServer.AddDatabase("catalog-db");
 IResourceBuilder<PostgresDatabaseResource> cartDb = databaseServer.AddDatabase("cart-db");
+IResourceBuilder<PostgresDatabaseResource> orderDb = databaseServer.AddDatabase("order-db");
 
 IResourceBuilder<RabbitMQServerResource> queue = builder
     .AddRabbitMQ("queue")
@@ -31,6 +32,12 @@ builder.AddProject<Projects.Cart_API>("cart-api")
     .WithReference(cartDb)
     .WithReference(queue)
     .WaitFor(cartDb)
+    .WaitFor(queue);
+
+builder.AddProject<Projects.Ordering_API>("order-api")
+    .WithReference(orderDb)
+    .WithReference(queue)
+    .WaitFor(orderDb)
     .WaitFor(queue);
 
 builder.Build().Run();
