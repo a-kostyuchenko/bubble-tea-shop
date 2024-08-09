@@ -23,13 +23,8 @@ public sealed record Money
         "Money.InvalidCurrency",
         "Currency is invalid");
     
-    public static Result<Money> Create(decimal amount, Currency? currency)
+    public static Result<Money> Create(decimal amount, Currency currency)
     {
-        if (currency is null)
-        {
-            return Result.Failure<Money>(Currency.NotSupported);
-        }
-        
         if (amount < decimal.Zero)
         {
             return Result.Failure<Money>(NegativeAmount);
