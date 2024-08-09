@@ -9,15 +9,16 @@ using ServiceDefaults.Messaging;
 
 namespace Cart.API.Features.Carts;
 
-public static class CancelCart
+public static class RemoveCartItem
 {
-    public sealed record Command(Guid CartId) : ICommand;
+    public sealed record Command(Guid CartId, Guid CartItemId) : ICommand;
     
     public sealed class Validator : AbstractValidator<Command>
     {
         public Validator()
         {
             RuleFor(c => c.CartId).NotEmpty();
+            RuleFor(c => c.CartItemId).NotEmpty();
         }
     }
 
@@ -33,7 +34,7 @@ public static class CancelCart
                 return Result.Failure(CartErrors.NotFound(request.CartId));
             }
 
-            Result result = cart.Cancel();
+            Result result = cart.RemoveItem(request.CartItemId);
 
             if (result.IsFailure)
             {
@@ -50,18 +51,18 @@ public static class CancelCart
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapDelete("carts/{cartId:guid}/cancel", Handler)
+            app.MapPost("carts/{cartId:guid}/items/{cartItemId:guid}", Handler)
                 .WithTags(nameof(ShoppingCart))
-                .WithName(nameof(CancelCart));
+                .WithName(nameof(AddCartItem));
         }
 
-        private static async Task<IResult> Handler(ISender sender, Guid cartId)
+        private static async Task<IResult> Handler(ISender sender, Guid cartId, Guid cartItemId)
         {
-            var command = new Command(cartId);
+            var command = new Command(cartId, cartItemId);
             
             Result result = await sender.Send(command);
 
-            return result.Match(Results.NoContent, ApiResults.Problem);
+            return result.Match(Results.Created, ApiResults.Problem);
         }
     }
 }
