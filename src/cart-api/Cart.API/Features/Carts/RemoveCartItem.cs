@@ -51,9 +51,9 @@ public static class RemoveCartItem
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPost("carts/{cartId:guid}/items/{cartItemId:guid}", Handler)
+            app.MapDelete("carts/{cartId:guid}/items/{cartItemId:guid}", Handler)
                 .WithTags(nameof(ShoppingCart))
-                .WithName(nameof(AddCartItem));
+                .WithName(nameof(RemoveCartItem));
         }
 
         private static async Task<IResult> Handler(ISender sender, Guid cartId, Guid cartItemId)

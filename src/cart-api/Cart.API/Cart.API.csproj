@@ -32,6 +32,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\contracts\BubbleTeaShop.Contracts\BubbleTeaShop.Contracts.csproj" />
       <ProjectReference Include="..\..\service-defaults\ServiceDefaults\ServiceDefaults.csproj" />
     </ItemGroup>
 

@@ -2,7 +2,7 @@ using ServiceDefaults.Domain;
 
 namespace ServiceDefaults.Exceptions;
 
-public sealed class ApplicationException(
+public sealed class BubbleTeaShopException(
     string requestName,
     Error? error = default,
     Exception? innerException = default) : Exception("Application exception", innerException)
