@@ -13,7 +13,7 @@ public sealed class ShoppingCart : Entity
     private readonly List<CartItem> _items = [];
     
     public string Customer { get; private set; }
-    public string Note { get; private set; }
+    public string? Note { get; private set; }
     public CartStatus Status { get; private set; }
     public IReadOnlyCollection<CartItem> Items => [.. _items];
     

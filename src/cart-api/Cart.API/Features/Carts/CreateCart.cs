@@ -103,16 +103,16 @@ public static class CreateCart
 
         private static async Task<IResult> Handler(ISender sender, Request request)
         {
-            var command = new Command(request.Name, request.Items);
+            var command = new Command(request.Customer, request.Items);
             
             Result<Guid> result = await sender.Send(command);
 
             return result.Match(
-                cartId => Results.CreatedAtRoute("", new { cartId }, cartId),
+                cartId => Results.CreatedAtRoute(nameof(GetCart), new { cartId }, cartId),
                 ApiResults.Problem);
         }
 
-        private sealed record Request(string Name)
+        private sealed record Request(string Customer)
         {
             public List<ItemRequest> Items { get; init; } = [];
         }

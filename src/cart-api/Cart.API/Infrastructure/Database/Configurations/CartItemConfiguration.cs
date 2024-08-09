@@ -36,7 +36,7 @@ internal sealed class CartItemConfiguration : IEntityTypeConfiguration<CartItem>
 
         builder.Property(i => i.Quantity)
             .IsRequired()
-            .HasConversion(quantity => quantity.Value, value => new Quantity(value));
+            .HasConversion(quantity => quantity.Value, value => Quantity.Create(value).Value);
 
         builder.Property(i => i.Size)
             .IsRequired()

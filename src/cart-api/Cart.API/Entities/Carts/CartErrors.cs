@@ -19,4 +19,8 @@ public static class CartErrors
     public static readonly Error Cancelled = Error.Problem(
         "ShoppingCart.Cancelled",
         "The cart has been cancelled.");
+
+    public static Error NotFound(Guid cartId) => Error.NotFound(
+        "ShoppingCart.NotFound",
+        $"The cart with the identifier {cartId} was not found");
 }
