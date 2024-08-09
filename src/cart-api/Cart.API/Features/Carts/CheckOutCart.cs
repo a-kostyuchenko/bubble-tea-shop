@@ -9,7 +9,7 @@ using ServiceDefaults.Messaging;
 
 namespace Cart.API.Features.Carts;
 
-public static class CancelCart
+public static class CheckOutCart
 {
     public sealed record Command(Guid CartId) : ICommand;
     
@@ -33,7 +33,7 @@ public static class CancelCart
                 return Result.Failure(CartErrors.NotFound(request.CartId));
             }
 
-            Result result = cart.Cancel();
+            Result result = cart.CheckOut();
 
             if (result.IsFailure)
             {
@@ -50,9 +50,9 @@ public static class CancelCart
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPut("carts/{cartId:guid}/cancel", Handler)
+            app.MapPut("carts/{cartId:guid}/check-out", Handler)
                 .WithTags(nameof(ShoppingCart))
-                .WithName(nameof(CancelCart));
+                .WithName(nameof(CheckOutCart));
         }
 
         private static async Task<IResult> Handler(ISender sender, Guid cartId)
