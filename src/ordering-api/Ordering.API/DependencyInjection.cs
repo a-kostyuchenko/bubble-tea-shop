@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using BubbleTeaShop.Contracts;
 using FluentValidation;
 using Hangfire;
 using Hangfire.MemoryStorage;
@@ -66,6 +67,8 @@ internal static class DependencyInjection
         services.AddMassTransit(configurator =>
         {
             configurator.SetKebabCaseEndpointNameFormatter();
+
+            configurator.AddConsumer<IntegrationEventConsumer<CartCheckedOutEvent>>();
     
             configurator.UsingRabbitMq((context, cfg) =>
             {

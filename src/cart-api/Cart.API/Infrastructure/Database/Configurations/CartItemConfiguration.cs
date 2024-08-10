@@ -10,7 +10,14 @@ internal sealed class CartItemConfiguration : IEntityTypeConfiguration<CartItem>
 {
     public void Configure(EntityTypeBuilder<CartItem> builder)
     {
-        builder.ToTable(TableNames.CartItems);
+        builder.ToTable(
+            TableNames.CartItems,
+            tableBuilder =>
+            {
+                tableBuilder.HasCheckConstraint(
+                    "CK_Quantity_GreaterThanZero",
+                    sql: "quantity > 0");
+            });
         
         builder.HasKey(i => i.Id);
         

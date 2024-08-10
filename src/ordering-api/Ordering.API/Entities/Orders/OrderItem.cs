@@ -4,7 +4,7 @@ namespace Ordering.API.Entities.Orders;
 
 public sealed class OrderItem : Entity
 {
-    private OrderItem()
+    private OrderItem() : base(Ulid.NewUlid())
     {
     }
     

@@ -24,7 +24,8 @@ internal sealed class ShoppingCartConfiguration : IEntityTypeConfiguration<Shopp
 
         builder.HasMany(c => c.Items)
             .WithOne()
-            .HasForeignKey("cart_id");
+            .HasForeignKey("cart_id")
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.Navigation(c => c.Items).AutoInclude();
     }
