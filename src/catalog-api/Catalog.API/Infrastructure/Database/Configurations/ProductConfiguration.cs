@@ -1,4 +1,4 @@
-using Catalog.API.Entities.BubbleTeas;
+using Catalog.API.Entities.Products;
 using Catalog.API.Infrastructure.Database.Constants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -6,22 +6,17 @@ using ServiceDefaults.Domain;
 
 namespace Catalog.API.Infrastructure.Database.Configurations;
 
-internal sealed class BubbleTeaConfiguration : IEntityTypeConfiguration<BubbleTea>
+internal sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
 {
-    public void Configure(EntityTypeBuilder<BubbleTea> builder)
+    public void Configure(EntityTypeBuilder<Product> builder)
     {
-        builder.ToTable(TableNames.BubbleTeas);
+        builder.ToTable(TableNames.Products);
         
         builder.HasKey(b => b.Id);
         
         builder.Property(b => b.Name)
             .IsRequired()
             .HasMaxLength(300);
-
-        builder.Property(b => b.TeaType)
-            .IsRequired()
-            .HasConversion(type => type.Name, name => TeaType.FromName(name))
-            .HasMaxLength(100);
 
         builder.ComplexProperty(b => b.Price, priceBuilder =>
         {
@@ -40,7 +35,7 @@ internal sealed class BubbleTeaConfiguration : IEntityTypeConfiguration<BubbleTe
             .WithMany()
             .UsingEntity(joinBuilder =>
             {
-                joinBuilder.ToTable(TableNames.BubbleTeaIngredients);
+                joinBuilder.ToTable(TableNames.ProductIngredients);
                 
                 joinBuilder.Property("IngredientsId").HasColumnName("ingredient_id");
             });

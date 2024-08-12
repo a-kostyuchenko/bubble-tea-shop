@@ -1,4 +1,4 @@
-using Catalog.API.Entities.BubbleTeas;
+using Catalog.API.Entities.Products;
 using Catalog.API.Infrastructure.Database;
 using FluentValidation;
 using MediatR;
@@ -7,14 +7,13 @@ using ServiceDefaults.Domain;
 using ServiceDefaults.Endpoints;
 using ServiceDefaults.Messaging;
 
-namespace Catalog.API.Features.BubbleTeas;
+namespace Catalog.API.Features.Products;
 
-public static class UpdateBubbleTea
+public static class UpdateProduct
 {
     public sealed record Command(
-        Guid BubbleTeaId,
+        Guid ProductId,
         string Name,
-        string TeaType,
         decimal Price,
         string Currency) : ICommand;
     
@@ -23,7 +22,6 @@ public static class UpdateBubbleTea
         public Validator()
         {
             RuleFor(c => c.Name).NotEmpty().MaximumLength(300);
-            RuleFor(c => c.TeaType).NotEmpty().MaximumLength(100);
             RuleFor(c => c.Price).GreaterThanOrEqualTo(0);
             RuleFor(c => c.Currency).NotEmpty().MaximumLength(3);
         }
@@ -33,29 +31,26 @@ public static class UpdateBubbleTea
     {
         public async Task<Result> Handle(Command request, CancellationToken cancellationToken)
         {
-            BubbleTea? bubbleTea = await dbContext.BubbleTeas
-                .FirstOrDefaultAsync(b => b.Id == request.BubbleTeaId, cancellationToken);
+            Product? product = await dbContext.Products
+                .FirstOrDefaultAsync(b => b.Id == request.ProductId, cancellationToken);
 
-            if (bubbleTea is null)
+            if (product is null)
             {
-                return Result.Failure(BubbleTeaErrors.NotFound(request.BubbleTeaId));
+                return Result.Failure(ProductErrors.NotFound(request.ProductId));
             }
 
-            var teaTypeResult = Result.Create(TeaType.FromName(request.Name));
             Result<Money> moneyResult = Money.Create(request.Price, Currency.FromCode(request.Currency));
             
-            var inspectResult = Result.Inspect(teaTypeResult, moneyResult);
-            
-            if (inspectResult.IsFailure)
+            if (moneyResult.IsFailure)
             {
-                return Result.Failure(inspectResult.Error);
+                return moneyResult;
             }
             
-            bubbleTea.Update(request.Name, teaTypeResult.Value, moneyResult.Value);
+            product.Update(request.Name, moneyResult.Value);
             
             await dbContext.SaveChangesAsync(cancellationToken);
 
-            return Result.Success(bubbleTea.Id);
+            return Result.Success(product.Id);
         }
     }
 
@@ -63,17 +58,16 @@ public static class UpdateBubbleTea
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPut("bubble-teas", Handler)
-                .WithTags(nameof(BubbleTea))
-                .WithName(nameof(UpdateBubbleTea));
+            app.MapPut("products/{productId:guid}", Handler)
+                .WithTags(nameof(Product))
+                .WithName(nameof(UpdateProduct));
         }
 
-        private static async Task<IResult> Handler(ISender sender, Guid bubbleTeaId, Request request)
+        private static async Task<IResult> Handler(ISender sender, Guid productId, Request request)
         {
             var command = new Command(
-                bubbleTeaId,
+                productId,
                 request.Name,
-                request.TeaType,
                 request.Price,
                 request.Currency);
             
@@ -82,6 +76,6 @@ public static class UpdateBubbleTea
             return result.Match(Results.NoContent, ApiResults.Problem);
         }
 
-        private sealed record Request(string Name, string TeaType, decimal Price, string Currency);
+        private sealed record Request(string Name, decimal Price, string Currency);
     }
 }

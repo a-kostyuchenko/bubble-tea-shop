@@ -1,5 +1,5 @@
-using Catalog.API.Entities.BubbleTeas;
 using Catalog.API.Entities.Ingredients;
+using Catalog.API.Entities.Products;
 using Catalog.API.Infrastructure.Database;
 using FluentValidation;
 using MediatR;
@@ -8,18 +8,18 @@ using ServiceDefaults.Domain;
 using ServiceDefaults.Endpoints;
 using ServiceDefaults.Messaging;
 
-namespace Catalog.API.Features.BubbleTeas;
+namespace Catalog.API.Features.Products;
 
-public static class AddIngredient
+public static class RemoveIngredient
 {
-    public sealed record Command(Guid BubbleTeaId, Guid IngredientId) : ICommand;
+    public sealed record Command(Guid ProductId, Guid IngredientId) : ICommand;
     
     public sealed class Validator : AbstractValidator<Command>
     {
         public Validator()
         {
-            RuleFor(c => c.BubbleTeaId).NotEmpty();
-            RuleFor(c => c.BubbleTeaId).NotEmpty();
+            RuleFor(c => c.ProductId).NotEmpty();
+            RuleFor(c => c.IngredientId).NotEmpty();
         }
     }
 
@@ -27,13 +27,13 @@ public static class AddIngredient
     {
         public async Task<Result> Handle(Command request, CancellationToken cancellationToken)
         {
-            BubbleTea? bubbleTea = await dbContext.BubbleTeas
+            Product? product = await dbContext.Products
                 .Include(b => b.Ingredients)
-                .FirstOrDefaultAsync(b => b.Id == request.BubbleTeaId, cancellationToken);
+                .FirstOrDefaultAsync(b => b.Id == request.ProductId, cancellationToken);
 
-            if (bubbleTea is null)
+            if (product is null)
             {
-                return Result.Failure(BubbleTeaErrors.NotFound(request.BubbleTeaId));
+                return Result.Failure(ProductErrors.NotFound(request.ProductId));
             }
 
             Ingredient? ingredient = await dbContext.Ingredients
@@ -44,11 +44,11 @@ public static class AddIngredient
                 return Result.Failure(IngredientErrors.NotFound(request.IngredientId));
             }
             
-            bubbleTea.AddIngredient(ingredient);
+            product.RemoveIngredient(ingredient);
             
             await dbContext.SaveChangesAsync(cancellationToken);
 
-            return Result.Success(bubbleTea.Id);
+            return Result.Success(product.Id);
         }
     }
 
@@ -56,14 +56,14 @@ public static class AddIngredient
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPut("bubble-teas/{bubbleTeaId:guid}/ingredients/{ingredientId:guid}", Handler)
-                .WithTags(nameof(BubbleTea))
-                .WithName(nameof(AddIngredient));
+            app.MapDelete("products/{productId:guid}/ingredients/{ingredientId:guid}", Handler)
+                .WithTags(nameof(Product))
+                .WithName(nameof(RemoveIngredient));
         }
 
-        private static async Task<IResult> Handler(ISender sender, Guid bubbleTeaId, Guid ingredientId)
+        private static async Task<IResult> Handler(ISender sender, Guid productId, Guid ingredientId)
         {
-            var command = new Command(bubbleTeaId, ingredientId);
+            var command = new Command(productId, ingredientId);
             
             Result result = await sender.Send(command);
 

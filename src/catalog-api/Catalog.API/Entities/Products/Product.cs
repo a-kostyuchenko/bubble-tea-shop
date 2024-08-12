@@ -1,40 +1,37 @@
 using Catalog.API.Entities.Ingredients;
 using ServiceDefaults.Domain;
 
-namespace Catalog.API.Entities.BubbleTeas;
+namespace Catalog.API.Entities.Products;
 
-public sealed class BubbleTea : Entity
+public sealed class Product : Entity
 {
-    private BubbleTea() : base(Ulid.NewUlid())
+    private Product() : base(Ulid.NewUlid())
     {
     }
 
     private readonly HashSet<Ingredient> _ingredients = [];
     
     public string Name { get; private set; }
-    public TeaType TeaType { get; private set; }
     public Money Price { get; private set; }
     public IReadOnlyCollection<Ingredient> Ingredients => _ingredients.ToList();
     
-    public static Result<BubbleTea> Create(string name, TeaType teaType, Money? price = null)
+    public static Result<Product> Create(string name, Money? price = null)
     {
-        return Result.Success(new BubbleTea
+        return Result.Success(new Product
         {
             Name = name,
-            TeaType = teaType,
             Price = price ?? Money.Zero(),
         });
     }
     
-    public void Update(string name, TeaType teaType, Money price)
+    public void Update(string name, Money price)
     {
-        if (Name == name && TeaType == teaType && Price == price)
+        if (Name == name && Price == price)
         {
             return;
         }
         
         Name = name;
-        TeaType = teaType;
         Price = price;
     }
     

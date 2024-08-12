@@ -1,5 +1,5 @@
 using System.Data.Common;
-using Catalog.API.Entities.BubbleTeas;
+using Catalog.API.Entities.Products;
 using Catalog.API.Infrastructure.Database;
 using Dapper;
 using MediatR;
@@ -7,11 +7,11 @@ using ServiceDefaults.Domain;
 using ServiceDefaults.Endpoints;
 using ServiceDefaults.Messaging;
 
-namespace Catalog.API.Features.BubbleTeas;
+namespace Catalog.API.Features.Products;
 
-public static class GetBubbleTea
+public static class GetProduct
 {
-    public sealed record Query(Guid BubbleTeaId) : IQuery<Response>;
+    public sealed record Query(Guid ProductId) : IQuery<Response>;
 
     public sealed record Response(
         Guid Id,
@@ -33,49 +33,49 @@ public static class GetBubbleTea
             const string sql = 
                 $"""
                     SELECT
-                        bt.id AS {nameof(Response.Id)},
-                        bt.name AS {nameof(Response.Name)},
-                        bt.amount AS {nameof(Response.Price)},
-                        bt.currency AS {nameof(Response.Currency)},
+                        p.id AS {nameof(Response.Id)},
+                        p.name AS {nameof(Response.Name)},
+                        p.amount AS {nameof(Response.Price)},
+                        p.currency AS {nameof(Response.Currency)},
                         i.id AS {nameof(IngredientResponse.IngredientId)},
                         i.name AS {nameof(IngredientResponse.Name)}
-                    FROM catalog.bubble_teas bt
-                    LEFT JOIN catalog.bubble_tea_ingredients bti ON bti.bubble_tea_id = bt.id
-                    LEFT JOIN catalog.ingredients i ON i.id = bti.ingredient_id
-                    WHERE bt.id = @BubbleTeaId
+                    FROM catalog.products p
+                    LEFT JOIN catalog.product_ingredients pi ON pi.product_id = p.id
+                    LEFT JOIN catalog.ingredients i ON i.id = pi.ingredient_id
+                    WHERE p.id = @ProductId
                  """;
             
-            Dictionary<Guid, Response> bubbleTeasDictionary = [];
+            Dictionary<Guid, Response> productsDictionary = [];
 
             await connection.QueryAsync<Response, IngredientResponse?, Response>(
                 sql,
-                (bubbleTea, ingredient) =>
+                (product, ingredient) =>
                 {
-                    if (bubbleTeasDictionary.TryGetValue(bubbleTea.Id, out Response? existingBubbleTea))
+                    if (productsDictionary.TryGetValue(product.Id, out Response? existingProduct))
                     {
-                        bubbleTea = existingBubbleTea;
+                        product = existingProduct;
                     }
                     else
                     {
-                        bubbleTeasDictionary.Add(bubbleTea.Id, bubbleTea);
+                        productsDictionary.Add(product.Id, product);
                     }
 
                     if (ingredient is not null)
                     {
-                        bubbleTea.Ingredients.Add(ingredient);
+                        product.Ingredients.Add(ingredient);
                     }
                 
-                    return bubbleTea;
+                    return product;
                 },
                 request,
                 splitOn: nameof(IngredientResponse.IngredientId));
         
-            if (!bubbleTeasDictionary.TryGetValue(request.BubbleTeaId, out Response bubbleTeaResponse))
+            if (!productsDictionary.TryGetValue(request.ProductId, out Response productResponse))
             {
-                return Result.Failure<Response>(BubbleTeaErrors.NotFound(request.BubbleTeaId));
+                return Result.Failure<Response>(ProductErrors.NotFound(request.ProductId));
             }
 
-            return bubbleTeaResponse;
+            return productResponse;
         }
     }
 
@@ -83,15 +83,15 @@ public static class GetBubbleTea
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapGet("bubble-teas/{bubbleTeaId:guid}", Handler)
-                .WithTags(nameof(BubbleTea))
-                .WithName(nameof(GetBubbleTea))
+            app.MapGet("products/{productId:guid}", Handler)
+                .WithTags(nameof(Product))
+                .WithName(nameof(GetProduct))
                 .Produces<Response>();
         }
 
-        private static async Task<IResult> Handler(ISender sender, Guid bubbleTeaId)
+        private static async Task<IResult> Handler(ISender sender, Guid productId)
         {
-            var query = new Query(bubbleTeaId);
+            var query = new Query(productId);
             
             Result<Response> result = await sender.Send(query);
 
