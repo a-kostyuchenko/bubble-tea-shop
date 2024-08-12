@@ -14,6 +14,7 @@ public static class UpdateProduct
     public sealed record Command(
         Guid ProductId,
         string Name,
+        string Category,
         decimal Price,
         string Currency) : ICommand;
     
@@ -22,6 +23,7 @@ public static class UpdateProduct
         public Validator()
         {
             RuleFor(c => c.Name).NotEmpty().MaximumLength(300);
+            RuleFor(c => c.Category).NotEmpty().MaximumLength(100);
             RuleFor(c => c.Price).GreaterThanOrEqualTo(0);
             RuleFor(c => c.Currency).NotEmpty().MaximumLength(3);
         }
@@ -40,17 +42,20 @@ public static class UpdateProduct
             }
 
             Result<Money> moneyResult = Money.Create(request.Price, Currency.FromCode(request.Currency));
+            var categoryResult = Result.Create(Category.FromName(request.Category));
             
-            if (moneyResult.IsFailure)
+            var inspection = Result.Inspect(moneyResult, categoryResult);
+            
+            if (inspection.IsFailure)
             {
-                return moneyResult;
+                return inspection;
             }
             
-            product.Update(request.Name, moneyResult.Value);
+            product.Update(request.Name, categoryResult.Value, moneyResult.Value);
             
             await dbContext.SaveChangesAsync(cancellationToken);
 
-            return Result.Success(product.Id);
+            return Result.Success();
         }
     }
 
@@ -68,6 +73,7 @@ public static class UpdateProduct
             var command = new Command(
                 productId,
                 request.Name,
+                request.Category,
                 request.Price,
                 request.Currency);
             
@@ -76,6 +82,6 @@ public static class UpdateProduct
             return result.Match(Results.NoContent, ApiResults.Problem);
         }
 
-        private sealed record Request(string Name, decimal Price, string Currency);
+        private sealed record Request(string Name, string Category, decimal Price, string Currency);
     }
 }

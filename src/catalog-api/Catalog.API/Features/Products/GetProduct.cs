@@ -16,6 +16,7 @@ public static class GetProduct
     public sealed record Response(
         Guid Id,
         string Name,
+        string Category,
         decimal Price,
         string Currency)
     {
@@ -35,6 +36,7 @@ public static class GetProduct
                     SELECT
                         p.id AS {nameof(Response.Id)},
                         p.name AS {nameof(Response.Name)},
+                        p.category AS {nameof(Response.Category)},
                         p.amount AS {nameof(Response.Price)},
                         p.currency AS {nameof(Response.Currency)},
                         i.id AS {nameof(IngredientResponse.IngredientId)},

@@ -13,25 +13,28 @@ public sealed class Product : Entity
     
     public string Name { get; private set; }
     public Money Price { get; private set; }
+    public Category Category { get; private set; }
     public IReadOnlyCollection<Ingredient> Ingredients => _ingredients.ToList();
     
-    public static Result<Product> Create(string name, Money? price = null)
+    public static Result<Product> Create(string name, Category category, Money? price = null)
     {
         return Result.Success(new Product
         {
             Name = name,
+            Category = category,
             Price = price ?? Money.Zero(),
         });
     }
     
-    public void Update(string name, Money price)
+    public void Update(string name, Category category, Money price)
     {
-        if (Name == name && Price == price)
+        if (Name == name && Category == category && Price == price)
         {
             return;
         }
         
         Name = name;
+        Category = category;
         Price = price;
     }
     

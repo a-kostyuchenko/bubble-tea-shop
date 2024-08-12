@@ -18,6 +18,11 @@ internal sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
             .IsRequired()
             .HasMaxLength(300);
 
+        builder.Property(p => p.Category)
+            .IsRequired()
+            .HasConversion(category => category.Name, name => Category.FromName(name))
+            .HasMaxLength(100);
+
         builder.ComplexProperty(b => b.Price, priceBuilder =>
         {
             priceBuilder.Property(p => p.Amount)
