@@ -1,4 +1,3 @@
-using AppHost.Extensions;
 using Aspirant.Hosting;
 
 IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(args);
@@ -9,7 +8,6 @@ IResourceBuilder<ParameterResource> pgPassword = builder.AddParameter("DatabaseP
 IResourceBuilder<PostgresServerResource> databaseServer = builder
     .AddPostgres("database-server", pgUser, pgPassword)
     .WithDataVolume()
-    .WithHealthCheck()
     .WithPgAdmin();
     
 IResourceBuilder<PostgresDatabaseResource> catalogDb = databaseServer.AddDatabase("catalog-db");
@@ -18,8 +16,9 @@ IResourceBuilder<PostgresDatabaseResource> orderDb = databaseServer.AddDatabase(
 
 IResourceBuilder<RabbitMQServerResource> queue = builder
     .AddRabbitMQ("queue")
-    .WithHealthCheck()
     .WithManagementPlugin();
+
+IResourceBuilder<RedisResource> cache = builder.AddRedis("cache");
 
 
 builder.AddProject<Projects.Catalog_API>("catalog-api")
@@ -37,7 +36,9 @@ builder.AddProject<Projects.Cart_API>("cart-api")
 builder.AddProject<Projects.Ordering_API>("ordering-api")
     .WithReference(orderDb)
     .WithReference(queue)
+    .WithReference(cache)
     .WaitFor(orderDb)
-    .WaitFor(queue);
+    .WaitFor(queue)
+    .WaitFor(cache);
 
 builder.Build().Run();
