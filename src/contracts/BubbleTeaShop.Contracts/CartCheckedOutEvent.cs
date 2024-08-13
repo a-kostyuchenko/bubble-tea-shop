@@ -11,9 +11,9 @@ public sealed class CartCheckedOutEvent(
     List<CartItemModel> items) : IntegrationEvent(id, occurredOnUtc)
 {
     public Guid CartId { get; init; } = cartId;
-    public string Customer { get; set; } = customer;
-    public string? Note { get; set; } = note;
-    public List<CartItemModel> Items { get; set; } = items;
+    public string Customer { get; init; } = customer;
+    public string? Note { get; init; } = note;
+    public List<CartItemModel> Items { get; init; } = items;
 }
 
 public sealed record CartItemModel(

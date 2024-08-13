@@ -7,6 +7,7 @@ using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Ordering.API.Features.Orders.CancelOrderSaga;
 using Ordering.API.Infrastructure.Database;
 using Ordering.API.Infrastructure.Database.Constants;
 using Ordering.API.Infrastructure.EventBus;
@@ -72,6 +73,10 @@ internal static class DependencyInjection
 
             configurator.AddConsumer<IntegrationEventConsumer<CartCheckedOutEvent>>()
                 .Endpoint(e => e.InstanceId = instanceId);
+
+            configurator.AddSagaStateMachine<CancelOrderSaga, CancelOrderState>()
+                .Endpoint(e => e.InstanceId = instanceId)
+                .RedisRepository(configuration.GetConnectionString("cache"));
     
             configurator.UsingRabbitMq((context, cfg) =>
             {
