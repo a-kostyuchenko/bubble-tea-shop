@@ -34,7 +34,7 @@ builder.AddProject<Projects.Cart_API>("cart-api")
     .WaitFor(cartDb)
     .WaitFor(queue);
 
-builder.AddProject<Projects.Ordering_API>("order-api")
+builder.AddProject<Projects.Ordering_API>("ordering-api")
     .WithReference(orderDb)
     .WithReference(queue)
     .WaitFor(orderDb)

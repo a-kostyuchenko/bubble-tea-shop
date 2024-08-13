@@ -64,11 +64,14 @@ internal static class DependencyInjection
     
     private static void AddMessageQueue(this IServiceCollection services, IConfiguration configuration)
     {
+        string instanceId = AssemblyReference.Assembly.GetName().Name?.ToLowerInvariant().Replace('.', '-')!;
+
         services.AddMassTransit(configurator =>
         {
             configurator.SetKebabCaseEndpointNameFormatter();
 
-            configurator.AddConsumer<IntegrationEventConsumer<CartCheckedOutEvent>>();
+            configurator.AddConsumer<IntegrationEventConsumer<CartCheckedOutEvent>>()
+                .Endpoint(e => e.InstanceId = instanceId);
     
             configurator.UsingRabbitMq((context, cfg) =>
             {
