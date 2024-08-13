@@ -9,9 +9,9 @@ using ServiceDefaults.Messaging;
 
 namespace Ordering.API.Features.Orders;
 
-public static class GetOrder
+public static class GetOrders
 {
-    public sealed record Query(Guid OrderId) : IQuery<Response>;
+    public sealed record Query(string? Status, int Page, int PageSize) : IQuery<PagedResponse>;
 
     public sealed record Response(
         Guid Id,
@@ -32,13 +32,37 @@ public static class GetOrder
         string SugarLevel,
         string IceLevel,
         string Temperature);
+    
+    public sealed record PagedResponse(
+        int Page,
+        int PageSize,
+        int TotalCount,
+        IReadOnlyCollection<Response> Orders);
 
-    internal sealed class QueryHandler(IDbConnectionFactory dbConnectionFactory) : IQueryHandler<Query, Response>
+    internal sealed class QueryHandler(IDbConnectionFactory dbConnectionFactory) : IQueryHandler<Query, PagedResponse>
     {
-        public async Task<Result<Response>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result<PagedResponse>> Handle(Query request, CancellationToken cancellationToken)
         {
             await using DbConnection connection = await dbConnectionFactory.OpenConnectionAsync();
             
+            var parameters = new
+            {
+                request.Status,
+                Take = request.PageSize,
+                Skip = (request.Page - 1) * request.PageSize
+            };
+            
+            IReadOnlyCollection<Response> orders = await GetOrdersAsync(connection, parameters);
+            
+            int totalCount = await CountOrdersAsync(connection, parameters);
+            
+            return new PagedResponse(request.Page, request.PageSize, totalCount, orders);
+        }
+        
+        private static async Task<IReadOnlyCollection<Response>> GetOrdersAsync(
+            DbConnection connection,
+            object parameters)
+        {
             const string sql = 
                 $"""
                     SELECT
@@ -56,12 +80,15 @@ public static class GetOrder
                         i.temperature AS {nameof(ItemResponse.Temperature)}
                     FROM ordering.orders c
                     LEFT JOIN ordering.order_items i ON i.order_id = c.id
-                    WHERE c.id = @OrderId
+                    WHERE (@Status IS NULL OR c.status = @Status)
+                    ORDER BY c.id
+                    OFFSET @Skip
+                    LIMIT @Take
                  """;
             
             Dictionary<Guid, Response> ordersDictionary = [];
 
-            await connection.QueryAsync<Response, ItemResponse?, Response>(
+            List<Response> orders =  (await connection.QueryAsync<Response, ItemResponse?, Response>(
                 sql,
                 (order, item) =>
                 {
@@ -81,15 +108,24 @@ public static class GetOrder
                 
                     return order;
                 },
-                request,
-                splitOn: nameof(ItemResponse.ItemId));
-        
-            if (!ordersDictionary.TryGetValue(request.OrderId, out Response orderResponse))
-            {
-                return Result.Failure<Response>(OrderErrors.NotFound(request.OrderId));
-            }
+                parameters,
+                splitOn: nameof(ItemResponse.ItemId))).AsList();
 
-            return orderResponse;
+            return orders;
+        }
+        
+        private static async Task<int> CountOrdersAsync(DbConnection connection, object parameters)
+        {
+            const string sql =
+                """
+                SELECT COUNT(*)
+                FROM ordering.orders c
+                WHERE (@Status IS NULL OR c.status = @Status)
+                """;
+
+            int totalCount = await connection.ExecuteScalarAsync<int>(sql, parameters);
+
+            return totalCount;
         }
     }
 
@@ -97,17 +133,17 @@ public static class GetOrder
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapGet("orders/{orderId:guid}", Handler)
+            app.MapGet("orders", Handler)
                 .WithTags(nameof(Order))
-                .WithName(nameof(GetOrder))
-                .Produces<Response>();
+                .WithName(nameof(GetOrders))
+                .Produces<PagedResponse>();
         }
 
-        private static async Task<IResult> Handler(ISender sender, Guid orderId)
+        private static async Task<IResult> Handler(ISender sender, string? status, int page = 1, int pageSize = 15)
         {
-            var query = new Query(orderId);
+            var query = new Query(status, page, pageSize);
             
-            Result<Response> result = await sender.Send(query);
+            Result<PagedResponse> result = await sender.Send(query);
 
             return result.Match(Results.Ok, ApiResults.Problem);
         }
