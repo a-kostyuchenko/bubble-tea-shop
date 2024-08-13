@@ -18,7 +18,9 @@ IResourceBuilder<RabbitMQServerResource> queue = builder
     .AddRabbitMQ("queue")
     .WithManagementPlugin();
 
-IResourceBuilder<RedisResource> cache = builder.AddRedis("cache");
+IResourceBuilder<RedisResource> cache = builder
+    .AddRedis("cache")
+    .WithDataVolume();
 
 
 builder.AddProject<Projects.Catalog_API>("catalog-api")

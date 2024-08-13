@@ -1,8 +1,11 @@
+using BubbleTeaShop.Contracts;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Ordering.API.Entities.Orders;
+using Ordering.API.Entities.Orders.Events;
 using Ordering.API.Infrastructure.Database;
+using Ordering.API.Infrastructure.EventBus;
 using ServiceDefaults.Domain;
 using ServiceDefaults.Endpoints;
 using ServiceDefaults.Messaging;
@@ -62,6 +65,22 @@ public static class CancelOrder
             Result result = await sender.Send(command);
 
             return result.Match(Results.NoContent, ApiResults.Problem);
+        }
+    }
+    
+    internal sealed class OrderCancelledDomainEventHandler(IEventBus eventBus) 
+        : DomainEventHandler<OrderCancelledDomainEvent>
+    {
+        public override async Task Handle(
+            OrderCancelledDomainEvent domainEvent,
+            CancellationToken cancellationToken = default)
+        {
+            await eventBus.PublishAsync(
+                new OrderCancelledEvent(
+                domainEvent.Id,
+                domainEvent.OccurredOnUtc,
+                domainEvent.OrderId),
+                cancellationToken);
         }
     }
 }
