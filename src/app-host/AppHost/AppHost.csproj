@@ -22,6 +22,7 @@
       <ProjectReference Include="..\..\cart-api\Cart.API\Cart.API.csproj" />
       <ProjectReference Include="..\..\catalog-api\Catalog.API\Catalog.API.csproj" />
       <ProjectReference Include="..\..\ordering-api\Ordering.API\Ordering.API.csproj" />
+      <ProjectReference Include="..\..\payment-api\Payment.API\Payment.API.csproj" />
     </ItemGroup>
 
 </Project>
