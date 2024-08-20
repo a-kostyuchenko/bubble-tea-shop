@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\service-defaults\ServiceDefaults\ServiceDefaults.csproj" />
+    </ItemGroup>
+
 </Project>
