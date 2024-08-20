@@ -7,7 +7,24 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\contracts\BubbleTeaShop.Contracts\BubbleTeaShop.Contracts.csproj" />
       <ProjectReference Include="..\Payment.Application\Payment.Application.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Database\Configurations\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Dapper" />
+      <PackageReference Include="EFCore.NamingConventions" />
+      <PackageReference Include="Hangfire.MemoryStorage" />
+      <PackageReference Include="Hangfire.NetCore" />
+      <PackageReference Include="MassTransit" />
+      <PackageReference Include="MassTransit.Abstractions" />
+      <PackageReference Include="MassTransit.RabbitMQ" />
+      <PackageReference Include="Newtonsoft.Json" />
+      <PackageReference Include="Scrutor" />
     </ItemGroup>
 
 </Project>
