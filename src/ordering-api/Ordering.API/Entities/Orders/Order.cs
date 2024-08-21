@@ -5,7 +5,7 @@ namespace Ordering.API.Entities.Orders;
 
 public sealed class Order : Entity
 {
-    private Order() : base(Ulid.NewUlid())
+    private Order()
     {
     }
 
@@ -17,15 +17,18 @@ public sealed class Order : Entity
     public DateTime CreatedOnUtc { get; init; }
     public IReadOnlyCollection<OrderItem> Items => [.. _items];
     
-    public static Order Create(string customer, string? note)
+    public static Order Create(Guid id, string customer, string? note)
     {
-        return new Order
+        var order = new Order
         {
+            Id = id,
             Customer = customer,
             Note = note,
             Status = OrderStatus.Pending,
             CreatedOnUtc = DateTime.UtcNow
         };
+        
+        return order;
     }
     
     public void AddItem(string productName, Money price, int quantity, Parameters parameters) => 

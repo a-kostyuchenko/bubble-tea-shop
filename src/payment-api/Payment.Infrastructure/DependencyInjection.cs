@@ -9,11 +9,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Payment.Application.Abstractions.Data;
+using Payment.Application.Abstractions.Payments;
+using Payment.Domain.Payments;
 using Payment.Infrastructure.Database;
 using Payment.Infrastructure.Database.Constants;
+using Payment.Infrastructure.Database.Repositories;
 using Payment.Infrastructure.EventBus;
 using Payment.Infrastructure.Inbox;
 using Payment.Infrastructure.Outbox;
+using Payment.Infrastructure.Payments;
 using ServiceDefaults.Messaging;
 
 namespace Payment.Infrastructure;
@@ -26,6 +31,9 @@ public static class DependencyInjection
         services.AddIntegrationEventHandlers();
         services.AddMessageQueue(configuration);
         services.AddBackgroundJobs(configuration);
+        
+        services.TryAddScoped<IPaymentRepository, PaymentRepository>();
+        services.TryAddScoped<IPaymentService, PaymentService>();
         
         return services;
     }
@@ -107,6 +115,8 @@ public static class DependencyInjection
         builder.AddNpgsqlDataSource("payment-db");
         
         builder.Services.TryAddScoped<IDbConnectionFactory, DbConnectionFactory>();
+        
+        builder.Services.TryAddScoped<IUnitOfWork>(sp => sp.GetRequiredService<PaymentDbContext>());
     }
     
     private static void AddBackgroundJobs(this IServiceCollection services, IConfiguration configuration)

@@ -17,12 +17,14 @@ public static class CreateOrder
         string SugarLevel,
         string IceLevel,
         string Temperature);
-    public sealed record Command(string Customer, string? Note, List<ItemRequest> Items) : ICommand<Guid>;
+    public sealed record Command(Guid Id, string Customer, string? Note, List<ItemRequest> Items) : ICommand<Guid>;
     
     public sealed class Validator : AbstractValidator<Command>
     {
         public Validator()
         {
+            RuleFor(c => c.Id).NotEmpty();
+            
             RuleFor(c => c.Customer).NotEmpty().MaximumLength(300);
             
             RuleForEach(c => c.Items)
@@ -44,7 +46,7 @@ public static class CreateOrder
     {
         public async Task<Result<Guid>> Handle(Command request, CancellationToken cancellationToken)
         {
-            Result<Order> orderResult = Order.Create(request.Customer, request.Note);
+            Result<Order> orderResult = Order.Create(request.Id, request.Customer, request.Note);
 
             if (orderResult.IsFailure)
             {

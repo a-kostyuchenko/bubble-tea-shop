@@ -12,10 +12,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Database\Configurations\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="Dapper" />
       <PackageReference Include="EFCore.NamingConventions" />
       <PackageReference Include="Hangfire.MemoryStorage" />

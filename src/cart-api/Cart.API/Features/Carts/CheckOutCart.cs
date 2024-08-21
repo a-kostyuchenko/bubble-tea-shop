@@ -15,13 +15,24 @@ namespace Cart.API.Features.Carts;
 
 public static class CheckOutCart
 {
-    public sealed record Command(Guid CartId) : ICommand;
+    public sealed record Command(
+        Guid CartId,
+        string CardNumber,
+        int ExpiryMonth,
+        int ExpiryYear,
+        string CVV,
+        string CardHolderName) : ICommand;
     
     public sealed class Validator : AbstractValidator<Command>
     {
         public Validator()
         {
             RuleFor(c => c.CartId).NotEmpty();
+            RuleFor(c => c.CardNumber).CreditCard();
+            RuleFor(c => c.ExpiryMonth).InclusiveBetween(1, 12);
+            RuleFor(c => c.ExpiryYear).InclusiveBetween(DateTime.UtcNow.Year, DateTime.UtcNow.Year + 10);
+            RuleFor(c => c.CVV).NotEmpty().Length(PaymentInfo.DefaultCvvLength);
+            RuleFor(c => c.CardHolderName).NotEmpty().MaximumLength(300);
         }
     }
 
@@ -36,8 +47,20 @@ public static class CheckOutCart
             {
                 return Result.Failure(CartErrors.NotFound(request.CartId));
             }
+            
+            Result<PaymentInfo> paymentInfoResult = PaymentInfo.Create(
+                request.CardNumber,
+                request.ExpiryMonth,
+                request.ExpiryYear,
+                request.CVV,
+                request.CardHolderName);
 
-            Result result = cart.CheckOut();
+            if (paymentInfoResult.IsFailure)
+            {
+                return paymentInfoResult;
+            }
+
+            Result result = cart.CheckOut(paymentInfoResult.Value);
 
             if (result.IsFailure)
             {
@@ -59,14 +82,27 @@ public static class CheckOutCart
                 .WithName(nameof(CheckOutCart));
         }
 
-        private static async Task<IResult> Handler(ISender sender, Guid cartId)
+        private static async Task<IResult> Handler(ISender sender, Guid cartId, Request request)
         {
-            var command = new Command(cartId);
+            var command = new Command(
+                cartId,
+                request.CardNumber,
+                request.ExpiryMonth,
+                request.ExpiryYear,
+                request.CVV,
+                request.CardHolderName);
             
             Result result = await sender.Send(command);
 
             return result.Match(Results.NoContent, ApiResults.Problem);
         }
+        
+        private sealed record Request(
+            string CardNumber,
+            int ExpiryMonth,
+            int ExpiryYear,
+            string CVV,
+            string CardHolderName);
     }
     
     internal sealed class CartCheckedOutDomainEventHandler(CartDbContext dbContext, IEventBus eventBus) 
@@ -92,6 +128,13 @@ public static class CheckOutCart
                 cart.Id,
                 cart.Customer,
                 cart.Note,
+                domainEvent.CardNumber,
+                domainEvent.ExpiryMonth,
+                domainEvent.ExpiryYear,
+                domainEvent.CVV,
+                domainEvent.CardHolderName,
+                cart.Items.Sum(i => i.Price.Amount * i.Quantity.Value),
+                cart.Items.First().Price.Currency.Code,
                 cart.Items.Select(item => new CartItemModel(
                     item.ProductId,
                     item.ProductName,

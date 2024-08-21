@@ -15,6 +15,7 @@ public static class CartCheckedOut
             CancellationToken cancellationToken = default)
         {
             var command = new CreateOrder.Command(
+                integrationEvent.CartId,
                 integrationEvent.Customer,
                 integrationEvent.Note,
                 integrationEvent.Items.Select(item => new CreateOrder.ItemRequest(

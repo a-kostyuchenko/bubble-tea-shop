@@ -20,7 +20,7 @@ public static class CreateCart
         string SugarLevel,
         string IceLevel,
         string Temperature);
-    public sealed record Command(string Customer, List<ItemRequest> Items) : ICommand<Guid>;
+    public sealed record Command(string Customer,  List<ItemRequest> Items) : ICommand<Guid>;
     
     public sealed class Validator : AbstractValidator<Command>
     {

@@ -48,7 +48,7 @@ public sealed class ShoppingCart : Entity
         return Result.Success();
     } 
     
-    public Result CheckOut()
+    public Result CheckOut(PaymentInfo paymentInfo)
     {
         if (_items.Count == 0)
         {
@@ -67,7 +67,13 @@ public sealed class ShoppingCart : Entity
         
         Status = CartStatus.CheckedOut;
         
-        Raise(new CartCheckedOutDomainEvent(Id));
+        Raise(new CartCheckedOutDomainEvent(
+            Id,
+            paymentInfo.CardNumber,
+            paymentInfo.ExpiryMonth,
+            paymentInfo.ExpiryYear,
+            paymentInfo.CVV,
+            paymentInfo.CardHolderName));
 
         return Result.Success();
     }

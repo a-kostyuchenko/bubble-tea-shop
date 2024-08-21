@@ -1,11 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Payment.Application.Abstractions.Data;
 using Payment.Infrastructure.Database.Constants;
 
 namespace Payment.Infrastructure.Database;
 
-public sealed class PaymentDbContext(DbContextOptions<PaymentDbContext> options) : DbContext(options)
+public sealed class PaymentDbContext(DbContextOptions<PaymentDbContext> options) : DbContext(options), IUnitOfWork
 {
+    public DbSet<Domain.Payments.Payment> Payments { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
