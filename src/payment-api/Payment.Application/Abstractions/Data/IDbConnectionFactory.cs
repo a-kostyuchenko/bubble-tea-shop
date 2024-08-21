@@ -1,6 +1,6 @@
 using System.Data.Common;
 
-namespace Payment.Infrastructure.Database;
+namespace Payment.Application.Abstractions.Data;
 
 public interface IDbConnectionFactory
 {

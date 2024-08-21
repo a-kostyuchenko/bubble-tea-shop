@@ -1,5 +1,6 @@
 using System.Data.Common;
 using Npgsql;
+using Payment.Application.Abstractions.Data;
 
 namespace Payment.Infrastructure.Database;
 
