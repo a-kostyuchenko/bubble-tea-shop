@@ -9,6 +9,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\contracts\BubbleTeaShop.Contracts\BubbleTeaShop.Contracts.csproj" />
       <ProjectReference Include="..\Payment.Application\Payment.Application.csproj" />
+      <ProjectReference Include="..\Payment.Presentation\Payment.Presentation.csproj" />
     </ItemGroup>
 
     <ItemGroup>

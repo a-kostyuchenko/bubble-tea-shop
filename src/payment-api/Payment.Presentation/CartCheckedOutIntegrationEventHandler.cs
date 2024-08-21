@@ -5,7 +5,7 @@ using ServiceDefaults.Domain;
 using ServiceDefaults.Exceptions;
 using ServiceDefaults.Messaging;
 
-namespace Payment.API.Endpoints;
+namespace Payment.Presentation;
 
 internal sealed class CartCheckedOutIntegrationEventHandler(ISender sender) 
     : IntegrationEventHandler<CartCheckedOutEvent>

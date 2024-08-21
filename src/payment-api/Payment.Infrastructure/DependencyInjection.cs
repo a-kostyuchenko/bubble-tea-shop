@@ -40,7 +40,7 @@ public static class DependencyInjection
     
     private static void AddDomainEventHandlers(this IServiceCollection services)
     {
-        Type[] domainEventHandlers = AssemblyReference.Assembly
+        Type[] domainEventHandlers = Application.AssemblyReference.Assembly
             .GetTypes()
             .Where(type => type.IsAssignableTo(typeof(IDomainEventHandler)) &&
                            !type.IsAssignableTo(typeof(IdempotentDomainEventHandler<>)))
@@ -64,7 +64,7 @@ public static class DependencyInjection
     
     private static void AddIntegrationEventHandlers(this IServiceCollection services)
     {
-        Type[] integrationEventHandlers = AssemblyReference.Assembly
+        Type[] integrationEventHandlers = Presentation.AssemblyReference.Assembly
             .GetTypes()
             .Where(type => type.IsAssignableTo(typeof(IIntegrationEventHandler)) &&
                            !type.IsAssignableTo(typeof(IdempotentIntegrationEventHandler<>)))

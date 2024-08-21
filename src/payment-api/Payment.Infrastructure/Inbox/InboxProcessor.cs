@@ -45,7 +45,7 @@ internal sealed class InboxProcessor(
                 IEnumerable<IIntegrationEventHandler> handlers = IntegrationEventHandlersFactory.GetHandlers(
                     integrationEvent.GetType(),
                     scope.ServiceProvider,
-                    AssemblyReference.Assembly);
+                    Presentation.AssemblyReference.Assembly);
 
                 foreach (IIntegrationEventHandler integrationEventHandler in handlers)
                 {

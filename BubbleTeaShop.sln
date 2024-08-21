@@ -44,6 +44,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.Application", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.Infrastructure", "src\payment-api\Payment.Infrastructure\Payment.Infrastructure.csproj", "{4630D2E9-9675-419C-BD4E-EA9891A72612}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.Presentation", "src\payment-api\Payment.Presentation\Payment.Presentation.csproj", "{00F33BD6-12FD-4732-A131-3B33E49EB20C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,6 +92,10 @@ Global
 		{4630D2E9-9675-419C-BD4E-EA9891A72612}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4630D2E9-9675-419C-BD4E-EA9891A72612}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4630D2E9-9675-419C-BD4E-EA9891A72612}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00F33BD6-12FD-4732-A131-3B33E49EB20C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00F33BD6-12FD-4732-A131-3B33E49EB20C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00F33BD6-12FD-4732-A131-3B33E49EB20C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00F33BD6-12FD-4732-A131-3B33E49EB20C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{CE3E5AE9-0F6B-4DD8-A3F9-17CFAEC4DD26} = {EB36040F-91FA-4925-B3C2-0AC2352BC016}
@@ -109,5 +115,6 @@ Global
 		{C7FA5C2F-976C-40CB-A302-8C049C52CA09} = {B5223356-AFD5-41A2-B131-EC1F7A1C5406}
 		{E47EF195-B2F7-4558-8E62-2BC2E133F111} = {B5223356-AFD5-41A2-B131-EC1F7A1C5406}
 		{4630D2E9-9675-419C-BD4E-EA9891A72612} = {B5223356-AFD5-41A2-B131-EC1F7A1C5406}
+		{00F33BD6-12FD-4732-A131-3B33E49EB20C} = {B5223356-AFD5-41A2-B131-EC1F7A1C5406}
 	EndGlobalSection
 EndGlobal
