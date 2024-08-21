@@ -1,50 +1,18 @@
-using FluentValidation;
 using Payment.Application.Abstractions.Data;
 using Payment.Application.Abstractions.Payments;
+using Payment.Application.Payments.Commands.Create;
 using Payment.Domain.Payments;
 using ServiceDefaults.Domain;
 using ServiceDefaults.Messaging;
 
-namespace Payment.Application.Payments.Commands.Create;
+namespace Payment.Application.Payments.Commands.Process;
 
-public sealed record CreatePaymentCommand(
-    Guid OrderId,
-    decimal Amount,
-    string Currency, 
-    string CardNumber,
-    int ExpiryMonth,
-    int ExpiryYear,
-    string CVV,
-    string CardHolderName) : ICommand;
-
-internal sealed class CreatePaymentCommandValidator : AbstractValidator<CreatePaymentCommand>
-{
-    public CreatePaymentCommandValidator()
-    {
-        RuleFor(c => c.OrderId).NotEmpty();
-        
-        RuleFor(c => c.Amount).GreaterThan(0);
-        
-        RuleFor(c => c.Currency).NotEmpty().MaximumLength(3);
-        
-        RuleFor(c => c.CardNumber).CreditCard();
-        
-        RuleFor(c => c.ExpiryMonth).InclusiveBetween(1, 12);
-        
-        RuleFor(c => c.ExpiryYear).InclusiveBetween(DateTime.UtcNow.Year, DateTime.UtcNow.Year + 10);
-        
-        RuleFor(c => c.CVV).NotEmpty().MaximumLength(PaymentInfo.DefaultCvvLength);
-        
-        RuleFor(c => c.CardHolderName).NotEmpty().MaximumLength(300);
-    }
-}
-
-internal sealed class CreatePaymentCommandHandler(
+internal sealed class ProcessPaymentCommandHandler(
     IPaymentRepository paymentRepository,
     IUnitOfWork unitOfWork,
-    IPaymentService paymentService) : ICommandHandler<CreatePaymentCommand>
+    IPaymentService paymentService) : ICommandHandler<ProcessPaymentCommand>
 {
-    public async Task<Result> Handle(CreatePaymentCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(ProcessPaymentCommand request, CancellationToken cancellationToken)
     {
         Result<Money> moneyResult = Money.Create(request.Amount, Currency.FromCode(request.Currency));
         Result<PaymentInfo> paymentInfoResult = PaymentInfo.Create(
@@ -67,7 +35,7 @@ internal sealed class CreatePaymentCommandHandler(
             moneyResult.Value,
             paymentInfoResult.Value);
         
-        var payment = Domain.Payments.Payment.Create(
+        var payment = Domain.Payments.Payment.Process(
             request.OrderId,
             paymentResponse.TransactionId,
             moneyResult.Value,

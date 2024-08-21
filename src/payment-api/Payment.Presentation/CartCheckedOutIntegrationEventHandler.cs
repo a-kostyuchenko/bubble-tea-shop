@@ -8,13 +8,13 @@ using ServiceDefaults.Messaging;
 namespace Payment.Presentation;
 
 internal sealed class CartCheckedOutIntegrationEventHandler(ISender sender) 
-    : IntegrationEventHandler<CartCheckedOutEvent>
+    : IntegrationEventHandler<CheckOutCartStartedEvent>
 {
     public override async Task Handle(
-        CartCheckedOutEvent integrationEvent,
+        CheckOutCartStartedEvent integrationEvent,
         CancellationToken cancellationToken = default)
     {
-        var command = new CreatePaymentCommand(
+        var command = new ProcessPaymentCommand(
             integrationEvent.CartId,
             integrationEvent.TotalAmount,
             integrationEvent.Currency,
@@ -28,7 +28,7 @@ internal sealed class CartCheckedOutIntegrationEventHandler(ISender sender)
 
         if (result.IsFailure)
         {
-            throw new BubbleTeaShopException(nameof(CreatePaymentCommand), result.Error);
+            throw new BubbleTeaShopException(nameof(ProcessPaymentCommand), result.Error);
         }
     }
 }

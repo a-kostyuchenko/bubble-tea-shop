@@ -64,7 +64,7 @@ public sealed record PaymentInfo
             return Result.Failure<PaymentInfo>(InvalidExpiryYear);
         }
 
-        if (DateOnly.FromDateTime(DateTime.UtcNow) < new DateOnly(expiryYear, expiryMonth, 1))
+        if (DateOnly.FromDateTime(DateTime.UtcNow) > new DateOnly(expiryYear, expiryMonth, 1))
         {
             return Result.Failure<PaymentInfo>(CardExpired);
         }

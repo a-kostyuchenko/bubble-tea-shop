@@ -8,10 +8,10 @@ namespace Ordering.API.Features.Orders;
 
 public static class CartCheckedOut
 {
-    public sealed class Consumer(ISender sender) : IntegrationEventHandler<CartCheckedOutEvent>
+    public sealed class Consumer(ISender sender) : IntegrationEventHandler<CheckOutCartStartedEvent>
     {
         public override async Task Handle(
-            CartCheckedOutEvent integrationEvent,
+            CheckOutCartStartedEvent integrationEvent,
             CancellationToken cancellationToken = default)
         {
             var command = new CreateOrder.Command(

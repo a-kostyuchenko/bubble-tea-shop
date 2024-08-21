@@ -16,6 +16,7 @@
         <PackageReference Include="Hangfire.PostgreSql" />
         <PackageReference Include="MassTransit" />
         <PackageReference Include="MassTransit.RabbitMQ" />
+        <PackageReference Include="MassTransit.Redis" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
             <PrivateAssets>all</PrivateAssets>

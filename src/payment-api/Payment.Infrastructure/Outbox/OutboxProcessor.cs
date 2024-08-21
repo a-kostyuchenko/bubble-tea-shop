@@ -46,7 +46,7 @@ internal sealed class OutboxProcessor(
                 IEnumerable<IDomainEventHandler> handlers = DomainEventHandlersFactory.GetHandlers(
                     domainEvent.GetType(),
                     scope.ServiceProvider,
-                    AssemblyReference.Assembly);
+                    Application.AssemblyReference.Assembly);
                 
                 foreach (IDomainEventHandler handler in handlers)
                 {

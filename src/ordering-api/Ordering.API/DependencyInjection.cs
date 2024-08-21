@@ -71,7 +71,10 @@ internal static class DependencyInjection
         {
             configurator.SetKebabCaseEndpointNameFormatter();
 
-            configurator.AddConsumer<IntegrationEventConsumer<CartCheckedOutEvent>>()
+            configurator.AddConsumer<IntegrationEventConsumer<CheckOutCartStartedEvent>>()
+                .Endpoint(e => e.InstanceId = instanceId);
+            
+            configurator.AddConsumer<IntegrationEventConsumer<PaymentFinishedEvent>>()
                 .Endpoint(e => e.InstanceId = instanceId);
 
             configurator.AddSagaStateMachine<CancelOrderSaga, CancelOrderState>()

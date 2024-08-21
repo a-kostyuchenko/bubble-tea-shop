@@ -1,4 +1,5 @@
 using MassTransit;
+using Payment.Application.Abstractions.EventBus;
 using ServiceDefaults.Messaging;
 
 namespace Payment.Infrastructure.EventBus;

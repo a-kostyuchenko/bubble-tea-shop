@@ -2,7 +2,7 @@ using ServiceDefaults.Messaging;
 
 namespace BubbleTeaShop.Contracts;
 
-public sealed class OrderPaymentRefundedEvent(
+public sealed class OrderCancelledNotificationSentEvent(
     Guid id,
     DateTime occurredOnUtc,
     Guid orderId) : IntegrationEvent(id, occurredOnUtc)

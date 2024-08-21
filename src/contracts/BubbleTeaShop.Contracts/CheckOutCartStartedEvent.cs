@@ -2,7 +2,7 @@ using ServiceDefaults.Messaging;
 
 namespace BubbleTeaShop.Contracts;
 
-public sealed class CartCheckedOutEvent(
+public sealed class CheckOutCartStartedEvent(
     Guid id,
     DateTime occurredOnUtc,
     Guid cartId,

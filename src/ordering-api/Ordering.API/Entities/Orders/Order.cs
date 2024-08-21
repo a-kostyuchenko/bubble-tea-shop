@@ -28,11 +28,27 @@ public sealed class Order : Entity
             CreatedOnUtc = DateTime.UtcNow
         };
         
+        order.Raise(new OrderCreatedDomainEvent(order.Id));
+        
         return order;
     }
     
     public void AddItem(string productName, Money price, int quantity, Parameters parameters) => 
         _items.Add(OrderItem.Create(productName, price, quantity, parameters));
+
+    public Result Pay()
+    {
+        if (Status != OrderStatus.Pending)
+        {
+            return Result.Failure(OrderErrors.InvalidStatus(Status));
+        }
+        
+        Status = OrderStatus.Paid;
+        
+        Raise(new OrderPaidDomainEvent(Id));
+        
+        return Result.Success();
+    }
     
     public Result Process()
     {

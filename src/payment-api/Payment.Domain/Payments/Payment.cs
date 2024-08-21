@@ -14,13 +14,13 @@ public sealed class Payment : Entity
     {
     }
     
-    public static Payment Create(
+    public static Payment Process(
         Guid orderId,
         Guid transactionId,
         Money amount,
         PaymentInfo paymentInfo)
     {
-        return new Payment
+        var payment = new Payment
         {
             Id = Guid.NewGuid(),
             OrderId = orderId,
@@ -29,5 +29,9 @@ public sealed class Payment : Entity
             CreatedAtUtc = DateTime.UtcNow,
             PaymentInfo = paymentInfo
         };
+        
+        payment.Raise(new PaymentProcessedDomainEvent(payment.Id, payment.OrderId));
+        
+        return payment;
     }
 }

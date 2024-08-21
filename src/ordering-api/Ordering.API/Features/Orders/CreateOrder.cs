@@ -1,6 +1,9 @@
+using BubbleTeaShop.Contracts;
 using FluentValidation;
 using Ordering.API.Entities.Orders;
+using Ordering.API.Entities.Orders.Events;
 using Ordering.API.Infrastructure.Database;
+using Ordering.API.Infrastructure.EventBus;
 using ServiceDefaults.Domain;
 using ServiceDefaults.Messaging;
 
@@ -76,6 +79,20 @@ public static class CreateOrder
             await dbContext.SaveChangesAsync(cancellationToken);
 
             return order.Id;
+        }
+    }
+    
+    internal sealed class OrderCreatedDomainEventHandler(IEventBus eventBus) 
+        : DomainEventHandler<OrderCreatedDomainEvent>
+    {
+        public override async Task Handle(
+            OrderCreatedDomainEvent domainEvent,
+            CancellationToken cancellationToken = default)
+        {
+            await eventBus.PublishAsync(new OrderCreatedEvent(
+                domainEvent.Id,
+                domainEvent.OccurredOnUtc,
+                domainEvent.OrderId), cancellationToken);
         }
     }
 }

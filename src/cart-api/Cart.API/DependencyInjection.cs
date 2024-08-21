@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using Cart.API.Features.Carts.CheckOutCartSaga;
 using Cart.API.Infrastructure.Database;
 using Cart.API.Infrastructure.Database.Constants;
 using Cart.API.Infrastructure.EventBus;
@@ -63,11 +64,15 @@ internal static class DependencyInjection
     
     private static void AddMessageQueue(this IServiceCollection services, IConfiguration configuration)
     {
-        // string instanceId = AssemblyReference.Assembly.GetName().Name?.ToLowerInvariant().Replace('.', '-');
+        string instanceId = AssemblyReference.Assembly.GetName().Name?.ToLowerInvariant().Replace('.', '-')!;
 
         services.AddMassTransit(configurator =>
         {
             configurator.SetKebabCaseEndpointNameFormatter();
+            
+            configurator.AddSagaStateMachine<CheckOutCartSaga, CheckOutCartState>()
+                .Endpoint(e => e.InstanceId = instanceId)
+                .RedisRepository(configuration.GetConnectionString("cache"));
     
             configurator.UsingRabbitMq((context, cfg) =>
             {

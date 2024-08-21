@@ -1,6 +1,6 @@
 using ServiceDefaults.Messaging;
 
-namespace Payment.Infrastructure.EventBus;
+namespace Payment.Application.Abstractions.EventBus;
 
 public interface IEventBus
 {
