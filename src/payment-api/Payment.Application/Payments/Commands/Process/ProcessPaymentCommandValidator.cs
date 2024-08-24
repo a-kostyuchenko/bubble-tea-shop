@@ -1,7 +1,7 @@
 using FluentValidation;
 using Payment.Domain.Payments;
 
-namespace Payment.Application.Payments.Commands.Create;
+namespace Payment.Application.Payments.Commands.Process;
 
 internal sealed class ProcessPaymentCommandValidator : AbstractValidator<ProcessPaymentCommand>
 {

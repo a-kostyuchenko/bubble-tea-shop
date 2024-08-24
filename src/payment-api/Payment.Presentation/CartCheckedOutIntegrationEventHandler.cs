@@ -1,6 +1,6 @@
 using BubbleTeaShop.Contracts;
 using MediatR;
-using Payment.Application.Payments.Commands.Create;
+using Payment.Application.Payments.Commands.Process;
 using ServiceDefaults.Domain;
 using ServiceDefaults.Exceptions;
 using ServiceDefaults.Messaging;

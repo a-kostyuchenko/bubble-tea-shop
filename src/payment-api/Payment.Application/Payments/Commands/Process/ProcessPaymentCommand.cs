@@ -1,6 +1,6 @@
 using ServiceDefaults.Messaging;
 
-namespace Payment.Application.Payments.Commands.Create;
+namespace Payment.Application.Payments.Commands.Process;
 
 public sealed record ProcessPaymentCommand(
     Guid OrderId,

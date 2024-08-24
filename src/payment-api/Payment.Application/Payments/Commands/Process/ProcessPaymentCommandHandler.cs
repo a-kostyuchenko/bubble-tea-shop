@@ -1,6 +1,5 @@
 using Payment.Application.Abstractions.Data;
 using Payment.Application.Abstractions.Payments;
-using Payment.Application.Payments.Commands.Create;
 using Payment.Domain.Payments;
 using ServiceDefaults.Domain;
 using ServiceDefaults.Messaging;
