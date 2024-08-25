@@ -30,13 +30,18 @@ internal sealed class ProcessPaymentCommandHandler(
         
         // This is a simplified version of the actual payment process.
         // In a real-world scenario, you would call a payment gateway API.
-        PaymentResponse paymentResponse = await paymentService.ChargeAsync(
+        Result<PaymentResponse> paymentResult = await paymentService.ChargeAsync(
             moneyResult.Value,
             paymentInfoResult.Value);
+
+        if (paymentResult.IsFailure)
+        {
+            return paymentResult;
+        }
         
         var payment = Domain.Payments.Payment.Process(
             request.OrderId,
-            paymentResponse.TransactionId,
+            paymentResult.Value.TransactionId,
             moneyResult.Value,
             paymentInfoResult.Value);
         

@@ -5,5 +5,5 @@ namespace Payment.Application.Abstractions.Payments;
 
 public interface IPaymentService
 {
-    Task<PaymentResponse> ChargeAsync(Money amount, PaymentInfo paymentInfo);
+    Task<Result<PaymentResponse>> ChargeAsync(Money amount, PaymentInfo paymentInfo);
 }

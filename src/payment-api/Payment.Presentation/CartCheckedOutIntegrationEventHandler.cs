@@ -1,5 +1,6 @@
 using BubbleTeaShop.Contracts;
 using MediatR;
+using Payment.Application.Abstractions.EventBus;
 using Payment.Application.Payments.Commands.Process;
 using ServiceDefaults.Domain;
 using ServiceDefaults.Exceptions;
@@ -7,7 +8,7 @@ using ServiceDefaults.Messaging;
 
 namespace Payment.Presentation;
 
-internal sealed class CartCheckedOutIntegrationEventHandler(ISender sender) 
+internal sealed class CartCheckedOutIntegrationEventHandler(ISender sender, IEventBus eventBus) 
     : IntegrationEventHandler<CheckOutCartStartedEvent>
 {
     public override async Task Handle(
@@ -28,6 +29,12 @@ internal sealed class CartCheckedOutIntegrationEventHandler(ISender sender)
 
         if (result.IsFailure)
         {
+            await eventBus.PublishAsync(new PaymentFailedEvent(
+                integrationEvent.Id,
+                integrationEvent.OccurredOnUtc,
+                integrationEvent.CartId),
+                cancellationToken);
+            
             throw new BubbleTeaShopException(nameof(ProcessPaymentCommand), result.Error);
         }
     }
