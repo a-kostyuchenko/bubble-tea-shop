@@ -89,4 +89,16 @@ public sealed class Order : Entity
         
         return Result.Success();
     }
+    
+    public Result MarkAsFailed()
+    {
+        if (Status != OrderStatus.Pending)
+        {
+            return Result.Failure(OrderErrors.InvalidStatus(Status));
+        }
+        
+        Status = OrderStatus.PaymentFailed;
+        
+        return Result.Success();
+    }
 }

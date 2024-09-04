@@ -9,6 +9,7 @@ public sealed class OrderStatus : Enumeration<OrderStatus>
     public static readonly OrderStatus Processing = new(3, "processing");
     public static readonly OrderStatus Completed = new(4, "completed");
     public static readonly OrderStatus Cancelled = new(5, "cancelled");
+    public static readonly OrderStatus PaymentFailed = new(6, "payment_failed");
     
     private OrderStatus()
     {

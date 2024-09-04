@@ -14,6 +14,7 @@ public class CheckOutCartSaga : MassTransitStateMachine<CheckOutCartState>
     public Event<OrderCreatedEvent> OrderCreatedEvent { get; set; }
     public Event<PaymentProcessedEvent> PaymentProcessedEvent { get; set; }
     public Event<OrderPaidEvent> OrderPaidEvent { get; set; }
+    public Event<PaymentFailedEvent> PaymentFailedEvent { get; set; }
 
     public Event PaymentFinished { get; set; }
     public Event OrderCheckOutCompleted { get; set; }
@@ -88,6 +89,10 @@ public class CheckOutCartSaga : MassTransitStateMachine<CheckOutCartState>
                         Guid.NewGuid(),
                         DateTime.UtcNow,
                         context.Saga.CorrelationId))
+                .Finalize());
+        
+        DuringAny(
+            When(PaymentFailedEvent)
                 .Finalize());
     }
 }
