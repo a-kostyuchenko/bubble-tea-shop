@@ -30,7 +30,7 @@ internal sealed class CartCheckedOutIntegrationEventHandler(ISender sender, IEve
         if (result.IsFailure)
         {
             await eventBus.PublishAsync(new PaymentFailedEvent(
-                integrationEvent.Id,
+                Guid.NewGuid(), 
                 integrationEvent.OccurredOnUtc,
                 integrationEvent.CartId),
                 cancellationToken);

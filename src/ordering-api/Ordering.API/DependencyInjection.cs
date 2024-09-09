@@ -76,6 +76,9 @@ internal static class DependencyInjection
             
             configurator.AddConsumer<IntegrationEventConsumer<PaymentFinishedEvent>>()
                 .Endpoint(e => e.InstanceId = instanceId);
+            
+            configurator.AddConsumer<IntegrationEventConsumer<PaymentFailedEvent>>()
+                .Endpoint(e => e.InstanceId = instanceId);
 
             configurator.AddSagaStateMachine<CancelOrderSaga, CancelOrderState>()
                 .Endpoint(e => e.InstanceId = instanceId)

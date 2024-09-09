@@ -9,6 +9,7 @@ public class CheckOutCartSaga : MassTransitStateMachine<CheckOutCartState>
     public State OrderCreated { get; set; }
     public State PaymentProcessed { get; set; }
     public State OrderPaid { get; set; }
+    public State PaymentFailed { get; set; }
     
     public Event<CartCheckedOutEvent> CheckOutCartEvent { get; set; }
     public Event<OrderCreatedEvent> OrderCreatedEvent { get; set; }
@@ -25,6 +26,7 @@ public class CheckOutCartSaga : MassTransitStateMachine<CheckOutCartState>
         Event(() => OrderCreatedEvent, c => c.CorrelateById(m => m.Message.OrderId));
         Event(() => PaymentProcessedEvent, c => c.CorrelateById(m => m.Message.OrderId));
         Event(() => OrderPaidEvent, c => c.CorrelateById(m => m.Message.OrderId));
+        Event(() => PaymentFailedEvent, c => c.CorrelateById(m => m.Message.OrderId));
         
         InstanceState(s => s.CurrentState);
         
@@ -83,16 +85,16 @@ public class CheckOutCartSaga : MassTransitStateMachine<CheckOutCartState>
             OrderCreatedEvent, PaymentProcessedEvent, OrderPaidEvent);
         
         DuringAny(
+            When(PaymentFailedEvent)
+                .TransitionTo(PaymentFailed));
+        
+        DuringAny(
             When(OrderCheckOutCompleted)
                 .Publish(context =>
                     new CartCheckOutCompletedEvent(
                         Guid.NewGuid(),
                         DateTime.UtcNow,
                         context.Saga.CorrelationId))
-                .Finalize());
-        
-        DuringAny(
-            When(PaymentFailedEvent)
                 .Finalize());
     }
 }
