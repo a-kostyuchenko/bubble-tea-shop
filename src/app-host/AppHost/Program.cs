@@ -24,13 +24,13 @@ IResourceBuilder<RedisResource> cache = builder
     .WithDataVolume();
 
 
-builder.AddProject<Projects.Catalog_API>("catalog-api")
+IResourceBuilder<ProjectResource> catalogApi = builder.AddProject<Projects.Catalog_API>("catalog-api")
     .WithReference(catalogDb)
     .WithReference(queue)
     .WaitFor(catalogDb)
     .WaitFor(queue);
 
-builder.AddProject<Projects.Cart_API>("cart-api")
+IResourceBuilder<ProjectResource> cartApi = builder.AddProject<Projects.Cart_API>("cart-api")
     .WithReference(cartDb)
     .WithReference(queue)
     .WithReference(cache)
@@ -38,7 +38,7 @@ builder.AddProject<Projects.Cart_API>("cart-api")
     .WaitFor(queue)
     .WaitFor(cache);
 
-builder.AddProject<Projects.Ordering_API>("ordering-api")
+IResourceBuilder<ProjectResource> orderingApi = builder.AddProject<Projects.Ordering_API>("ordering-api")
     .WithReference(orderDb)
     .WithReference(queue)
     .WithReference(cache)
@@ -46,10 +46,20 @@ builder.AddProject<Projects.Ordering_API>("ordering-api")
     .WaitFor(queue)
     .WaitFor(cache);
 
-builder.AddProject<Projects.Payment_API>("payment-api")
+IResourceBuilder<ProjectResource> paymentApi = builder.AddProject<Projects.Payment_API>("payment-api")
     .WithReference(paymentDb)
     .WithReference(queue)
     .WaitFor(paymentDb)
     .WaitFor(queue);
+
+builder.AddProject<Projects.BubbleTeaShop_Gateway>("gateway")
+    .WithReference(catalogApi)
+    .WithReference(cartApi)
+    .WithReference(orderingApi)
+    .WithReference(paymentApi)
+    .WaitFor(catalogApi)
+    .WaitFor(cartApi)
+    .WaitFor(orderingApi)
+    .WaitFor(paymentApi);
 
 builder.Build().Run();
