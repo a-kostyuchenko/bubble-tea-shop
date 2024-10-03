@@ -1,3 +1,5 @@
+using MassTransit.Logging;
+using MassTransit.Monitoring;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +11,7 @@ using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 using ServiceDefaults.Exceptions;
+using ServiceDefaults.OpenTelemetry;
 
 namespace ServiceDefaults;
 
@@ -52,14 +55,17 @@ public static class Extensions
             {
                 metrics.AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
-                    .AddRuntimeInstrumentation();
+                    .AddRuntimeInstrumentation()
+                    .AddMeter(InstrumentationOptions.MeterName)
+                    .AddMeter(ActivitySourceProvider.DefaultSourceName);
             })
             .WithTracing(tracing =>
             {
                 tracing.AddAspNetCoreInstrumentation()
-                    // Uncomment the following line to enable gRPC instrumentation (requires the OpenTelemetry.Instrumentation.GrpcNetClient package)
-                    //.AddGrpcClientInstrumentation()
-                    .AddHttpClientInstrumentation();
+                    .AddHttpClientInstrumentation()
+                    .AddSource(DiagnosticHeaders.DefaultListenerName)
+                    .AddSource(ActivitySourceProvider.DefaultSourceName)
+                    .AddSource("Yarp.ReverseProxy");
             });
 
         builder.AddOpenTelemetryExporters();
