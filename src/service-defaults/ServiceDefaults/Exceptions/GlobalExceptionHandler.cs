@@ -1,6 +1,6 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace ServiceDefaults.Exceptions;
@@ -12,18 +12,23 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
         Exception exception,
         CancellationToken cancellationToken)
     {
-        logger.LogError(exception, "Unhandled exception occurred");
+        string traceId = Activity.Current?.Id ?? httpContext.TraceIdentifier;
         
-        var problemDetails = new ProblemDetails
-        {
-            Status = StatusCodes.Status500InternalServerError,
-            Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.6.1",
-            Title = "Server failure."
-        };
+        logger.LogError(
+            exception,
+            "Unhandled exception occurred on {MachineName} with traceId {TraceId}",
+            Environment.MachineName,
+            traceId
+        );
         
-        httpContext.Response.StatusCode = problemDetails.Status.Value;
-
-        await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
+        await Results.Problem(
+            title: "Internal Server Error",
+            statusCode: StatusCodes.Status500InternalServerError,
+            extensions: new Dictionary<string, object?>
+            {
+                {"traceId",  traceId}
+            }
+        ).ExecuteAsync(httpContext);
 
         return true;
     }
