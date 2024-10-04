@@ -21,9 +21,11 @@ public static class GetProduct
         string Currency)
     {
         public List<IngredientResponse> Ingredients { get; init; } = [];
+        public List<ParameterResponse> Parameters { get; init; } = [];
     }
     
     public sealed record IngredientResponse(Guid IngredientId, string Name);
+    public sealed record ParameterResponse(Guid ParameterId, string Name);
 
     internal sealed class QueryHandler(IDbConnectionFactory dbConnectionFactory) : IQueryHandler<Query, Response>
     {
@@ -40,18 +42,22 @@ public static class GetProduct
                         p.amount AS {nameof(Response.Price)},
                         p.currency AS {nameof(Response.Currency)},
                         i.id AS {nameof(IngredientResponse.IngredientId)},
-                        i.name AS {nameof(IngredientResponse.Name)}
+                        i.name AS {nameof(IngredientResponse.Name)},
+                        pr.id AS {nameof(ParameterResponse.ParameterId)},
+                        pr.name AS {nameof(ParameterResponse.Name)}
                     FROM catalog.products p
                     LEFT JOIN catalog.product_ingredients pi ON pi.product_id = p.id
                     LEFT JOIN catalog.ingredients i ON i.id = pi.ingredient_id
+                    LEFT JOIN catalog.product_parameters pp ON pp.product_id = p.id
+                    LEFT JOIN catalog.parameters pr ON pr.id = pp.parameter_id
                     WHERE p.id = @ProductId
                  """;
             
             Dictionary<Guid, Response> productsDictionary = [];
 
-            await connection.QueryAsync<Response, IngredientResponse?, Response>(
+            await connection.QueryAsync<Response, IngredientResponse?, ParameterResponse?, Response>(
                 sql,
-                (product, ingredient) =>
+                (product, ingredient, parameter) =>
                 {
                     if (productsDictionary.TryGetValue(product.Id, out Response? existingProduct))
                     {
@@ -66,11 +72,16 @@ public static class GetProduct
                     {
                         product.Ingredients.Add(ingredient);
                     }
+
+                    if (parameter is not null)
+                    {
+                        product.Parameters.Add(parameter);
+                    }
                 
                     return product;
                 },
                 request,
-                splitOn: nameof(IngredientResponse.IngredientId));
+                splitOn: $"{nameof(IngredientResponse.IngredientId)}, {nameof(ParameterResponse.ParameterId)}");
         
             if (!productsDictionary.TryGetValue(request.ProductId, out Response productResponse))
             {
