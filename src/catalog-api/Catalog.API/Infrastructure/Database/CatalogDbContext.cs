@@ -1,4 +1,5 @@
 using Catalog.API.Entities.Ingredients;
+using Catalog.API.Entities.Parameters;
 using Catalog.API.Entities.Products;
 using Catalog.API.Infrastructure.Database.Constants;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ internal sealed class CatalogDbContext(DbContextOptions<CatalogDbContext> option
 {
     public DbSet<Product> Products { get; set; }
     public DbSet<Ingredient> Ingredients { get; set; }
+    public DbSet<Parameter> Parameters { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
