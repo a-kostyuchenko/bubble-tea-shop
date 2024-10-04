@@ -10,11 +10,13 @@ public sealed class Product : Entity
     }
 
     private readonly HashSet<Ingredient> _ingredients = [];
+    private readonly HashSet<Parameter> _parameters = [];
     
     public string Name { get; private set; }
     public Money Price { get; private set; }
     public Category Category { get; private set; }
-    public IReadOnlyCollection<Ingredient> Ingredients => _ingredients.ToList();
+    public IReadOnlyCollection<Ingredient> Ingredients => [.. _ingredients];
+    public IReadOnlyCollection<Parameter> Parameters => [.. _parameters];
     
     public static Result<Product> Create(string name, Category category, Money? price = null)
     {
@@ -38,13 +40,11 @@ public sealed class Product : Entity
         Price = price;
     }
     
-    public void AddIngredient(Ingredient ingredient)
-    {
-        _ingredients.Add(ingredient);
-    }
-    
-    public void RemoveIngredient(Ingredient ingredient)
-    {
-        _ingredients.Remove(ingredient);
-    }
+    public void AddIngredient(Ingredient ingredient) => _ingredients.Add(ingredient);
+
+    public void RemoveIngredient(Ingredient ingredient) => _ingredients.Remove(ingredient);
+
+    public void AddParameter(Parameter parameter) => _parameters.Add(parameter);
+
+    public void RemoveParameter(Parameter parameter) => _parameters.Remove(parameter);
 }
