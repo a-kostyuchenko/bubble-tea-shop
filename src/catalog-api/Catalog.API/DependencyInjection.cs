@@ -25,7 +25,7 @@ public static class DependencyInjection
     {
         services.AddDomainEventHandlers();
         services.AddIntegrationEventHandlers();
-        // services.AddApplication();
+        services.AddApplication();
         services.AddEndpoints(AssemblyReference.Assembly);
         services.AddMessageQueue(configuration);
         services.AddApiVersioning();
@@ -57,8 +57,8 @@ public static class DependencyInjection
         services.Configure<OutboxOptions>(configuration.GetSection(OutboxOptions.ConfigurationSection));
         services.Configure<InboxOptions>(configuration.GetSection(InboxOptions.ConfigurationSection));
         
-        // services.TryAddScoped<IOutboxProcessor, OutboxProcessor>();
-        // services.TryAddScoped<IInboxProcessor, InboxProcessor>();
+        services.TryAddScoped<IOutboxProcessor, OutboxProcessor>();
+        services.TryAddScoped<IInboxProcessor, InboxProcessor>();
     }
     
     private static void AddMessageQueue(this IServiceCollection services, IConfiguration configuration)
@@ -165,9 +165,9 @@ public static class DependencyInjection
             });
         
         builder.EnrichNpgsqlDbContext<CatalogDbContext>();
-        //
-        // builder.AddNpgsqlDataSource("catalog-db");
-        //
-        // builder.Services.TryAddScoped<IDbConnectionFactory, DbConnectionFactory>();
+        
+        builder.AddNpgsqlDataSource("catalog-db");
+        
+        builder.Services.TryAddScoped<IDbConnectionFactory, DbConnectionFactory>();
     }
 }
