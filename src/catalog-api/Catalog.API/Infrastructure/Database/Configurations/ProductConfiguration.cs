@@ -44,5 +44,40 @@ internal sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
                 
                 joinBuilder.Property("IngredientsId").HasColumnName("ingredient_id");
             });
+
+        builder.OwnsMany(p => p.Parameters, parameterBuilder =>
+        {
+            parameterBuilder.WithOwner();
+
+            parameterBuilder.ToTable(TableNames.Parameters);
+            
+            parameterBuilder.Property(p => p.Name)
+                .HasMaxLength(200)
+                .IsRequired();
+            
+            parameterBuilder.OwnsMany(p => p.Options, optionBuilder =>
+            {
+                optionBuilder.WithOwner();
+                
+                optionBuilder.ToTable(TableNames.Options);
+
+                optionBuilder.Property(o => o.Name)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                optionBuilder.OwnsOne(o => o.ExtraPrice, priceBuilder =>
+                {
+                    priceBuilder.Property(p => p.Amount)
+                        .HasPrecision(10, 2)
+                        .HasColumnName("amount");
+
+                    priceBuilder.Property(p => p.Currency)
+                        .IsRequired()
+                        .HasConversion(currency => currency.Code, code => Currency.FromCode(code))
+                        .HasMaxLength(3)
+                        .HasColumnName("currency");
+                });
+            });
+        });
     }
 }
