@@ -44,5 +44,14 @@ internal sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
                 
                 joinBuilder.Property("IngredientsId").HasColumnName("ingredient_id");
             });
+        
+        builder.HasMany(b => b.Parameters)
+            .WithMany()
+            .UsingEntity(joinBuilder =>
+            {
+                joinBuilder.ToTable(TableNames.ProductParameters);
+                
+                joinBuilder.Property("ParametersId").HasColumnName("parameter_id");
+            });
     }
 }
