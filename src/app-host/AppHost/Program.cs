@@ -62,4 +62,4 @@ builder.AddProject<Projects.BubbleTeaShop_Gateway>("gateway")
     .WaitFor(orderingApi)
     .WaitFor(paymentApi);
 
-builder.Build().Run();
+await builder.Build().RunAsync();

@@ -1,6 +1,6 @@
 using ServiceDefaults.Domain;
 
-namespace Catalog.API.Entities.Products;
+namespace Catalog.API.Entities.Parameters;
 
 public sealed class Parameter : Entity
 {

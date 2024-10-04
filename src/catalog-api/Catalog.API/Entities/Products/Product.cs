@@ -1,4 +1,5 @@
 using Catalog.API.Entities.Ingredients;
+using Catalog.API.Entities.Parameters;
 using ServiceDefaults.Domain;
 
 namespace Catalog.API.Entities.Products;

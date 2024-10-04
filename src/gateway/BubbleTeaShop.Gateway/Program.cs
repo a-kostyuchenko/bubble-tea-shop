@@ -26,4 +26,4 @@ app.UseHttpsRedirection();
 app.MapReverseProxy();
 app.MapDefaultEndpoints();
 
-app.Run();
+await app.RunAsync();

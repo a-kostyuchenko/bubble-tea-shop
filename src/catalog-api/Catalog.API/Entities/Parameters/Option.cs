@@ -1,6 +1,6 @@
 using ServiceDefaults.Domain;
 
-namespace Catalog.API.Entities.Products;
+namespace Catalog.API.Entities.Parameters;
 
 public sealed class Option : Entity
 {
@@ -8,9 +8,9 @@ public sealed class Option : Entity
     {
     }
     
-    public string Name { get; set; }
-    public double Value { get; set; }
-    public Money ExtraPrice { get; set; }
+    public string Name { get; private set; }
+    public double Value { get; private set; }
+    public Money ExtraPrice { get; private set; }
     
     public static Option Create(string name, double value, Money extraPrice) =>
         new()

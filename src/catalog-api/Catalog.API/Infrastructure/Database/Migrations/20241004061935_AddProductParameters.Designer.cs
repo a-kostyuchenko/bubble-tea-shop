@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Catalog.API.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(CatalogDbContext))]
-    [Migration("20241004054028_AddProductParameters")]
+    [Migration("20241004061935_AddProductParameters")]
     partial class AddProductParameters
     {
         /// <inheritdoc />
@@ -22,7 +22,7 @@ namespace Catalog.API.Infrastructure.Database.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("catalog")
-                .HasAnnotation("ProductVersion", "8.0.7")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -43,6 +43,76 @@ namespace Catalog.API.Infrastructure.Database.Migrations
                         .HasName("pk_ingredients");
 
                     b.ToTable("ingredients", "catalog");
+                });
+
+            modelBuilder.Entity("Catalog.API.Entities.Parameters.Option", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("name");
+
+                    b.Property<double>("Value")
+                        .HasColumnType("double precision")
+                        .HasColumnName("value");
+
+                    b.Property<Guid>("parameter_id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("parameter_id");
+
+                    b.ComplexProperty<Dictionary<string, object>>("ExtraPrice", "Catalog.API.Entities.Parameters.Option.ExtraPrice#Money", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<decimal>("Amount")
+                                .HasPrecision(10, 2)
+                                .HasColumnType("numeric(10,2)")
+                                .HasColumnName("extra_price");
+
+                            b1.Property<string>("Currency")
+                                .IsRequired()
+                                .HasMaxLength(3)
+                                .HasColumnType("character varying(3)")
+                                .HasColumnName("currency");
+                        });
+
+                    b.HasKey("Id")
+                        .HasName("pk_options");
+
+                    b.HasIndex("parameter_id")
+                        .HasDatabaseName("ix_options_parameter_id");
+
+                    b.ToTable("options", "catalog");
+                });
+
+            modelBuilder.Entity("Catalog.API.Entities.Parameters.Parameter", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("name");
+
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("product_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_parameters");
+
+                    b.HasIndex("ProductId")
+                        .HasDatabaseName("ix_parameters_product_id");
+
+                    b.ToTable("parameters", "catalog");
                 });
 
             modelBuilder.Entity("Catalog.API.Entities.Products.Product", b =>
@@ -208,108 +278,22 @@ namespace Catalog.API.Infrastructure.Database.Migrations
                     b.ToTable("product_ingredients", "catalog");
                 });
 
-            modelBuilder.Entity("Catalog.API.Entities.Products.Product", b =>
+            modelBuilder.Entity("Catalog.API.Entities.Parameters.Option", b =>
                 {
-                    b.OwnsMany("Catalog.API.Entities.Products.Parameter", "Parameters", b1 =>
-                        {
-                            b1.Property<Guid>("ProductId")
-                                .HasColumnType("uuid")
-                                .HasColumnName("product_id");
+                    b.HasOne("Catalog.API.Entities.Parameters.Parameter", null)
+                        .WithMany("Options")
+                        .HasForeignKey("parameter_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_options_parameters_parameter_id");
+                });
 
-                            b1.Property<Guid>("Id")
-                                .HasColumnType("uuid")
-                                .HasColumnName("id");
-
-                            b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasMaxLength(200)
-                                .HasColumnType("character varying(200)")
-                                .HasColumnName("name");
-
-                            b1.HasKey("ProductId", "Id")
-                                .HasName("pk_parameters");
-
-                            b1.ToTable("parameters", "catalog");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ProductId")
-                                .HasConstraintName("fk_parameters_products_product_id");
-
-                            b1.OwnsMany("Catalog.API.Entities.Products.Option", "Options", b2 =>
-                                {
-                                    b2.Property<Guid>("ParameterProductId")
-                                        .HasColumnType("uuid")
-                                        .HasColumnName("parameter_product_id");
-
-                                    b2.Property<Guid>("ParameterId")
-                                        .HasColumnType("uuid")
-                                        .HasColumnName("parameter_id");
-
-                                    b2.Property<Guid>("Id")
-                                        .HasColumnType("uuid")
-                                        .HasColumnName("id");
-
-                                    b2.Property<string>("Name")
-                                        .IsRequired()
-                                        .HasMaxLength(200)
-                                        .HasColumnType("character varying(200)")
-                                        .HasColumnName("name");
-
-                                    b2.Property<double>("Value")
-                                        .HasColumnType("double precision")
-                                        .HasColumnName("value");
-
-                                    b2.HasKey("ParameterProductId", "ParameterId", "Id")
-                                        .HasName("pk_options");
-
-                                    b2.ToTable("options", "catalog");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("ParameterProductId", "ParameterId")
-                                        .HasConstraintName("fk_options_parameters_parameter_product_id_parameter_id");
-
-                                    b2.OwnsOne("ServiceDefaults.Domain.Money", "ExtraPrice", b3 =>
-                                        {
-                                            b3.Property<Guid>("OptionParameterProductId")
-                                                .HasColumnType("uuid")
-                                                .HasColumnName("parameter_product_id");
-
-                                            b3.Property<Guid>("OptionParameterId")
-                                                .HasColumnType("uuid")
-                                                .HasColumnName("parameter_id");
-
-                                            b3.Property<Guid>("OptionId")
-                                                .HasColumnType("uuid")
-                                                .HasColumnName("id");
-
-                                            b3.Property<decimal>("Amount")
-                                                .HasPrecision(10, 2)
-                                                .HasColumnType("numeric(10,2)")
-                                                .HasColumnName("amount");
-
-                                            b3.Property<string>("Currency")
-                                                .IsRequired()
-                                                .HasMaxLength(3)
-                                                .HasColumnType("character varying(3)")
-                                                .HasColumnName("currency");
-
-                                            b3.HasKey("OptionParameterProductId", "OptionParameterId", "OptionId");
-
-                                            b3.ToTable("options", "catalog");
-
-                                            b3.WithOwner()
-                                                .HasForeignKey("OptionParameterProductId", "OptionParameterId", "OptionId")
-                                                .HasConstraintName("fk_options_options_parameter_product_id_parameter_id_id");
-                                        });
-
-                                    b2.Navigation("ExtraPrice")
-                                        .IsRequired();
-                                });
-
-                            b1.Navigation("Options");
-                        });
-
-                    b.Navigation("Parameters");
+            modelBuilder.Entity("Catalog.API.Entities.Parameters.Parameter", b =>
+                {
+                    b.HasOne("Catalog.API.Entities.Products.Product", null)
+                        .WithMany("Parameters")
+                        .HasForeignKey("ProductId")
+                        .HasConstraintName("fk_parameters_products_product_id");
                 });
 
             modelBuilder.Entity("IngredientProduct", b =>
@@ -327,6 +311,16 @@ namespace Catalog.API.Infrastructure.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_product_ingredients_products_product_id");
+                });
+
+            modelBuilder.Entity("Catalog.API.Entities.Parameters.Parameter", b =>
+                {
+                    b.Navigation("Options");
+                });
+
+            modelBuilder.Entity("Catalog.API.Entities.Products.Product", b =>
+                {
+                    b.Navigation("Parameters");
                 });
 #pragma warning restore 612, 618
         }

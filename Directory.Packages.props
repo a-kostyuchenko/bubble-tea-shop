@@ -82,7 +82,7 @@
     <PackageVersion Include="AspNetCore.HealthChecks.Uris" Version="8.0.1" />
     <PackageVersion Include="AspNetCore.HealthChecks.NpgSql" Version="$(HealthCheckVersion)" />
     <PackageVersion Include="AspNetCore.HealthChecks.Rabbitmq" Version="$(HealthCheckVersion)" />
-    <PackageVersion Include="AspNetCore.HealthChecks.Redis" Version="$(HealthCheckVersion)" />
+    <PackageVersion Include="AspNetCore.HealthChecks.Redis" Version="8.0.1" />
   </ItemGroup>
   <ItemGroup>
     <!-- Testing -->

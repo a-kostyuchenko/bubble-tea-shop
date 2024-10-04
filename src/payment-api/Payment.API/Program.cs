@@ -50,4 +50,4 @@ app.UseHttpsRedirection();
 app.MapDefaultEndpoints();
 app.MapEndpoints(versionedGroup);
 
-app.Run();
+await app.RunAsync();

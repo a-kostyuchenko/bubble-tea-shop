@@ -30,7 +30,7 @@ internal sealed class IdempotentDomainEventHandler<TDomainEvent>(
         await InsertOutboxConsumerAsync(connection, consumer);
     }
 
-    private async Task<bool> OutboxConsumerExistsAsync(
+    private static async Task<bool> OutboxConsumerExistsAsync(
         DbConnection connection,
         OutboxMessageConsumer consumer)
     {
@@ -47,7 +47,7 @@ internal sealed class IdempotentDomainEventHandler<TDomainEvent>(
         return await connection.ExecuteScalarAsync<bool>(sql, consumer);
     }
     
-    private async Task InsertOutboxConsumerAsync(
+    private static async Task InsertOutboxConsumerAsync(
         DbConnection connection,
         OutboxMessageConsumer consumer)
     {

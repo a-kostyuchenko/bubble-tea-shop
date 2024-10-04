@@ -18,19 +18,18 @@ namespace Catalog.API.Infrastructure.Database.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    product_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false)
+                    name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    product_id = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_parameters", x => new { x.product_id, x.id });
+                    table.PrimaryKey("pk_parameters", x => x.id);
                     table.ForeignKey(
                         name: "fk_parameters_products_product_id",
                         column: x => x.product_id,
                         principalSchema: "catalog",
                         principalTable: "products",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
@@ -39,24 +38,35 @@ namespace Catalog.API.Infrastructure.Database.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    parameter_product_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    parameter_id = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     value = table.Column<double>(type: "double precision", nullable: false),
-                    amount = table.Column<decimal>(type: "numeric(10,2)", precision: 10, scale: 2, nullable: false),
+                    parameter_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    extra_price = table.Column<decimal>(type: "numeric(10,2)", precision: 10, scale: 2, nullable: false),
                     currency = table.Column<string>(type: "character varying(3)", maxLength: 3, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_options", x => new { x.parameter_product_id, x.parameter_id, x.id });
+                    table.PrimaryKey("pk_options", x => x.id);
                     table.ForeignKey(
-                        name: "fk_options_parameters_parameter_product_id_parameter_id",
-                        columns: x => new { x.parameter_product_id, x.parameter_id },
+                        name: "fk_options_parameters_parameter_id",
+                        column: x => x.parameter_id,
                         principalSchema: "catalog",
                         principalTable: "parameters",
-                        principalColumns: new[] { "product_id", "id" },
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "ix_options_parameter_id",
+                schema: "catalog",
+                table: "options",
+                column: "parameter_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_parameters_product_id",
+                schema: "catalog",
+                table: "parameters",
+                column: "product_id");
         }
 
         /// <inheritdoc />
