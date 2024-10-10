@@ -12,8 +12,14 @@ public sealed class Invoice : Entity
     public IReadOnlyCollection<InvoiceLine> Lines => [.. _lines];
     public Money TotalAmount => _lines.Aggregate(Money.Zero(), (total, line) => total + line.Price);
     
-    public void Add(string label, int quantity, Money price)
+    public void Add(Guid productId, string label, int quantity, Money price)
     {
-        _lines.Add(InvoiceLine.Create(Id, label, quantity, price));
+        if (_lines.Find(l => l.ProductId == productId) is { } line)
+        {
+            line.Increment(quantity, price);
+            return;
+        }
+        
+        _lines.Add(InvoiceLine.Create(Id, productId, label, quantity, price));
     }
 }

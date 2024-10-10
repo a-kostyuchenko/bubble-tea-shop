@@ -14,10 +14,11 @@ public sealed class InvoiceLine : Entity
     public int Quantity { get; private set; } = 1;
     public Money Price { get; private set; }
     
-    public static InvoiceLine Create(Guid invoiceId, string label, int quantity, Money price) =>
+    public static InvoiceLine Create(Guid invoiceId, Guid productId, string label, int quantity, Money price) =>
         new()
         {
             InvoiceId = invoiceId,
+            ProductId = productId,
             Label = label,
             Quantity = quantity,
             Price = price
