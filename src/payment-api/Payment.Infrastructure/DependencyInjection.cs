@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Payment.Application.Abstractions.Data;
 using Payment.Application.Abstractions.EventBus;
 using Payment.Application.Abstractions.Payments;
+using Payment.Domain.Invoices;
 using Payment.Domain.Payments;
 using Payment.Infrastructure.Database;
 using Payment.Infrastructure.Database.Constants;
@@ -34,6 +35,7 @@ public static class DependencyInjection
         services.AddBackgroundJobs(configuration);
         
         services.TryAddScoped<IPaymentRepository, PaymentRepository>();
+        services.TryAddScoped<IInvoiceRepository, InvoiceRepository>();
         services.TryAddScoped<IPaymentService, PaymentService>();
         
         return services;
@@ -143,6 +145,9 @@ public static class DependencyInjection
             configurator.SetKebabCaseEndpointNameFormatter();
 
             configurator.AddConsumer<IntegrationEventConsumer<CheckOutCartStartedEvent>>()
+                .Endpoint(e => e.InstanceId = instanceId);
+            
+            configurator.AddConsumer<IntegrationEventConsumer<PaymentProcessedEvent>>()
                 .Endpoint(e => e.InstanceId = instanceId);
     
             configurator.UsingRabbitMq((context, cfg) =>
