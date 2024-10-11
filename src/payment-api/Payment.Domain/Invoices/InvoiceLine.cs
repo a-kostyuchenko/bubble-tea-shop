@@ -4,7 +4,7 @@ namespace Payment.Domain.Invoices;
 
 public sealed class InvoiceLine : Entity
 {
-    private InvoiceLine()
+    private InvoiceLine() : base(Ulid.NewUlid())
     {
     }
     
