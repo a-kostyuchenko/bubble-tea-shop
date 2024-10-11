@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Payment.Application.Abstractions.Data;
+using Payment.Domain.Invoices;
 using Payment.Infrastructure.Database.Constants;
 
 namespace Payment.Infrastructure.Database;
@@ -8,6 +9,7 @@ namespace Payment.Infrastructure.Database;
 public sealed class PaymentDbContext(DbContextOptions<PaymentDbContext> options) : DbContext(options), IUnitOfWork
 {
     public DbSet<Domain.Payments.Payment> Payments { get; set; }
+    public DbSet<Invoice> Invoices { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
