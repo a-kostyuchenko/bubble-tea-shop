@@ -8,15 +8,16 @@ public class CheckOutCartSaga : MassTransitStateMachine<CheckOutCartState>
     public State CheckOutStarted { get; set; }
     public State OrderCreated { get; set; }
     public State PaymentProcessed { get; set; }
+    public State InvoiceFormed { get; set; }
     public State OrderPaid { get; set; }
     public State PaymentFailed { get; set; }
     
     public Event<CartCheckedOutEvent> CheckOutCartEvent { get; set; }
     public Event<OrderCreatedEvent> OrderCreatedEvent { get; set; }
     public Event<PaymentProcessedEvent> PaymentProcessedEvent { get; set; }
+    public Event<InvoiceFormedEvent> InvoiceFormedEvent { get; set; }
     public Event<OrderPaidEvent> OrderPaidEvent { get; set; }
     public Event<PaymentFailedEvent> PaymentFailedEvent { get; set; }
-
     public Event PaymentFinished { get; set; }
     public Event OrderCheckOutCompleted { get; set; }
 
@@ -25,6 +26,7 @@ public class CheckOutCartSaga : MassTransitStateMachine<CheckOutCartState>
         Event(() => CheckOutCartEvent, c => c.CorrelateById(m => m.Message.CartId));
         Event(() => OrderCreatedEvent, c => c.CorrelateById(m => m.Message.OrderId));
         Event(() => PaymentProcessedEvent, c => c.CorrelateById(m => m.Message.OrderId));
+        Event(() => InvoiceFormedEvent, c => c.CorrelateById(m => m.Message.OrderId));
         Event(() => OrderPaidEvent, c => c.CorrelateById(m => m.Message.OrderId));
         Event(() => PaymentFailedEvent, c => c.CorrelateById(m => m.Message.OrderId));
         
@@ -62,10 +64,18 @@ public class CheckOutCartSaga : MassTransitStateMachine<CheckOutCartState>
             When(OrderCreatedEvent)
                 .TransitionTo(OrderCreated));
         
+        During(PaymentProcessed,
+            When(InvoiceFormedEvent)
+                .TransitionTo(InvoiceFormed));
+        
+        During(OrderCreated,
+            When(InvoiceFormedEvent)
+                .TransitionTo(InvoiceFormed));
+        
         CompositeEvent(
             () => PaymentFinished,
             state => state.PaymentFinishedStatus,
-            OrderCreatedEvent, PaymentProcessedEvent);
+            OrderCreatedEvent, PaymentProcessedEvent, InvoiceFormedEvent);
         
         DuringAny(
             When(PaymentFinished)

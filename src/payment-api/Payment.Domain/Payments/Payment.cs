@@ -1,3 +1,4 @@
+using BubbleTeaShop.Contracts;
 using ServiceDefaults.Domain;
 
 namespace Payment.Domain.Payments;
@@ -14,11 +15,11 @@ public sealed class Payment : Entity
     {
     }
     
-    public static Payment Process(
-        Guid orderId,
+    public static Payment Process(Guid orderId,
         Guid transactionId,
         Money amount,
-        PaymentInfo paymentInfo)
+        PaymentInfo paymentInfo,
+        List<CartItemModel> items)
     {
         var payment = new Payment
         {
@@ -30,7 +31,11 @@ public sealed class Payment : Entity
             PaymentInfo = paymentInfo
         };
         
-        payment.Raise(new PaymentProcessedDomainEvent(payment.Id, payment.OrderId));
+        payment.Raise(new PaymentProcessedDomainEvent(
+            payment.Id,
+            payment.OrderId,
+            paymentInfo.CardHolderName,
+            items));
         
         return payment;
     }

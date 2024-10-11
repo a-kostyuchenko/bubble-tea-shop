@@ -1,3 +1,4 @@
+using BubbleTeaShop.Contracts;
 using ServiceDefaults.Messaging;
 
 namespace Payment.Application.Payments.Commands.Process;
@@ -5,9 +6,10 @@ namespace Payment.Application.Payments.Commands.Process;
 public sealed record ProcessPaymentCommand(
     Guid OrderId,
     decimal Amount,
-    string Currency, 
+    string Currency,
     string CardNumber,
     int ExpiryMonth,
     int ExpiryYear,
     string CVV,
-    string CardHolderName) : ICommand;
+    string CardHolderName,
+    List<CartItemModel> Items) : ICommand;

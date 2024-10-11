@@ -23,7 +23,8 @@ internal sealed class CartCheckedOutIntegrationEventHandler(ISender sender, IEve
             integrationEvent.ExpiryMonth,
             integrationEvent.ExpiryYear,
             integrationEvent.CVV,
-            integrationEvent.CardHolderName);
+            integrationEvent.CardHolderName,
+            integrationEvent.Items);
 
         Result result = await sender.Send(command, cancellationToken);
 

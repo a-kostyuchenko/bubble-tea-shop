@@ -43,7 +43,8 @@ internal sealed class ProcessPaymentCommandHandler(
             request.OrderId,
             paymentResult.Value.TransactionId,
             moneyResult.Value,
-            paymentInfoResult.Value);
+            paymentInfoResult.Value,
+            request.Items);
         
         paymentRepository.Insert(payment);
         

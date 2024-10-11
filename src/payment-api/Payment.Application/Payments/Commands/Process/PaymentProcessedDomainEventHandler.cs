@@ -16,7 +16,9 @@ internal sealed class PaymentProcessedDomainEventHandler(IEventBus eventBus)
                 domainEvent.Id,
                 domainEvent.OccurredOnUtc,
                 domainEvent.OrderId,
-                domainEvent.PaymentId),
+                domainEvent.PaymentId,
+                domainEvent.Customer,
+                domainEvent.Items),
             cancellationToken);
     }
 }

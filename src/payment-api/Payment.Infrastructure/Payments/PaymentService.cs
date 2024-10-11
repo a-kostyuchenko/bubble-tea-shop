@@ -9,11 +9,11 @@ internal sealed class PaymentService : IPaymentService
 {
     public Task<Result<PaymentResponse>> ChargeAsync(Money amount, PaymentInfo paymentInfo)
     {
-        if (true)
-        {
-            return Task.FromResult(Result.Failure<PaymentResponse>(PaymentErrors.NotEnoughFunds));
-        }
+        // if (true)
+        // {
+        //     return Task.FromResult(Result.Failure<PaymentResponse>(PaymentErrors.NotEnoughFunds));
+        // }
         
-        // return Task.FromResult(Result.Success(new PaymentResponse(Guid.NewGuid())));
+        return Task.FromResult(Result.Success(new PaymentResponse(Guid.NewGuid())));
     }
 }
