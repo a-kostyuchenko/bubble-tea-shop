@@ -9,8 +9,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\contracts\BubbleTeaShop.Contracts\BubbleTeaShop.Contracts.csproj" />
-      <ProjectReference Include="..\..\aspire\ServiceDefaults\ServiceDefaults.csproj" />
+      <ProjectReference Include="..\..\..\contracts\BubbleTeaShop.Contracts\BubbleTeaShop.Contracts.csproj" />
+      <ProjectReference Include="..\..\..\aspire\ServiceDefaults\ServiceDefaults.csproj" />
       <ProjectReference Include="..\Payment.Domain\Payment.Domain.csproj" />
     </ItemGroup>
 
