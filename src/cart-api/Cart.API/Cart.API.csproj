@@ -34,7 +34,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\contracts\BubbleTeaShop.Contracts\BubbleTeaShop.Contracts.csproj" />
-      <ProjectReference Include="..\..\service-defaults\ServiceDefaults\ServiceDefaults.csproj" />
+      <ProjectReference Include="..\..\aspire\ServiceDefaults\ServiceDefaults.csproj" />
     </ItemGroup>
 
 </Project>
