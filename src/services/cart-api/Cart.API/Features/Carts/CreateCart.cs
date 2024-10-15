@@ -15,11 +15,7 @@ public static class CreateCart
         int Quantity,
         string ProductName,
         decimal Price,
-        string Currency,
-        string Size,
-        string SugarLevel,
-        string IceLevel,
-        string Temperature);
+        string Currency);
     public sealed record Command(string Customer,  List<ItemRequest> Items) : ICommand<Guid>;
     
     public sealed class Validator : AbstractValidator<Command>
@@ -36,10 +32,6 @@ public static class CreateCart
                     item.RuleFor(i => i.ProductName).NotEmpty().MaximumLength(300);
                     item.RuleFor(i => i.Price).GreaterThan(0);
                     item.RuleFor(i => i.Currency).NotEmpty().MaximumLength(3);
-                    item.RuleFor(i => i.Size).NotEmpty().MaximumLength(50);
-                    item.RuleFor(i => i.SugarLevel).NotEmpty().MaximumLength(50);
-                    item.RuleFor(i => i.IceLevel).NotEmpty().MaximumLength(50);
-                    item.RuleFor(i => i.Temperature).NotEmpty().MaximumLength(50);
                 });
         }
     }
@@ -61,18 +53,10 @@ public static class CreateCart
             {
                 Result<Money> moneyResult = Money.Create(item.Price, Currency.FromCode(item.Currency));
                 Result<Quantity> quantityResult = Quantity.Create(item.Quantity);
-                var sizeResult = Result.Success(Size.FromName(item.Size));
-                var sugarLevelResult = Result.Success(SugarLevel.FromName(item.SugarLevel));
-                var iceLevelResult = Result.Success(IceLevel.FromName(item.IceLevel));
-                var temperatureResult = Result.Success(Temperature.FromName(item.Temperature));
 
                 var inspection = Result.Inspect(
                     moneyResult,
-                    quantityResult,
-                    sizeResult,
-                    sugarLevelResult,
-                    iceLevelResult,
-                    temperatureResult);
+                    quantityResult);
 
                 if (inspection.IsFailure)
                 {
@@ -83,11 +67,7 @@ public static class CreateCart
                     item.ProductId,
                     item.ProductName,
                     moneyResult.Value,
-                    quantityResult.Value,
-                    sizeResult.Value,
-                    sugarLevelResult.Value,
-                    iceLevelResult.Value,
-                    temperatureResult.Value);
+                    quantityResult.Value);
 
                 if (cartItemResult.IsFailure)
                 {

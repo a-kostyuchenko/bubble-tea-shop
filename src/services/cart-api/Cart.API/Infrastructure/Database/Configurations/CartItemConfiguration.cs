@@ -44,25 +44,5 @@ internal sealed class CartItemConfiguration : IEntityTypeConfiguration<CartItem>
         builder.Property(i => i.Quantity)
             .IsRequired()
             .HasConversion(quantity => quantity.Value, value => Quantity.Create(value).Value);
-
-        builder.Property(i => i.Size)
-            .IsRequired()
-            .HasConversion(size => size.Name, name => Size.FromName(name))
-            .HasMaxLength(50);
-        
-        builder.Property(i => i.SugarLevel)
-            .IsRequired()
-            .HasConversion(level => level.Name, name => SugarLevel.FromName(name))
-            .HasMaxLength(50);
-        
-        builder.Property(i => i.IceLevel)
-            .IsRequired()
-            .HasConversion(level => level.Name, name => IceLevel.FromName(name))
-            .HasMaxLength(50);
-
-        builder.Property(i => i.Temperature)
-            .IsRequired()
-            .HasConversion(temperature => temperature.Name, name => Temperature.FromName(name))
-            .HasMaxLength(50);
     }
 }

@@ -140,11 +140,7 @@ public static class CheckOutCart
                     item.ProductName,
                     item.Quantity.Value,
                     item.Price.Amount,
-                    item.Price.Currency.Code,
-                    item.Size.Name,
-                    item.SugarLevel.Name,
-                    item.IceLevel.Name,
-                    item.Temperature.Name))
+                    item.Price.Currency.Code))
                     .ToList()), cancellationToken);
         }
     }
