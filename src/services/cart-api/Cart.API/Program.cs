@@ -12,8 +12,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => options.CustomSchemaIds(s => s.FullName?.Replace("+", ".")));
 
 builder.AddDatabase();
-builder.Services.AddCartServices(builder.Configuration);
 builder.AddServiceDefaults();
+builder.Services.AddCartServices(builder.Configuration);
 
 WebApplication app = builder.Build();
 

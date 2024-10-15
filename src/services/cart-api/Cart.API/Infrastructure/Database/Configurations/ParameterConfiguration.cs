@@ -17,6 +17,7 @@ internal sealed class ParameterConfiguration : IEntityTypeConfiguration<Paramete
 
         builder.HasOne(p => p.SelectedOption)
             .WithOne()
-            .HasForeignKey("parameter_id");
+            .HasForeignKey<Option>("parameter_id")
+            .IsRequired();
     }
 }
