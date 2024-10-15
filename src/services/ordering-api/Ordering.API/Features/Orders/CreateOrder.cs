@@ -15,11 +15,7 @@ public static class CreateOrder
         string ProductName,
         int Quantity,
         decimal Price,
-        string Currency,
-        string Size,
-        string SugarLevel,
-        string IceLevel,
-        string Temperature);
+        string Currency);
     public sealed record Command(Guid Id, string Customer, string? Note, List<ItemRequest> Items) : ICommand<Guid>;
     
     public sealed class Validator : AbstractValidator<Command>
@@ -37,10 +33,6 @@ public static class CreateOrder
                     item.RuleFor(i => i.ProductName).NotEmpty().MaximumLength(300);
                     item.RuleFor(i => i.Price).GreaterThan(0);
                     item.RuleFor(i => i.Currency).NotEmpty().MaximumLength(3);
-                    item.RuleFor(i => i.Size).NotEmpty().MaximumLength(50);
-                    item.RuleFor(i => i.SugarLevel).NotEmpty().MaximumLength(50);
-                    item.RuleFor(i => i.IceLevel).NotEmpty().MaximumLength(50);
-                    item.RuleFor(i => i.Temperature).NotEmpty().MaximumLength(50);
                 });
         }
     }
@@ -70,8 +62,7 @@ public static class CreateOrder
                 order.AddItem(
                     item.ProductName,
                     moneyResult.Value,
-                    item.Quantity,
-                    new Parameters(item.Size, item.IceLevel, item.SugarLevel, item.Temperature));
+                    item.Quantity);
             }
             
             dbContext.Add(order);

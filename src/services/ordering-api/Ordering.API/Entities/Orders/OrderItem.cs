@@ -11,16 +11,14 @@ public sealed class OrderItem : Entity
     public string ProductName { get; private set; }
     public Money Price { get; private set; }
     public int Quantity { get; private set; }
-    public Parameters Parameters { get; private set; }
     
-    public static OrderItem Create(string productName, Money price, int quantity, Parameters parameters)
+    public static OrderItem Create(string productName, Money price, int quantity)
     {
         return new OrderItem
         {
             ProductName = productName,
             Price = price,
             Quantity = quantity,
-            Parameters = parameters
         };
     }
 }

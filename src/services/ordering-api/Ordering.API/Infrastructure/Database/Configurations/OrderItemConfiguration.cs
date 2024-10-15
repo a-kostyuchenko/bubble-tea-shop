@@ -37,24 +37,5 @@ internal sealed class OrderItemConfiguration : IEntityTypeConfiguration<OrderIte
                 .HasMaxLength(3)
                 .HasColumnName("currency");
         });
-
-        builder.ComplexProperty(oi => oi.Parameters, parametersBuilder =>
-        {
-            parametersBuilder.Property(p => p.SugarLevel)
-                .HasMaxLength(50)
-                .HasColumnName("sugar_level");
-            
-            parametersBuilder.Property(p => p.IceLevel)
-                .HasMaxLength(50)
-                .HasColumnName("ice_level");
-            
-            parametersBuilder.Property(p => p.Temparature)
-                .HasMaxLength(50)
-                .HasColumnName("temperature");
-            
-            parametersBuilder.Property(p => p.Size)
-                .HasMaxLength(50)
-                .HasColumnName("size");
-        });
     }
 }

@@ -21,11 +21,7 @@ internal sealed class CartCheckedOutIntegrationEventHandler(ISender sender)
                 item.ProductName,
                 item.Quantity,
                 item.Price,
-                item.Currency,
-                item.Size,
-                item.SugarLevel,
-                item.IceLevel,
-                item.Temperature)).ToList());
+                item.Currency)).ToList());
         
         Result<Guid> result = await sender.Send(command, cancellationToken);
 

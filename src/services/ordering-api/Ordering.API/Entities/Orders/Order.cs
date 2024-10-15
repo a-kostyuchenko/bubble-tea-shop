@@ -33,8 +33,8 @@ public sealed class Order : Entity
         return order;
     }
     
-    public void AddItem(string productName, Money price, int quantity, Parameters parameters) => 
-        _items.Add(OrderItem.Create(productName, price, quantity, parameters));
+    public void AddItem(string productName, Money price, int quantity) => 
+        _items.Add(OrderItem.Create(productName, price, quantity));
 
     public Result Pay()
     {
