@@ -44,5 +44,10 @@ internal sealed class CartItemConfiguration : IEntityTypeConfiguration<CartItem>
         builder.Property(i => i.Quantity)
             .IsRequired()
             .HasConversion(quantity => quantity.Value, value => Quantity.Create(value).Value);
+        
+        builder.HasMany(i => i.Parameters)
+            .WithOne()
+            .HasForeignKey("cart_item_id")
+            .IsRequired();
     }
 }

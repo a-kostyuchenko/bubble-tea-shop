@@ -63,6 +63,17 @@ public sealed record Money
         return first with { Amount = first.Amount - second.Amount };
     }
 
+    public static Money operator *(Money money, int factor) => money.Scale(factor);
+    public static Money operator *(int factor, Money money) => money.Scale(factor);
+
+    public Money Scale(decimal factor) =>
+        factor < 0 ? throw new InvalidOperationException("Cannot multiply by a negative factor")
+            : new Money(Amount * factor, Currency);
+    
+    public Money Scale(int factor) =>
+        factor < 0 ? throw new InvalidOperationException("Cannot multiply by a negative factor")
+            : new Money(Amount * factor, Currency);
+
     public static Money Zero() => new(decimal.Zero, Currency.None);
     public static Money Zero(Currency currency) => new(decimal.Zero, currency);
 

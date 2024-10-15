@@ -17,7 +17,11 @@ public static class AddCartItem
         int Quantity,
         string ProductName,
         decimal Price,
-        string Currency) : ICommand;
+        string Currency,
+        HashSet<ParameterRequest> Parameters) : ICommand;
+
+    public sealed record ParameterRequest(string Name, OptionRequest SelectedOption);
+    public sealed record OptionRequest(string Name, double Value, decimal ExtraPrice, string Currency);
     
     public sealed class Validator : AbstractValidator<Command>
     {
@@ -29,6 +33,17 @@ public static class AddCartItem
             RuleFor(c => c.ProductName).NotEmpty().MaximumLength(300);
             RuleFor(c => c.Price).GreaterThan(0);
             RuleFor(c => c.Currency).NotEmpty().MaximumLength(3);
+            RuleFor(c => c.Parameters).NotNull();
+
+            RuleForEach(c => c.Parameters).ChildRules(item =>
+            {
+                item.RuleFor(i => i.Name).NotEmpty();
+                item.RuleFor(i => i.SelectedOption).NotNull();
+                item.RuleFor(i => i.SelectedOption.Name).NotEmpty();
+                item.RuleFor(i => i.SelectedOption.Value).GreaterThan(0);
+                item.RuleFor(i => i.SelectedOption.ExtraPrice).GreaterThan(0);
+                item.RuleFor(i => i.SelectedOption.Currency).NotEmpty().MaximumLength(3);
+            });
         }
     }
 
@@ -55,19 +70,45 @@ public static class AddCartItem
             {
                 return Result.Failure(inspection.Error);
             }
+            
+            HashSet<Parameter> parameters = [];
+            
+            foreach ((string name, OptionRequest selectedOption) in request.Parameters)
+            {
+                Result<Money> parameterMoneyResult = Money.Create(
+                    selectedOption.ExtraPrice,
+                    Currency.FromCode(selectedOption.Currency));
+                
+                if (parameterMoneyResult.IsFailure)
+                {
+                    return Result.Failure(parameterMoneyResult.Error);
+                }
+
+                var parameter = Parameter.Create(
+                    name,
+                    selectedOption.Name,
+                    selectedOption.Value,
+                    parameterMoneyResult.Value
+                );
+
+                parameters.Add(parameter);
+            }
 
             Result<CartItem> cartItemResult = CartItem.Create(
                 request.ProductId,
                 request.ProductName,
                 moneyResult.Value,
-                quantityResult.Value);
+                quantityResult.Value,
+                parameters);
 
             if (cartItemResult.IsFailure)
             {
                 return Result.Failure(cartItemResult.Error);
             }
-                
-            cart.AddItem(cartItemResult.Value);
+
+            CartItem cartItem = cartItemResult.Value;
+            
+            cart.AddItem(cartItem);
 
             await dbContext.SaveChangesAsync(cancellationToken);
 
@@ -92,18 +133,22 @@ public static class AddCartItem
                 request.Quantity,
                 request.ProductName,
                 request.Price,
-                request.Currency);
+                request.Currency,
+                request.Parameters);
             
             Result result = await sender.Send(command);
 
             return result.Match(Results.Created, ApiResults.Problem);
         }
-        
+
         private sealed record Request(
             Guid ProductId,
             int Quantity,
             string ProductName,
             decimal Price,
-            string Currency);
+            string Currency)
+        {
+            public HashSet<ParameterRequest> Parameters { get; init; } = [];
+        }
     }
 }

@@ -77,7 +77,6 @@ public static class CreateCart
                 cart.AddItem(cartItemResult.Value);
             }
             
-            
             dbContext.Add(cart);
 
             await dbContext.SaveChangesAsync(cancellationToken);
