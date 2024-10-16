@@ -15,23 +15,36 @@ public static class GetCart
 
     public sealed record Response(
         Guid Id,
-        string Customer)
+        string Customer,
+        decimal TotalPrice)
     {
         public List<ItemResponse> Items { get; init; } = [];
-        public decimal TotalPrice => Items.Sum(i => i.Price * i.Quantity);
     }
-    
+
     public sealed record ItemResponse(
         Guid ItemId,
         Guid ProductId,
         int Quantity,
         string ProductName,
         decimal Price,
-        string Currency,
-        string Size,
-        string SugarLevel,
-        string IceLevel,
-        string Temperature);
+        string Currency)
+    {
+        public List<ParameterResponse> Parameters { get; init; } = [];
+    }
+
+    public sealed record ParameterResponse(
+        Guid ParameterId,
+        string Name)
+    {
+        public OptionResponse SelectedOption { get; init; }
+    }
+
+    public sealed record OptionResponse(
+        Guid OptionId,
+        string Name,
+        double Value,
+        decimal ExtraPrice,
+        string Currency);
 
     internal sealed class QueryHandler(IDbConnectionFactory dbConnectionFactory) : IQueryHandler<Query, Response>
     {
@@ -40,30 +53,36 @@ public static class GetCart
             await using DbConnection connection = await dbConnectionFactory.OpenConnectionAsync();
             
             const string sql = 
-                $"""
-                    SELECT
-                        c.id AS {nameof(Response.Id)},
-                        c.customer AS {nameof(Response.Customer)},
-                        i.id AS {nameof(ItemResponse.ItemId)},
-                        i.product_id AS {nameof(ItemResponse.ProductId)},
-                        i.quantity AS {nameof(ItemResponse.Quantity)},
-                        i.product_name AS {nameof(ItemResponse.ProductName)},
-                        i.amount AS {nameof(ItemResponse.Price)},
-                        i.currency AS {nameof(ItemResponse.Currency)},
-                        i.size AS {nameof(ItemResponse.Size)},
-                        i.sugar_level AS {nameof(ItemResponse.SugarLevel)},
-                        i.ice_level AS {nameof(ItemResponse.IceLevel)},
-                        i.temperature AS {nameof(ItemResponse.Temperature)}
-                    FROM cart.shopping_carts c
-                    LEFT JOIN cart.cart_items i ON i.cart_id = c.id
-                    WHERE c.id = @CartId
-                 """;
+                $$"""
+                     SELECT
+                         c.id AS {{nameof(Response.Id)}},
+                         c.customer AS {{nameof(Response.Customer)}},
+                         SUM(i.amount * i.quantity + COALESCE(o.extra_price, 0)) OVER (PARTITION BY c.id) AS {{nameof(Response.TotalPrice)}},
+                         i.id AS {{nameof(ItemResponse.ItemId)}},
+                         i.product_id AS {{nameof(ItemResponse.ProductId)}},
+                         i.quantity AS {{nameof(ItemResponse.Quantity)}},
+                         i.product_name AS {{nameof(ItemResponse.ProductName)}},
+                         i.amount AS {{nameof(ItemResponse.Price)}},
+                         i.currency AS {{nameof(ItemResponse.Currency)}},
+                         p.id AS {{nameof(ParameterResponse.ParameterId)}},
+                         p.name AS {{nameof(ParameterResponse.Name)}},
+                         o.id AS {{nameof(OptionResponse.OptionId)}},
+                         o.name AS {{nameof(OptionResponse.Name)}},
+                         o.value AS {{nameof(OptionResponse.Value)}},
+                         o.extra_price AS {{nameof(OptionResponse.ExtraPrice)}},
+                         o.currency AS {{nameof(OptionResponse.Currency)}}
+                     FROM cart.shopping_carts c
+                     LEFT JOIN cart.cart_items i ON i.cart_id = c.id
+                     LEFT JOIN cart.cart_item_parameters p ON p.cart_item_id = i.id
+                     LEFT JOIN cart.cart_item_options o ON o.parameter_id = p.id
+                     WHERE c.id = @CartId
+                  """;
             
             Dictionary<Guid, Response> cartsDictionary = [];
 
-            await connection.QueryAsync<Response, ItemResponse?, Response>(
+            await connection.QueryAsync<Response, ItemResponse?, ParameterResponse?, OptionResponse?, Response>(
                 sql,
-                (cart, item) =>
+                (cart, item, parameter, option) =>
                 {
                     if (cartsDictionary.TryGetValue(cart.Id, out Response? existingCart))
                     {
@@ -74,15 +93,22 @@ public static class GetCart
                         cartsDictionary.Add(cart.Id, cart);
                     }
 
-                    if (item is not null)
+                    if (item is null)
                     {
-                        cart.Items.Add(item);
+                        return cart;
                     }
-                
+
+                    if (parameter is not null && option is not null)
+                    {
+                        item.Parameters.Add(parameter with { SelectedOption = option });
+                    }
+                        
+                    cart.Items.Add(item);
+
                     return cart;
                 },
                 request,
-                splitOn: nameof(ItemResponse.ItemId));
+                splitOn: $"{nameof(ItemResponse.ItemId)},{nameof(ParameterResponse.ParameterId)},{nameof(OptionResponse.OptionId)}");
         
             if (!cartsDictionary.TryGetValue(request.CartId, out Response cartResponse))
             {

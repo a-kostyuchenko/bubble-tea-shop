@@ -15,7 +15,10 @@ public static class CreateCart
         int Quantity,
         string ProductName,
         decimal Price,
-        string Currency);
+        string Currency,
+        HashSet<ParameterRequest> Parameters);
+    public sealed record ParameterRequest(string Name, OptionRequest SelectedOption);
+    public sealed record OptionRequest(string Name, double Value, decimal ExtraPrice, string Currency);
     public sealed record Command(string Customer,  List<ItemRequest> Items) : ICommand<Guid>;
     
     public sealed class Validator : AbstractValidator<Command>
@@ -63,11 +66,35 @@ public static class CreateCart
                     return Result.Failure<Guid>(inspection.Error);
                 }
 
+                HashSet<Parameter> parameters = [];
+            
+                foreach ((string name, OptionRequest selectedOption) in item.Parameters)
+                {
+                    Result<Money> parameterMoneyResult = Money.Create(
+                        selectedOption.ExtraPrice,
+                        Currency.FromCode(selectedOption.Currency));
+                
+                    if (parameterMoneyResult.IsFailure)
+                    {
+                        return Result.Failure<Guid>(parameterMoneyResult.Error);
+                    }
+
+                    var parameter = Parameter.Create(
+                        name,
+                        selectedOption.Name,
+                        selectedOption.Value,
+                        parameterMoneyResult.Value
+                    );
+
+                    parameters.Add(parameter);
+                }
+
                 Result<CartItem> cartItemResult = CartItem.Create(
                     item.ProductId,
                     item.ProductName,
                     moneyResult.Value,
-                    quantityResult.Value);
+                    quantityResult.Value,
+                    parameters);
 
                 if (cartItemResult.IsFailure)
                 {
