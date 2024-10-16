@@ -27,11 +27,7 @@ public static class GetOrders
         int Quantity,
         string ProductName,
         decimal Price,
-        string Currency,
-        string Size,
-        string SugarLevel,
-        string IceLevel,
-        string Temperature);
+        string Currency);
     
     public sealed record PagedResponse(
         int Page,
@@ -73,11 +69,7 @@ public static class GetOrders
                         i.quantity AS {nameof(ItemResponse.Quantity)},
                         i.product_name AS {nameof(ItemResponse.ProductName)},
                         i.amount AS {nameof(ItemResponse.Price)},
-                        i.currency AS {nameof(ItemResponse.Currency)},
-                        i.size AS {nameof(ItemResponse.Size)},
-                        i.sugar_level AS {nameof(ItemResponse.SugarLevel)},
-                        i.ice_level AS {nameof(ItemResponse.IceLevel)},
-                        i.temperature AS {nameof(ItemResponse.Temperature)}
+                        i.currency AS {nameof(ItemResponse.Currency)}
                     FROM ordering.orders c
                     LEFT JOIN ordering.order_items i ON i.order_id = c.id
                     WHERE (@Status IS NULL OR c.status = @Status)
