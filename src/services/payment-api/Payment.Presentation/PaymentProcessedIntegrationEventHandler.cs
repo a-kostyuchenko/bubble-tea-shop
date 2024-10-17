@@ -20,6 +20,7 @@ internal sealed class PaymentProcessedIntegrationEventHandler(ISender sender)
                 item.ProductName,
                 item.Quantity,
                 item.Price,
+                item.TotalPrice,
                 item.Currency)).ToList());
 
         Result result = await sender.Send(command, cancellationToken);

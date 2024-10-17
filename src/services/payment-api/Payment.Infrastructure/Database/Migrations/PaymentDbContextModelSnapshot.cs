@@ -94,6 +94,22 @@ namespace Payment.Infrastructure.Database.Migrations
                                 .HasColumnName("currency");
                         });
 
+                    b.ComplexProperty<Dictionary<string, object>>("TotalPrice", "Payment.Domain.Invoices.InvoiceLine.TotalPrice#Money", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<decimal>("Amount")
+                                .HasPrecision(10, 2)
+                                .HasColumnType("numeric(10,2)")
+                                .HasColumnName("total_amount");
+
+                            b1.Property<string>("Currency")
+                                .IsRequired()
+                                .HasMaxLength(3)
+                                .HasColumnType("character varying(3)")
+                                .HasColumnName("total_currency");
+                        });
+
                     b.HasKey("InvoiceId", "ProductId")
                         .HasName("pk_invoice_lines");
 

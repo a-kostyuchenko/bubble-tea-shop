@@ -19,7 +19,7 @@ namespace Ordering.API.Infrastructure.Database.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("ordering")
-                .HasAnnotation("ProductVersion", "8.0.7")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -77,35 +77,6 @@ namespace Ordering.API.Infrastructure.Database.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("order_id");
 
-                    b.ComplexProperty<Dictionary<string, object>>("Parameters", "Ordering.API.Entities.Orders.OrderItem.Parameters#Parameters", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<string>("IceLevel")
-                                .IsRequired()
-                                .HasMaxLength(50)
-                                .HasColumnType("character varying(50)")
-                                .HasColumnName("ice_level");
-
-                            b1.Property<string>("Size")
-                                .IsRequired()
-                                .HasMaxLength(50)
-                                .HasColumnType("character varying(50)")
-                                .HasColumnName("size");
-
-                            b1.Property<string>("SugarLevel")
-                                .IsRequired()
-                                .HasMaxLength(50)
-                                .HasColumnType("character varying(50)")
-                                .HasColumnName("sugar_level");
-
-                            b1.Property<string>("Temparature")
-                                .IsRequired()
-                                .HasMaxLength(50)
-                                .HasColumnType("character varying(50)")
-                                .HasColumnName("temperature");
-                        });
-
                     b.ComplexProperty<Dictionary<string, object>>("Price", "Ordering.API.Entities.Orders.OrderItem.Price#Money", b1 =>
                         {
                             b1.IsRequired();
@@ -132,6 +103,53 @@ namespace Ordering.API.Infrastructure.Database.Migrations
                         {
                             t.HasCheckConstraint("CK_Quantity_GreaterThanZero", "quantity > 0");
                         });
+                });
+
+            modelBuilder.Entity("Ordering.API.Entities.Orders.Parameter", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)")
+                        .HasColumnName("name");
+
+                    b.Property<string>("Option")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)")
+                        .HasColumnName("option");
+
+                    b.Property<Guid?>("order_item_id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("order_item_id");
+
+                    b.ComplexProperty<Dictionary<string, object>>("ExtraPrice", "Ordering.API.Entities.Orders.Parameter.ExtraPrice#Money", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<decimal>("Amount")
+                                .HasPrecision(10, 2)
+                                .HasColumnType("numeric(10,2)")
+                                .HasColumnName("extra_price");
+
+                            b1.Property<string>("Currency")
+                                .IsRequired()
+                                .HasMaxLength(3)
+                                .HasColumnType("character varying(3)")
+                                .HasColumnName("currency");
+                        });
+
+                    b.HasKey("Id")
+                        .HasName("pk_order_item_parameters");
+
+                    b.HasIndex("order_item_id")
+                        .HasDatabaseName("ix_order_item_parameters_order_item_id");
+
+                    b.ToTable("order_item_parameters", "ordering");
                 });
 
             modelBuilder.Entity("Ordering.API.Infrastructure.Inbox.InboxMessage", b =>
@@ -247,9 +265,23 @@ namespace Ordering.API.Infrastructure.Database.Migrations
                         .HasConstraintName("fk_order_items_orders_order_id");
                 });
 
+            modelBuilder.Entity("Ordering.API.Entities.Orders.Parameter", b =>
+                {
+                    b.HasOne("Ordering.API.Entities.Orders.OrderItem", null)
+                        .WithMany("Parameters")
+                        .HasForeignKey("order_item_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasConstraintName("fk_order_item_parameters_order_items_order_item_id");
+                });
+
             modelBuilder.Entity("Ordering.API.Entities.Orders.Order", b =>
                 {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("Ordering.API.Entities.Orders.OrderItem", b =>
+                {
+                    b.Navigation("Parameters");
                 });
 #pragma warning restore 612, 618
         }

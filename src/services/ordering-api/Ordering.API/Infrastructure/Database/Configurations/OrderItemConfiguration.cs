@@ -37,5 +37,10 @@ internal sealed class OrderItemConfiguration : IEntityTypeConfiguration<OrderIte
                 .HasMaxLength(3)
                 .HasColumnName("currency");
         });
+        
+        builder.HasMany(oi => oi.Parameters)
+            .WithOne()
+            .HasForeignKey("order_item_id")
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
