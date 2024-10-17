@@ -46,7 +46,7 @@ public sealed class Invoice : Entity
         return invoice;
     }
     
-    public void Add(Guid productId, string label, int quantity, Money price)
+    public void Add(Guid productId, string label, int quantity, Money price, Money totalPrice)
     {
         if (_lines.Find(l => l.ProductId == productId) is { } line)
         {
@@ -54,6 +54,6 @@ public sealed class Invoice : Entity
             return;
         }
         
-        _lines.Add(InvoiceLine.Create(Id, productId, label, quantity, price));
+        _lines.Add(InvoiceLine.Create(Id, productId, label, quantity, price, totalPrice));
     }
 }

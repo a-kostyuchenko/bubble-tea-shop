@@ -17,11 +17,7 @@ internal sealed class CartCheckedOutIntegrationEventHandler(ISender sender)
             integrationEvent.CartId,
             integrationEvent.Customer,
             integrationEvent.Note,
-            integrationEvent.Items.Select(item => new CreateOrder.ItemRequest(
-                item.ProductName,
-                item.Quantity,
-                item.Price,
-                item.Currency)).ToList());
+            integrationEvent.Items);
         
         Result<Guid> result = await sender.Send(command, cancellationToken);
 

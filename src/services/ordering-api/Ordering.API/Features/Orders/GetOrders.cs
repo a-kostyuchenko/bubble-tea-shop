@@ -19,7 +19,6 @@ public static class GetOrders
         string Status)
     {
         public List<ItemResponse> Items { get; init; } = [];
-        public decimal TotalPrice => Items.Sum(i => i.Price * i.Quantity);
     }
     
     public sealed record ItemResponse(

@@ -5,4 +5,10 @@ public sealed record CartItemModel(
     string ProductName,
     int Quantity,
     decimal Price,
-    string Currency);
+    decimal TotalPrice,
+    string Currency,
+    List<ParameterModel> Parameters);
+
+public sealed record ParameterModel(string Name, OptionModel SelectedOption);
+
+public sealed record OptionModel(string Name, decimal ExtraPrice, string Currency);

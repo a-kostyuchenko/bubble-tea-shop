@@ -49,5 +49,7 @@ internal sealed class CartItemConfiguration : IEntityTypeConfiguration<CartItem>
             .WithOne()
             .HasForeignKey("cart_item_id")
             .IsRequired();
+        
+        builder.Navigation(i => i.Parameters).AutoInclude();
     }
 }

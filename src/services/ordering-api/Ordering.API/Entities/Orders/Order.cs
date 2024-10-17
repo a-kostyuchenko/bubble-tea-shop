@@ -35,6 +35,9 @@ public sealed class Order : Entity
     
     public void AddItem(string productName, Money price, int quantity) => 
         _items.Add(OrderItem.Create(productName, price, quantity));
+    
+    public void AddItem(string productName, Money price, int quantity, List<Parameter> parameters) => 
+        _items.Add(OrderItem.Create(productName, price, quantity, parameters));
 
     public Result Pay()
     {

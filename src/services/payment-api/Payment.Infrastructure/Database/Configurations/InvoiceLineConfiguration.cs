@@ -16,7 +16,7 @@ internal sealed class InvoiceLineConfiguration : IEntityTypeConfiguration<Invoic
                 "CK_Quantity_NotNegative",
                 sql: "quantity > 0");
         });
-        
+
         builder.HasKey(l => new { l.InvoiceId, l.ProductId });
 
         builder.Property(l => l.Label)
@@ -33,6 +33,19 @@ internal sealed class InvoiceLineConfiguration : IEntityTypeConfiguration<Invoic
                 .HasConversion(currency => currency.Code, code => Currency.FromCode(code))
                 .HasMaxLength(3)
                 .HasColumnName("currency");
+        });
+
+        builder.ComplexProperty(l => l.TotalPrice, priceBuilder =>
+        {
+            priceBuilder.Property(p => p.Amount)
+                .HasPrecision(10, 2)
+                .HasColumnName("total_amount");
+
+            priceBuilder.Property(p => p.Currency)
+                .IsRequired()
+                .HasConversion(currency => currency.Code, code => Currency.FromCode(code))
+                .HasMaxLength(3)
+                .HasColumnName("total_currency");
         });
     }
 }

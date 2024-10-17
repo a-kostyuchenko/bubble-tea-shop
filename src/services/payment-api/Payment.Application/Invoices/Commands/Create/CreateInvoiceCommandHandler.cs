@@ -16,13 +16,14 @@ internal sealed class CreateInvoiceCommandHandler(
         foreach (InvoiceLineModel line in request.Lines)
         {
             Result<Money> moneyResult = Money.Create(line.Price, Currency.FromCode(line.Currency));
+            Result<Money> totalPriceResult = Money.Create(line.TotalPrice, Currency.FromCode(line.Currency));
 
             if (moneyResult.IsFailure)
             {
                 return Result.Failure<Guid>(moneyResult.Error);
             }
             
-            invoice.Add(line.ProductId, line.Label, line.Quantity, moneyResult.Value);
+            invoice.Add(line.ProductId, line.Label, line.Quantity, moneyResult.Value, totalPriceResult.Value);
         }
         
         invoiceRepository.Insert(invoice);

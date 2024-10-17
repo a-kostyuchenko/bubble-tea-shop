@@ -133,15 +133,24 @@ public static class CheckOutCart
                 domainEvent.ExpiryYear,
                 domainEvent.CVV,
                 domainEvent.CardHolderName,
-                cart.Items.Sum(i => i.Price.Amount * i.Quantity.Value),
+                cart.Items.Aggregate(Money.Zero(), (money, item) => money + item.TotalPrice).Amount,
                 cart.Items.First().Price.Currency.Code,
-                cart.Items.Select(item => new CartItemModel(
-                    item.ProductId,
-                    item.ProductName,
-                    item.Quantity.Value,
-                    item.Price.Amount,
-                    item.Price.Currency.Code))
-                    .ToList()), cancellationToken);
+                cart.Items.Select(i => new CartItemModel(
+                    i.ProductId,
+                    i.ProductName,
+                    i.Quantity.Value,
+                    i.Price.Amount,
+                    i.TotalPrice.Amount,
+                    i.Price.Currency.Code,
+                    i.Parameters.Select(p => new ParameterModel(
+                        p.Name,
+                        new OptionModel(
+                            p.SelectedOption.Name,
+                            p.SelectedOption.ExtraPrice.Amount,
+                            p.SelectedOption.ExtraPrice.Currency.Code
+                        )
+                    )).ToList()
+                )).ToList()), cancellationToken);
         }
     }
 }
