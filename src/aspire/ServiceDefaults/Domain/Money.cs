@@ -40,17 +40,17 @@ public sealed record Money
     
     public static Money operator +(Money first, Money second)
     {
-        if (first.Currency != second.Currency)
+        if (!first.IsZero() && !second.IsZero() && first.Currency != second.Currency)
         {
             throw new InvalidOperationException("Currencies have to be equal");
         }
 
-        return first with { Amount = first.Amount + second.Amount };
+        return new Money(first.Amount + second.Amount, first.Currency == Currency.None ? second.Currency : first.Currency);
     }
     
     public static Money operator -(Money first, Money second)
     {
-        if (first.Currency != second.Currency)
+        if (!first.IsZero() && !second.IsZero() && first.Currency != second.Currency)
         {
             throw new InvalidOperationException("Currencies have to be equal");
         }
@@ -60,7 +60,7 @@ public sealed record Money
             throw new InvalidOperationException("Amount cannot be negative");
         }
 
-        return first with { Amount = first.Amount - second.Amount };
+        return new Money(first.Amount - second.Amount, first.Currency == Currency.None ? second.Currency : first.Currency);
     }
 
     public static Money operator *(Money money, int factor) => money.Scale(factor);
