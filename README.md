@@ -1,61 +1,79 @@
 # Bubble Tea Shop
 
-This repository contains the source code for a bubble tea shop management system built using microservices architecture in .NET. It includes various services for handling orders, inventory, user management, and payments, leveraging PostgreSQL for database management.
+Bubble Tea Shop is a microservices-based application that allows managing a bubble tea shop, including orders, payments, invoices and more. The application is built using the latest versions of .NET and .NET Aspire.
+
+## Table of Contents
+
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Architecture](#architecture)
+- [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+- [Project Structure](#project-structure)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
 ## Features
 
-- **Microservices Architecture:** Each service is independent, enabling easy maintenance and scaling.
-- **Tech Stack:** 
-  - .NET Core
-  - PostgreSQL
-  - .NET Aspire
-- **RESTful API:** Each service exposes a RESTful API for interaction.
+- **Bubble Tea Menu:** Display a list of bubble tea products with prices.
+- **Order Management:** Create, track order status, cancel and complete orders.
+- **Adjustable Ingredients and Parameters:** Customize bubble tea ingredients and quantities as you wish, set specific parameters for each product.
+- **Parameterized Discounts:** Apply discounts based on order total, quantity, or specific products. (TODO)
+- **Invoice Generation:** Generate invoices for orders and payments.
+- **Reporting:** Generate reports on sales, orders, and other metrics. (TODO)
+- **Localization:** Support multiple languages and currencies. (TODO)
+- **Notifications:** Send notifications for order status updates, promotions, etc. (TODO)
+
+## Technologies Used
+
+- **C#**
+- **.NET**
+- **.NET Aspire (latest version)**
+- **XUnit:** Testing framework for unit tests.
+- **Database:** PostgreSQL for data storage.
+- **ORM:** Entity Framework Core for object-relational mapping.
+- **Messaging:** RabbitMQ for messaging between services.
+- **Caching:** Redis for caching.
+- **CI/CD:** GitHub Actions for continuous integration and deployment.
+
+## Architecture
+
+Bubble Tea Shop follows a microservices architecture, which includes:
+
+- **API Gateway:** Exposes endpoints for communication with the application.
+- **Services:** Contains the business logic, data access, and presentation for each service.
+- **Tests:** Includes test projects for the application.
 
 ## Getting Started
 
 ### Prerequisites
 
-- [.NET Core SDK](https://dotnet.microsoft.com/download)
-- [PostgreSQL](https://www.postgresql.org/download/)
+- [.NET SDK](https://dotnet.microsoft.com/download)
+- [.NET Aspire](https://learn.microsoft.com/en-us/dotnet/aspire)
 
-### Installation
+## Project Structure
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/a-kostyuchenko/bubble-tea-shop.git
-   ```
-2. Navigate to the project directory and set up the environment:
-   ```bash
-   cd bubble-tea-shop
-   dotnet restore
-   ```
-
-3. Run the services:
-   ```bash
-   dotnet run
-   ```
-
-### Usage
-
-After starting the services, you can access the APIs at `http://localhost:5000`. Documentation for each API endpoint can be found in the [API Documentation](docs/api.md).
-
-### Testing
-
-To run the tests, use the following command:
-```bash
-dotnet test
-```
+- `src/`
+    - `services/` - Contains the microservices for the application.
+        - `ordering-api/` - Service for managing orders.
+        - `payment-api/` - Service for processing payments.
+        - `catalog-api/` - Service for managing the bubble tea menu.
+        - `cart-api/` - Service for managing shopping carts.
+    - `gateway/` - API Gateway for routing requests to the appropriate service.
+    - `contracts/` - Shared contracts between services.
+    - `aspire/` - Contains the .NET Aspire projects.
 
 ## Contributing
 
-Contributions are welcome! Please read our [contributing guidelines](CONTRIBUTING.md) first.
+Contributions are welcome! Please fork the repository and create a pull request.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Contact
 
-For any inquiries, feel free to open an issue or contact the maintainer at kosttchka@gmail.com.
+For any inquiries, please contact [kosttchka@gmail.com](mailto:kosttchka@gmail.com).
 
----
+Feel free to adjust the content to fit your specific project details and any additional information you would like to include.
