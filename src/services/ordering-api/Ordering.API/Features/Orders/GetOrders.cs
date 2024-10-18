@@ -16,17 +16,8 @@ public static class GetOrders
     public sealed record Response(
         Guid Id,
         string Customer,
-        string Status)
-    {
-        public List<ItemResponse> Items { get; init; } = [];
-    }
-    
-    public sealed record ItemResponse(
-        Guid ItemId,
-        int Quantity,
-        string ProductName,
-        decimal Price,
-        string Currency);
+        string Status,
+        long TotalItems);
     
     public sealed record PagedResponse(
         int Page,
@@ -64,11 +55,7 @@ public static class GetOrders
                         c.id AS {nameof(Response.Id)},
                         c.customer AS {nameof(Response.Customer)},
                         c.status AS {nameof(Response.Status)},
-                        i.id AS {nameof(ItemResponse.ItemId)},
-                        i.quantity AS {nameof(ItemResponse.Quantity)},
-                        i.product_name AS {nameof(ItemResponse.ProductName)},
-                        i.amount AS {nameof(ItemResponse.Price)},
-                        i.currency AS {nameof(ItemResponse.Currency)}
+                        COUNT(i.id) OVER (PARTITION BY c.id) AS {nameof(Response.TotalItems)}
                     FROM ordering.orders c
                     LEFT JOIN ordering.order_items i ON i.order_id = c.id
                     WHERE (@Status IS NULL OR c.status = @Status)
@@ -77,30 +64,7 @@ public static class GetOrders
                     LIMIT @Take
                  """;
             
-            Dictionary<Guid, Response> ordersDictionary = [];
-
-            List<Response> orders =  (await connection.QueryAsync<Response, ItemResponse?, Response>(
-                sql,
-                (order, item) =>
-                {
-                    if (ordersDictionary.TryGetValue(order.Id, out Response? existingCart))
-                    {
-                        order = existingCart;
-                    }
-                    else
-                    {
-                        ordersDictionary.Add(order.Id, order);
-                    }
-
-                    if (item is not null)
-                    {
-                        order.Items.Add(item);
-                    }
-                
-                    return order;
-                },
-                parameters,
-                splitOn: nameof(ItemResponse.ItemId))).AsList();
+            List<Response> orders =  (await connection.QueryAsync<Response>(sql, parameters)).AsList();
 
             return orders;
         }

@@ -19,14 +19,19 @@ public static class GetOrder
         string Status)
     {
         public List<ItemResponse> Items { get; init; } = [];
+        public decimal TotalPrice => Items.Sum(i => (i.Price + i.Parameters.Sum(p => p.ExtraPrice)) * i.Quantity);
     }
-    
+
     public sealed record ItemResponse(
         Guid ItemId,
         int Quantity,
         string ProductName,
         decimal Price,
-        string Currency);
+        string Currency)
+    {
+        public List<ParameterResponse> Parameters { get; init; } = [];
+    }
+    public sealed record ParameterResponse(string Name, string Option, decimal ExtraPrice);
 
     internal sealed class QueryHandler(IDbConnectionFactory dbConnectionFactory) : IQueryHandler<Query, Response>
     {
@@ -35,45 +40,62 @@ public static class GetOrder
             await using DbConnection connection = await dbConnectionFactory.OpenConnectionAsync();
             
             const string sql = 
-                $"""
-                    SELECT
-                        c.id AS {nameof(Response.Id)},
-                        c.customer AS {nameof(Response.Customer)},
-                        c.status AS {nameof(Response.Status)},
-                        i.id AS {nameof(ItemResponse.ItemId)},
-                        i.quantity AS {nameof(ItemResponse.Quantity)},
-                        i.product_name AS {nameof(ItemResponse.ProductName)},
-                        i.amount AS {nameof(ItemResponse.Price)},
-                        i.currency AS {nameof(ItemResponse.Currency)}
-                    FROM ordering.orders c
-                    LEFT JOIN ordering.order_items i ON i.order_id = c.id
-                    WHERE c.id = @OrderId
-                 """;
-            
+                $$"""
+                 SELECT
+                     c.id AS {{nameof(Response.Id)}},
+                     c.customer AS {{nameof(Response.Customer)}},
+                     c.status AS {{nameof(Response.Status)}},
+                     i.id AS {{nameof(ItemResponse.ItemId)}},
+                     i.quantity AS {{nameof(ItemResponse.Quantity)}},
+                     i.product_name AS {{nameof(ItemResponse.ProductName)}},
+                     i.amount AS {{nameof(ItemResponse.Price)}},
+                     i.currency AS {{nameof(ItemResponse.Currency)}},
+                     p.name AS {{nameof(ParameterResponse.Name)}},
+                     p.option AS {{nameof(ParameterResponse.Option)}},
+                     p.extra_price AS {{nameof(ParameterResponse.ExtraPrice)}}
+                 FROM ordering.orders c
+                 LEFT JOIN ordering.order_items i ON i.order_id = c.id
+                 LEFT JOIN ordering.order_item_parameters p ON p.order_item_id = i.id
+                 WHERE c.id = @OrderId
+                """;
+
             Dictionary<Guid, Response> ordersDictionary = [];
 
-            await connection.QueryAsync<Response, ItemResponse?, Response>(
+            await connection.QueryAsync<Response, ItemResponse?, ParameterResponse?, Response>(
                 sql,
-                (order, item) =>
+                (order, item, parameter) =>
                 {
-                    if (ordersDictionary.TryGetValue(order.Id, out Response? existingCart))
+                    if (ordersDictionary.TryGetValue(order.Id, out Response? existingOrder))
                     {
-                        order = existingCart;
+                        order = existingOrder;
                     }
                     else
                     {
                         ordersDictionary.Add(order.Id, order);
                     }
 
-                    if (item is not null)
+                    if (item is null)
+                    {
+                        return order;
+                    }
+
+                    ItemResponse? existingItem = order.Items.Find(i => i.ItemId == item.ItemId);
+                    
+                    if (existingItem is null)
                     {
                         order.Items.Add(item);
+                        existingItem = item;
                     }
-                
+
+                    if (parameter is not null)
+                    {
+                        existingItem.Parameters.Add(parameter);
+                    }
+
                     return order;
                 },
                 request,
-                splitOn: nameof(ItemResponse.ItemId));
+                splitOn: $"{nameof(ItemResponse.ItemId)}, {nameof(ParameterResponse.Name)}");
         
             if (!ordersDictionary.TryGetValue(request.OrderId, out Response orderResponse))
             {
