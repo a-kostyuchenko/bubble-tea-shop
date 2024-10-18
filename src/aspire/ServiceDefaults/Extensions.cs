@@ -65,7 +65,8 @@ public static class Extensions
                     .AddHttpClientInstrumentation()
                     .AddSource(DiagnosticHeaders.DefaultListenerName)
                     .AddSource(ActivitySourceProvider.DefaultSourceName)
-                    .AddSource("Yarp.ReverseProxy");
+                    .AddSource("Yarp.ReverseProxy")
+                    .AddSource("MassTransit");
             });
 
         builder.AddOpenTelemetryExporters();
