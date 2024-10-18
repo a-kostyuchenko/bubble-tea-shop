@@ -15,10 +15,10 @@ public static class GetCart
 
     public sealed record Response(
         Guid Id,
-        string Customer,
-        decimal TotalPrice)
+        string Customer)
     {
         public List<ItemResponse> Items { get; init; } = [];
+        public decimal TotalPrice => Items.Sum(i => (i.Price + i.Parameters.Sum(p => p.SelectedOption.ExtraPrice)) * i.Quantity);
     }
 
     public sealed record ItemResponse(
@@ -57,7 +57,6 @@ public static class GetCart
                      SELECT
                          c.id AS {{nameof(Response.Id)}},
                          c.customer AS {{nameof(Response.Customer)}},
-                         SUM(i.amount * i.quantity + COALESCE(o.extra_price, 0)) OVER (PARTITION BY c.id) AS {{nameof(Response.TotalPrice)}},
                          i.id AS {{nameof(ItemResponse.ItemId)}},
                          i.product_id AS {{nameof(ItemResponse.ProductId)}},
                          i.quantity AS {{nameof(ItemResponse.Quantity)}},
@@ -98,12 +97,18 @@ public static class GetCart
                         return cart;
                     }
 
+                    ItemResponse? existingItem = cart.Items.Find(i => i.ItemId == item.ItemId);
+                    
+                    if (existingItem is null)
+                    {
+                        cart.Items.Add(item);
+                        existingItem = item;
+                    }
+
                     if (parameter is not null && option is not null)
                     {
-                        item.Parameters.Add(parameter with { SelectedOption = option });
+                        existingItem.Parameters.Add(parameter with { SelectedOption = option });
                     }
-                        
-                    cart.Items.Add(item);
 
                     return cart;
                 },

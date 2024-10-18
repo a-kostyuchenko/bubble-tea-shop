@@ -15,8 +15,8 @@ public sealed class CartItem : Entity
     public Money Price { get; private set; }
     public Quantity Quantity { get; private set; }
     public Money TotalPrice => 
-        Price * Quantity.Value +
-        Parameters.Aggregate(Money.Zero(), (money, parameter) => money + parameter.SelectedOption.ExtraPrice);
+        (Price + Parameters.Aggregate(Money.Zero(), (money, parameter) => money + parameter.SelectedOption.ExtraPrice))
+        * Quantity.Value;
     public IReadOnlyCollection<Parameter> Parameters => [.. _parameters];
     
     public static Result<CartItem> Create(
