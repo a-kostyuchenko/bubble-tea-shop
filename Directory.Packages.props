@@ -11,6 +11,8 @@
     <AspVersioningVersion>8.1.0</AspVersioningVersion>
   </PropertyGroup>
   <ItemGroup>
+    <PackageVersion Include="Aspire.Azure.Storage.Blobs" Version="8.2.1" />
+    <PackageVersion Include="Aspire.Hosting.Azure.Storage" Version="8.2.1" />
     <PackageVersion Include="Aspire.Npgsql" Version="8.2.1" />
     <PackageVersion Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.2.1" />
     <PackageVersion Include="Dapper" Version="2.1.35" />

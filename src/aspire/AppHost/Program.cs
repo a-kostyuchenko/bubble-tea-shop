@@ -1,3 +1,5 @@
+using Aspire.Hosting.Azure;
+
 IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(args);
 
 IResourceBuilder<ParameterResource> pgUser = builder.AddParameter("DatabaseUser");
@@ -8,6 +10,13 @@ IResourceBuilder<PostgresServerResource> databaseServer = builder
     .WithDataVolume()
     .WithPgAdmin()
     .WithLifetime(ContainerLifetime.Persistent);
+
+IResourceBuilder<AzureStorageResource> storage = builder
+    .AddAzureStorage("storage")
+    .RunAsEmulator();
+    
+    
+IResourceBuilder<AzureBlobStorageResource> blobs = storage.AddBlobs("blobs");
     
 IResourceBuilder<PostgresDatabaseResource> catalogDb = databaseServer.AddDatabase("catalog-db");
 IResourceBuilder<PostgresDatabaseResource> cartDb = databaseServer.AddDatabase("cart-db");
@@ -26,6 +35,7 @@ IResourceBuilder<RedisResource> cache = builder
 IResourceBuilder<ProjectResource> catalogApi = builder.AddProject<Projects.Catalog_API>("catalog-api")
     .WithReference(catalogDb)
     .WithReference(queue)
+    .WithReference(blobs)
     .WaitFor(catalogDb)
     .WaitFor(queue);
 
