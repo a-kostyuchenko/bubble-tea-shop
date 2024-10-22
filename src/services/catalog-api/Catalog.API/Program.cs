@@ -14,6 +14,7 @@ builder.Services.AddSwaggerGen(options => options.CustomSchemaIds(s => s.FullNam
 builder.AddDatabase();
 builder.AddServiceDefaults();
 builder.Services.AddCatalogServices(builder.Configuration);
+builder.AddAzureBlobClient("blobs");
 
 WebApplication app = builder.Build();
 
