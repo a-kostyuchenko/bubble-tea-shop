@@ -14,31 +14,46 @@ public sealed class Product : Entity
     private readonly HashSet<Parameter> _parameters = [];
     
     public string Name { get; private set; }
+    public string Slug { get; private set; }
+    public string Description { get; private set; }
     public Money Price { get; private set; }
     public Category Category { get; private set; }
     public IReadOnlyCollection<Ingredient> Ingredients => [.. _ingredients];
     public IReadOnlyCollection<Parameter> Parameters => [.. _parameters];
     
-    public static Result<Product> Create(string name, Category category, Money? price = null)
+    public static Result<Product> Create(string name, string slug, string description, Category category, Money? price = null)
     {
         return Result.Success(new Product
         {
             Name = name,
+            Slug = slug,
+            Description = description,
             Category = category,
             Price = price ?? Money.Zero(),
         });
     }
     
-    public void Update(string name, Category category, Money price)
+    public void Update(string description, Category category, Money price)
     {
-        if (Name == name && Category == category && Price == price)
+        if (Category == category && Price == price && Description == description)
+        {
+            return;
+        }
+        
+        Description = description;
+        Category = category;
+        Price = price;
+    }
+
+    public void UpdateName(string name, string slug)
+    {
+        if (Name == name && Slug == slug)
         {
             return;
         }
         
         Name = name;
-        Category = category;
-        Price = price;
+        Slug = slug;
     }
     
     public void AddIngredient(Ingredient ingredient) => _ingredients.Add(ingredient);

@@ -17,6 +17,14 @@ internal sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(b => b.Name)
             .IsRequired()
             .HasMaxLength(300);
+        
+        builder.Property(b => b.Slug)
+            .IsRequired()
+            .HasMaxLength(400);
+        
+        builder.Property(b => b.Description)
+            .IsRequired()
+            .HasMaxLength(1000);
 
         builder.Property(p => p.Category)
             .IsRequired()

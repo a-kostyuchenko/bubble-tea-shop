@@ -14,6 +14,7 @@ public static class UpdateProduct
     public sealed record Command(
         Guid ProductId,
         string Name,
+        string Description,
         string Category,
         decimal Price,
         string Currency) : ICommand;
@@ -23,6 +24,7 @@ public static class UpdateProduct
         public Validator()
         {
             RuleFor(c => c.Name).NotEmpty().MaximumLength(300);
+            RuleFor(c => c.Description).NotEmpty().MaximumLength(1000);
             RuleFor(c => c.Category).NotEmpty().MaximumLength(100);
             RuleFor(c => c.Price).GreaterThanOrEqualTo(0);
             RuleFor(c => c.Currency).NotEmpty().MaximumLength(3);
@@ -51,7 +53,14 @@ public static class UpdateProduct
                 return inspection;
             }
             
-            product.Update(request.Name, categoryResult.Value, moneyResult.Value);
+            product.Update(request.Description, categoryResult.Value, moneyResult.Value);
+
+            if (product.Name != request.Name)
+            {
+                string slug = "slug"; // TODO: Implement slug generation
+                
+                product.UpdateName(request.Name, slug);
+            }
             
             await dbContext.SaveChangesAsync(cancellationToken);
 
@@ -73,6 +82,7 @@ public static class UpdateProduct
             var command = new Command(
                 productId,
                 request.Name,
+                request.Description,
                 request.Category,
                 request.Price,
                 request.Currency);
@@ -82,6 +92,6 @@ public static class UpdateProduct
             return result.Match(Results.NoContent, ApiResults.Problem);
         }
 
-        private sealed record Request(string Name, string Category, decimal Price, string Currency);
+        private sealed record Request(string Name, string Description, string Category, decimal Price, string Currency);
     }
 }

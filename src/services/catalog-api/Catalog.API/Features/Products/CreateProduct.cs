@@ -10,13 +10,19 @@ namespace Catalog.API.Features.Products;
 
 public static class CreateProduct
 {
-    public sealed record Command(string Name, string Category, decimal Price, string Currency) : ICommand<Guid>;
+    public sealed record Command(
+        string Name,
+        string Description,
+        string Category,
+        decimal Price,
+        string Currency) : ICommand<Guid>;
     
     public sealed class Validator : AbstractValidator<Command>
     {
         public Validator()
         {
             RuleFor(c => c.Name).NotEmpty().MaximumLength(300);
+            RuleFor(c => c.Description).NotEmpty().MaximumLength(1000);
             RuleFor(c => c.Category).NotEmpty().MaximumLength(100);
             RuleFor(c => c.Price).GreaterThanOrEqualTo(0);
             RuleFor(c => c.Currency).NotEmpty().MaximumLength(3);
@@ -36,9 +42,14 @@ public static class CreateProduct
             {
                 return Result.Failure<Guid>(inspection.Error);
             }
+
+            // TODO: Implement slug generation
+            string slug = "slug";
             
             Result<Product> productResult = Product.Create(
                 request.Name,
+                slug,
+                request.Description,
                 categoryResult.Value,
                 moneyResult.Value);
 
@@ -66,7 +77,12 @@ public static class CreateProduct
 
         private static async Task<IResult> Handler(ISender sender, Request request)
         {
-            var command = new Command(request.Name, request.Category, request.Price, request.Currency);
+            var command = new Command(
+                request.Name,
+                request.Description,
+                request.Category,
+                request.Price,
+                request.Currency);
             
             Result<Guid> result = await sender.Send(command);
 
@@ -75,6 +91,6 @@ public static class CreateProduct
                 ApiResults.Problem);
         }
 
-        private sealed record Request(string Name, string Category, decimal Price, string Currency);
+        private sealed record Request(string Name, string Description, string Category, decimal Price, string Currency);
     }
 }
