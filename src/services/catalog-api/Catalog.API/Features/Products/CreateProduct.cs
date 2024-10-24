@@ -1,7 +1,9 @@
 using Catalog.API.Entities.Products;
 using Catalog.API.Infrastructure.Database;
+using Catalog.API.Infrastructure.Storage;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using ServiceDefaults.Domain;
 using ServiceDefaults.Endpoints;
 using ServiceDefaults.Messaging;
@@ -15,7 +17,9 @@ public static class CreateProduct
         string Description,
         string Category,
         decimal Price,
-        string Currency) : ICommand<Guid>;
+        string Currency,
+        Stream Stream,
+        string ContentType) : ICommand<Guid>;
     
     public sealed class Validator : AbstractValidator<Command>
     {
@@ -26,10 +30,14 @@ public static class CreateProduct
             RuleFor(c => c.Category).NotEmpty().MaximumLength(100);
             RuleFor(c => c.Price).GreaterThanOrEqualTo(0);
             RuleFor(c => c.Currency).NotEmpty().MaximumLength(3);
+            RuleFor(c => c.Stream).NotEmpty();
+            RuleFor(c => c.ContentType).NotEmpty();
         }
     }
 
-    internal sealed class CommandHandler(CatalogDbContext dbContext) : ICommandHandler<Command, Guid>
+    internal sealed class CommandHandler(
+        CatalogDbContext dbContext,
+        IBlobService blobService) : ICommandHandler<Command, Guid>
     {
         public async Task<Result<Guid>> Handle(Command request, CancellationToken cancellationToken)
         {
@@ -42,6 +50,8 @@ public static class CreateProduct
             {
                 return Result.Failure<Guid>(inspection.Error);
             }
+            
+            Guid imageId = await blobService.UploadAsync(request.Stream, request.ContentType, cancellationToken);
 
             // TODO: Implement slug generation
             string slug = "slug";
@@ -51,6 +61,7 @@ public static class CreateProduct
                 slug,
                 request.Description,
                 categoryResult.Value,
+                imageId,
                 moneyResult.Value);
 
             if (productResult.IsFailure)
@@ -72,17 +83,20 @@ public static class CreateProduct
         {
             app.MapPost("products", Handler)
                 .WithTags(nameof(Product))
-                .WithName(nameof(CreateProduct));
+                .WithName(nameof(CreateProduct))
+                .DisableAntiforgery();
         }
 
-        private static async Task<IResult> Handler(ISender sender, Request request)
+        private static async Task<IResult> Handler(ISender sender, [AsParameters] Request request)
         {
             var command = new Command(
                 request.Name,
                 request.Description,
                 request.Category,
                 request.Price,
-                request.Currency);
+                request.Currency,
+                request.Image.OpenReadStream(),
+                request.Image.ContentType);
             
             Result<Guid> result = await sender.Send(command);
 
@@ -91,6 +105,12 @@ public static class CreateProduct
                 ApiResults.Problem);
         }
 
-        private sealed record Request(string Name, string Description, string Category, decimal Price, string Currency);
+        private sealed record Request(
+            [FromForm] string Name,
+            [FromForm] string Description,
+            [FromForm] string Category,
+            [FromForm] decimal Price,
+            [FromForm] string Currency,
+            IFormFile Image);
     }
 }

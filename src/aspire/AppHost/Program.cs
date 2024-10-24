@@ -13,8 +13,9 @@ IResourceBuilder<PostgresServerResource> databaseServer = builder
 
 IResourceBuilder<AzureStorageResource> storage = builder
     .AddAzureStorage("storage")
-    .RunAsEmulator();
-    
+    .RunAsEmulator(resourceBuilder => resourceBuilder
+        .WithLifetime(ContainerLifetime.Persistent)
+        .WithDataVolume());
     
 IResourceBuilder<AzureBlobStorageResource> blobs = storage.AddBlobs("blobs");
     

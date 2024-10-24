@@ -16,12 +16,19 @@ public sealed class Product : Entity
     public string Name { get; private set; }
     public string Slug { get; private set; }
     public string Description { get; private set; }
+    public Guid ImageId { get; private set; }
     public Money Price { get; private set; }
     public Category Category { get; private set; }
     public IReadOnlyCollection<Ingredient> Ingredients => [.. _ingredients];
     public IReadOnlyCollection<Parameter> Parameters => [.. _parameters];
     
-    public static Result<Product> Create(string name, string slug, string description, Category category, Money? price = null)
+    public static Result<Product> Create(
+        string name,
+        string slug,
+        string description,
+        Category category,
+        Guid imageId,
+        Money? price = null)
     {
         return Result.Success(new Product
         {
@@ -29,6 +36,7 @@ public sealed class Product : Entity
             Slug = slug,
             Description = description,
             Category = category,
+            ImageId = imageId,
             Price = price ?? Money.Zero(),
         });
     }

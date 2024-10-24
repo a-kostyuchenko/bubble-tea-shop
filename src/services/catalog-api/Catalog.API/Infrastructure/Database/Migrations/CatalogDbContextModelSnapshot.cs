@@ -117,11 +117,27 @@ namespace Catalog.API.Infrastructure.Database.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnName("category");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)")
+                        .HasColumnName("description");
+
+                    b.Property<Guid>("ImageId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("image_id");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("character varying(300)")
                         .HasColumnName("name");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("character varying(400)")
+                        .HasColumnName("slug");
 
                     b.ComplexProperty<Dictionary<string, object>>("Price", "Catalog.API.Entities.Products.Product.Price#Money", b1 =>
                         {
