@@ -4,6 +4,7 @@ using Catalog.API.Infrastructure.Database.Constants;
 using Catalog.API.Infrastructure.EventBus;
 using Catalog.API.Infrastructure.Inbox;
 using Catalog.API.Infrastructure.Outbox;
+using Catalog.API.Infrastructure.Storage;
 using FluentValidation;
 using Hangfire;
 using Hangfire.MemoryStorage;
@@ -30,8 +31,14 @@ public static class DependencyInjection
         services.AddMessageQueue(configuration);
         services.AddApiVersioning();
         services.AddBackgroundJobs(configuration);
+        services.AddStorage();
 
         return services;
+    }
+
+    private static void AddStorage(this IServiceCollection services)
+    {
+        services.TryAddSingleton<IBlobService, BlobService>();
     }
 
     private static void AddApplication(this IServiceCollection services)
