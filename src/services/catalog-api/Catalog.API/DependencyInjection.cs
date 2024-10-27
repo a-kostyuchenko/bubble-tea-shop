@@ -37,13 +37,17 @@ public static class DependencyInjection
         services.AddApiVersioning();
         services.AddBackgroundJobs(configuration);
         services.AddStorage();
-
+        services.AddSlugs();
+        
+        return services;
+    }
+    
+    private static void AddSlugs(this IServiceCollection services)
+    {
         services.AddSingleton<ProductNameToSlug>(_ => name =>
             new Handle(name)
                 .Transform(ToLowercase(CultureInfo.InvariantCulture), IntoLetterAndDigitRuns)
                 .ToSlug(Hyphenate));
-
-        return services;
     }
 
     private static void AddStorage(this IServiceCollection services)
