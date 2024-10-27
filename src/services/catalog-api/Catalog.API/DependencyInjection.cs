@@ -1,4 +1,6 @@
+using System.Globalization;
 using Asp.Versioning;
+using Catalog.API.Entities.Products;
 using Catalog.API.Infrastructure.Database;
 using Catalog.API.Infrastructure.Database.Constants;
 using Catalog.API.Infrastructure.EventBus;
@@ -13,8 +15,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using ServiceDefaults.Behaviors;
+using ServiceDefaults.Common;
 using ServiceDefaults.Endpoints;
 using ServiceDefaults.Messaging;
+using static ServiceDefaults.Common.HandleTransforms;
+using static ServiceDefaults.Common.HandleToSlugConversions;
 
 namespace Catalog.API;
 
@@ -32,6 +37,11 @@ public static class DependencyInjection
         services.AddApiVersioning();
         services.AddBackgroundJobs(configuration);
         services.AddStorage();
+
+        services.AddSingleton<ProductNameToSlug>(_ => name =>
+            new Handle(name)
+                .Transform(ToLowercase(CultureInfo.InvariantCulture), IntoLetterAndDigitRuns)
+                .ToSlug(Hyphenate));
 
         return services;
     }

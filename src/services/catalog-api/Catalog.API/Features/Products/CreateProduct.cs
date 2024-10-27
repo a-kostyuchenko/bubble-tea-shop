@@ -1,9 +1,11 @@
 using Catalog.API.Entities.Products;
 using Catalog.API.Infrastructure.Database;
+using Catalog.API.Infrastructure.Database.Queries;
 using Catalog.API.Infrastructure.Storage;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ServiceDefaults.Common;
 using ServiceDefaults.Domain;
 using ServiceDefaults.Endpoints;
 using ServiceDefaults.Messaging;
@@ -19,7 +21,7 @@ public static class CreateProduct
         decimal Price,
         string Currency,
         Stream Stream,
-        string ContentType) : ICommand<Guid>;
+        string ContentType) : ICommand<string>;
     
     public sealed class Validator : AbstractValidator<Command>
     {
@@ -37,9 +39,10 @@ public static class CreateProduct
 
     internal sealed class CommandHandler(
         CatalogDbContext dbContext,
-        IBlobService blobService) : ICommandHandler<Command, Guid>
+        IBlobService blobService,
+        ProductNameToSlug productNameToSlug) : ICommandHandler<Command, string>
     {
-        public async Task<Result<Guid>> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<Result<string>> Handle(Command request, CancellationToken cancellationToken)
         {
             Result<Money> moneyResult = Money.Create(request.Price, Currency.FromCode(request.Currency));
             var categoryResult = Result.Create(Category.FromName(request.Category));
@@ -48,17 +51,22 @@ public static class CreateProduct
             
             if (inspection.IsFailure)
             {
-                return Result.Failure<Guid>(inspection.Error);
+                return Result.Failure<string>(inspection.Error);
             }
             
             Guid imageId = await blobService.UploadAsync(request.Stream, request.ContentType, cancellationToken);
 
-            // TODO: Implement slug generation
-            string slug = "slug";
+            Slug slugCandidate = productNameToSlug(request.Name);
+
+            (string? collision, IEnumerable<string> similar) = await dbContext.Products
+                .Select(p => p.Slug)
+                .FindCollisions(slugCandidate);
+
+            var slug = Slug.AvoidCollisionsWithNumber(slugCandidate, collision, similar);
             
             Result<Product> productResult = Product.Create(
                 request.Name,
-                slug,
+                slug.Value,
                 request.Description,
                 categoryResult.Value,
                 imageId,
@@ -66,14 +74,14 @@ public static class CreateProduct
 
             if (productResult.IsFailure)
             {
-                return Result.Failure<Guid>(productResult.Error);
+                return Result.Failure<string>(productResult.Error);
             }
 
             dbContext.Add(productResult.Value);
 
             await dbContext.SaveChangesAsync(cancellationToken);
 
-            return productResult.Value.Id;
+            return productResult.Value.Slug;
         }
     }
 
@@ -98,10 +106,10 @@ public static class CreateProduct
                 request.Image.OpenReadStream(),
                 request.Image.ContentType);
             
-            Result<Guid> result = await sender.Send(command);
+            Result<string> result = await sender.Send(command);
 
             return result.Match(
-                productId => Results.CreatedAtRoute(nameof(GetProduct), new { productId }, productId),
+                slug => Results.CreatedAtRoute(nameof(GetProduct), new { slug }, slug),
                 ApiResults.Problem);
         }
 

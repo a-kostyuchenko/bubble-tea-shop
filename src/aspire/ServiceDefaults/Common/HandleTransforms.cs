@@ -41,7 +41,7 @@ public static class HandleTransforms
     }
     
     public static TransformHandle StopAtColon =>
-        handle => new(StopStringsAtColon(handle.Components).ToArray());
+        handle => new Handle(StopStringsAtColon(handle.Components).ToArray());
     
     private static IEnumerable<string> StopStringsAtColon(IEnumerable<string> strings)
     {
