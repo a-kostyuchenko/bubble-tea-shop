@@ -12,17 +12,24 @@ internal sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
     {
         builder.ToTable(TableNames.Products);
         
-        builder.HasKey(b => b.Id);
+        builder.HasKey(p => p.Id);
         
-        builder.Property(b => b.Name)
+        builder.HasIndex(p => p.Slug)
+            .IsUnique();
+
+        builder.HasIndex(p => new { p.Name, p.Description })
+            .HasMethod("GIN")
+            .IsTsVectorExpressionIndex("english");
+        
+        builder.Property(p => p.Name)
             .IsRequired()
             .HasMaxLength(300);
         
-        builder.Property(b => b.Slug)
+        builder.Property(p => p.Slug)
             .IsRequired()
             .HasMaxLength(400);
         
-        builder.Property(b => b.Description)
+        builder.Property(p => p.Description)
             .IsRequired()
             .HasMaxLength(1000);
 
@@ -31,7 +38,7 @@ internal sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
             .HasConversion(category => category.Name, name => Category.FromName(name))
             .HasMaxLength(100);
 
-        builder.ComplexProperty(b => b.Price, priceBuilder =>
+        builder.ComplexProperty(p => p.Price, priceBuilder =>
         {
             priceBuilder.Property(p => p.Amount)
                 .HasPrecision(10, 2)
@@ -44,7 +51,7 @@ internal sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
                 .HasColumnName("currency");
         });
 
-        builder.HasMany(b => b.Ingredients)
+        builder.HasMany(p => p.Ingredients)
             .WithMany()
             .UsingEntity(joinBuilder =>
             {
@@ -53,7 +60,7 @@ internal sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
                 joinBuilder.Property("IngredientsId").HasColumnName("ingredient_id");
             });
         
-        builder.HasMany(b => b.Parameters)
+        builder.HasMany(p => p.Parameters)
             .WithMany()
             .UsingEntity(joinBuilder =>
             {
