@@ -20,7 +20,8 @@ public static class GetProducts
         string Slug,
         string Category,
         decimal Price,
-        string Currency)
+        string Currency,
+        float Rank)
     {
         public List<IngredientResponse> Ingredients { get; init; } = [];
     }
@@ -66,13 +67,14 @@ public static class GetProducts
                    p.category AS {nameof(Response.Category)},
                    p.amount AS {nameof(Response.Price)},
                    p.currency AS {nameof(Response.Currency)},
+                   ts_rank(to_tsvector('english', p.name || ' ' || p.description), phraseto_tsquery('english', @SearchTerm)) AS {nameof(Response.Rank)},
                    i.id AS {nameof(IngredientResponse.IngredientId)},
                    i.name AS {nameof(IngredientResponse.Name)}
                 FROM catalog.products p
                 LEFT JOIN catalog.product_ingredients pi ON pi.product_id = p.id
                 LEFT JOIN catalog.ingredients i ON i.id = pi.ingredient_id
-                WHERE (@SearchTerm IS NULL OR p.name ILIKE @SearchTerm)
-                ORDER BY i.id
+                WHERE to_tsvector('english', p.name || ' ' || p.description) @@ phraseto_tsquery('english', @SearchTerm)
+                ORDER BY ts_rank(to_tsvector('english', p.name || ' ' || p.description), phraseto_tsquery('english', @SearchTerm)) DESC
                 OFFSET @Skip
                 LIMIT @Take
                 ";
@@ -111,7 +113,7 @@ public static class GetProducts
                 $"""
                 SELECT COUNT(*)
                 FROM catalog.products p
-                WHERE (@SearchTerm IS NULL OR p.name ILIKE @SearchTerm)
+                WHERE to_tsvector('english', p.name || ' ' || p.description) @@ phraseto_tsquery('english', @SearchTerm)
                 """;
 
             int totalCount = await connection.ExecuteScalarAsync<int>(sql, parameters);
