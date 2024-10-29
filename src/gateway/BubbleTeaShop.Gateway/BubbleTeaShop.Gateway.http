@@ -1,6 +1,0 @@
-@BubbleTeaShop.Gateway_HostAddress = http://localhost:5080
-
-GET {{BubbleTeaShop.Gateway_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
