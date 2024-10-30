@@ -3,6 +3,7 @@ using Dapper;
 using MediatR;
 using Ordering.API.Entities.Orders;
 using Ordering.API.Infrastructure.Database;
+using ServiceDefaults.Common;
 using ServiceDefaults.Domain;
 using ServiceDefaults.Endpoints;
 using ServiceDefaults.Messaging;
@@ -11,23 +12,17 @@ namespace Ordering.API.Features.Orders;
 
 public static class GetOrders
 {
-    public sealed record Query(string? Status, int Page, int PageSize) : IQuery<PagedResponse>;
+    public sealed record Query(string? Status, int Page, int PageSize) : IQuery<PagedResponse<Response>>;
 
     public sealed record Response(
         Guid Id,
         string Customer,
         string Status,
         long TotalItems);
-    
-    public sealed record PagedResponse(
-        int Page,
-        int PageSize,
-        int TotalCount,
-        IReadOnlyCollection<Response> Orders);
 
-    internal sealed class QueryHandler(IDbConnectionFactory dbConnectionFactory) : IQueryHandler<Query, PagedResponse>
+    internal sealed class QueryHandler(IDbConnectionFactory dbConnectionFactory) : IQueryHandler<Query, PagedResponse<Response>>
     {
-        public async Task<Result<PagedResponse>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result<PagedResponse<Response>>> Handle(Query request, CancellationToken cancellationToken)
         {
             await using DbConnection connection = await dbConnectionFactory.OpenConnectionAsync();
             
@@ -42,7 +37,7 @@ public static class GetOrders
             
             int totalCount = await CountOrdersAsync(connection, parameters);
             
-            return new PagedResponse(request.Page, request.PageSize, totalCount, orders);
+            return new PagedResponse<Response>(request.Page, request.PageSize, totalCount, orders);
         }
         
         private static async Task<IReadOnlyCollection<Response>> GetOrdersAsync(
@@ -91,14 +86,14 @@ public static class GetOrders
             app.MapGet("orders", Handler)
                 .WithTags(nameof(Order))
                 .WithName(nameof(GetOrders))
-                .Produces<PagedResponse>();
+                .Produces<PagedResponse<Response>>();
         }
 
         private static async Task<IResult> Handler(ISender sender, string? status, int page = 1, int pageSize = 15)
         {
             var query = new Query(status, page, pageSize);
             
-            Result<PagedResponse> result = await sender.Send(query);
+            Result<PagedResponse<Response>> result = await sender.Send(query);
 
             return result.Match(Results.Ok, ApiResults.Problem);
         }

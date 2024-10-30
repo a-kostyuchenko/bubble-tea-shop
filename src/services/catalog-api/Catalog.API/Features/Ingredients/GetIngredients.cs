@@ -3,6 +3,7 @@ using Catalog.API.Entities.Ingredients;
 using Catalog.API.Infrastructure.Database;
 using Dapper;
 using MediatR;
+using ServiceDefaults.Common;
 using ServiceDefaults.Domain;
 using ServiceDefaults.Endpoints;
 using ServiceDefaults.Messaging;
@@ -11,18 +12,13 @@ namespace Catalog.API.Features.Ingredients;
 
 public static class GetIngredients
 {
-    public sealed record Query(string? SearchTerm, int Page, int PageSize) : IQuery<PagedResponse>;
+    public sealed record Query(string? SearchTerm, int Page, int PageSize) : IQuery<PagedResponse<Response>>;
     public sealed record Response(Guid Id, string Name);
-    public sealed record PagedResponse(
-        int Page,
-        int PageSize,
-        int TotalCount,
-        IReadOnlyCollection<Response> Ingredients);
 
     internal sealed class QueryHandler(IDbConnectionFactory dbConnectionFactory) 
-        : IQueryHandler<Query, PagedResponse>
+        : IQueryHandler<Query, PagedResponse<Response>>
     {
-        public async Task<Result<PagedResponse>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result<PagedResponse<Response>>> Handle(Query request, CancellationToken cancellationToken)
         {
             await using DbConnection connection = await dbConnectionFactory.OpenConnectionAsync();
 
@@ -36,7 +32,7 @@ public static class GetIngredients
             
             int totalCount = await CountIngredientsAsync(connection, parameters);
             
-            return new PagedResponse(request.Page, request.PageSize, totalCount, ingredients);
+            return new PagedResponse<Response>(request.Page, request.PageSize, totalCount, ingredients);
         }
         
         private static async Task<IReadOnlyCollection<Response>> GetIngredientsAsync(
@@ -85,7 +81,7 @@ public static class GetIngredients
             app.MapGet("ingredients", Handler)
                 .WithTags(nameof(Ingredient))
                 .WithName(nameof(GetIngredients))
-                .Produces<PagedResponse>();
+                .Produces<PagedResponse<Response>>();
         }
 
         private static async Task<IResult> Handler(
@@ -96,7 +92,7 @@ public static class GetIngredients
         {
             var query = new Query(searchTerm, page, pageSize);
             
-            Result<PagedResponse> result = await sender.Send(query);
+            Result<PagedResponse<Response>> result = await sender.Send(query);
 
             return result.Match(Results.Ok, ApiResults.Problem);
         }

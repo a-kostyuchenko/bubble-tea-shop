@@ -1,8 +1,10 @@
 using System.Data.Common;
 using Catalog.API.Entities.Parameters;
+using Catalog.API.Features.Products;
 using Catalog.API.Infrastructure.Database;
 using Dapper;
 using MediatR;
+using ServiceDefaults.Common;
 using ServiceDefaults.Domain;
 using ServiceDefaults.Endpoints;
 using ServiceDefaults.Messaging;
@@ -11,25 +13,19 @@ namespace Catalog.API.Features.Parameters;
 
 public static class GetParameters
 {
-    public sealed record Query(string? SearchTerm, int Page, int PageSize) : IQuery<PagedResponse>;
+    public sealed record Query(string? SearchTerm, int Page, int PageSize) : IQuery<PagedResponse<Response>>;
 
     public sealed record Response(Guid Id, string Name)
     {
         public List<OptionResponse> Options { get; init; } = [];
     }
-    public sealed record PagedResponse(
-        int Page,
-        int PageSize,
-        int TotalCount,
-        IReadOnlyCollection<Response> Parameters);
-    
     public sealed record OptionResponse(Guid OptionId, string Name, double Value, decimal ExtraPrice, string Currency);
 
 
     internal sealed class QueryHandler(IDbConnectionFactory dbConnectionFactory) 
-        : IQueryHandler<Query, PagedResponse>
+        : IQueryHandler<Query, PagedResponse<Response>>
     {
-        public async Task<Result<PagedResponse>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result<PagedResponse<Response>>> Handle(Query request, CancellationToken cancellationToken)
         {
             await using DbConnection connection = await dbConnectionFactory.OpenConnectionAsync();
 
@@ -43,7 +39,7 @@ public static class GetParameters
             
             int totalCount = await CountParametersAsync(connection, searchParameters);
             
-            return new PagedResponse(request.Page, request.PageSize, totalCount, parameters);
+            return new PagedResponse<Response>(request.Page, request.PageSize, totalCount, parameters);
         }
         
         private static async Task<IReadOnlyCollection<Response>> GetParametersAsync(
@@ -118,7 +114,7 @@ public static class GetParameters
             app.MapGet("parameters", Handler)
                 .WithTags(nameof(Parameter))
                 .WithName(nameof(GetParameters))
-                .Produces<PagedResponse>();
+                .Produces<PagedResponse<Response>>();
         }
 
         private static async Task<IResult> Handler(
@@ -129,7 +125,7 @@ public static class GetParameters
         {
             var query = new Query(searchTerm, page, pageSize);
             
-            Result<PagedResponse> result = await sender.Send(query);
+            Result<PagedResponse<Response>> result = await sender.Send(query);
 
             return result.Match(Results.Ok, ApiResults.Problem);
         }

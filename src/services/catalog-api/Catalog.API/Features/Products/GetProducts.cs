@@ -3,6 +3,7 @@ using Catalog.API.Entities.Products;
 using Catalog.API.Infrastructure.Database;
 using Dapper;
 using MediatR;
+using ServiceDefaults.Common;
 using ServiceDefaults.Domain;
 using ServiceDefaults.Endpoints;
 using ServiceDefaults.Messaging;
@@ -11,7 +12,7 @@ namespace Catalog.API.Features.Products;
 
 public static class GetProducts
 {
-    public sealed record Query(string? SearchTerm, int Page, int PageSize) : IQuery<PagedResponse>;
+    public sealed record Query(string? SearchTerm, int Page, int PageSize) : IQuery<PagedResponse<Response>>;
 
     public sealed record Response(
         Guid Id,
@@ -26,17 +27,12 @@ public static class GetProducts
         public List<IngredientResponse> Ingredients { get; init; } = [];
     }
     
-    public sealed record PagedResponse(
-        int Page,
-        int PageSize,
-        int TotalCount,
-        IReadOnlyCollection<Response> Products);
-    
     public sealed record IngredientResponse(Guid IngredientId, string Name);
 
-    internal sealed class QueryHandler(IDbConnectionFactory dbConnectionFactory) : IQueryHandler<Query, PagedResponse>
+    internal sealed class QueryHandler(IDbConnectionFactory dbConnectionFactory) 
+        : IQueryHandler<Query, PagedResponse<Response>>
     {
-        public async Task<Result<PagedResponse>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result<PagedResponse<Response>>> Handle(Query request, CancellationToken cancellationToken)
         {
             await using DbConnection connection = await dbConnectionFactory.OpenConnectionAsync();
             
@@ -50,7 +46,7 @@ public static class GetProducts
             
             int totalCount = await CountProductsAsync(connection, parameters);
             
-            return new PagedResponse(request.Page, request.PageSize, totalCount, products);
+            return new PagedResponse<Response>(request.Page, request.PageSize, totalCount, products);
         }
         
         private static async Task<IReadOnlyCollection<Response>> GetProductsAsync(
@@ -129,7 +125,7 @@ public static class GetProducts
             app.MapGet("products", Handler)
                 .WithTags(nameof(Product))
                 .WithName(nameof(GetProducts))
-                .Produces<PagedResponse>();
+                .Produces<PagedResponse<Response>>();
         }
 
         private static async Task<IResult> Handler(
@@ -140,7 +136,7 @@ public static class GetProducts
         {
             var query = new Query(searchTerm, page, pageSize);
             
-            Result<PagedResponse> result = await sender.Send(query);
+            Result<PagedResponse<Response>> result = await sender.Send(query);
 
             return result.Match(Results.Ok, ApiResults.Problem);
         }
