@@ -23,12 +23,8 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
         
         await Results.Problem(
             title: "Internal Server Error",
-            statusCode: StatusCodes.Status500InternalServerError,
-            extensions: new Dictionary<string, object?>
-            {
-                {"traceId",  traceId}
-            }
-        ).ExecuteAsync(httpContext);
+            statusCode: StatusCodes.Status500InternalServerError)
+            .ExecuteAsync(httpContext);
 
         return true;
     }
