@@ -1,5 +1,6 @@
 using Asp.Versioning;
 using ServiceDefaults.Endpoints;
+using ServiceDefaults.OpenApi;
 
 namespace Payment.API;
 
@@ -21,6 +22,14 @@ public static class DependencyInjection
         
         services.AddEndpoints(AssemblyReference.Assembly);
         
+        services.AddApiDocumentation();
+        
         return services;
+    }
+    
+    private static void AddApiDocumentation(this IServiceCollection services)
+    {
+        services.AddOpenApi();
+        services.ConfigureOptions<ScalarOptionsSetup>();
     }
 }

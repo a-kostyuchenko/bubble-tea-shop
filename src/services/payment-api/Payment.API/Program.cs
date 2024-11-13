@@ -5,6 +5,7 @@ using Payment.API.Extensions;
 using Payment.Application;
 using Payment.Infrastructure;
 using Payment.Infrastructure.Database;
+using Scalar.AspNetCore;
 using ServiceDefaults;
 using ServiceDefaults.Endpoints;
 
@@ -34,6 +35,8 @@ RouteGroupBuilder versionedGroup = app
 
 if (app.Environment.IsDevelopment())
 {
+    app.MapOpenApi();
+    app.MapScalarApiReference();
     app.ApplyMigrations<PaymentDbContext>();
 }
 

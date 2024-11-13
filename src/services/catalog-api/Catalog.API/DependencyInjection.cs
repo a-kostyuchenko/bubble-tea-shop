@@ -18,6 +18,7 @@ using ServiceDefaults.Behaviors;
 using ServiceDefaults.Common;
 using ServiceDefaults.Endpoints;
 using ServiceDefaults.Messaging;
+using ServiceDefaults.OpenApi;
 using static ServiceDefaults.Common.HandleTransforms;
 using static ServiceDefaults.Common.HandleToSlugConversions;
 
@@ -38,6 +39,7 @@ public static class DependencyInjection
         services.AddBackgroundJobs(configuration);
         services.AddStorage();
         services.AddSlugs();
+        services.AddApiDocumentation();
         
         return services;
     }
@@ -48,6 +50,12 @@ public static class DependencyInjection
             new Handle(name)
                 .Transform(ToLowercase(CultureInfo.InvariantCulture), IntoLetterAndDigitRuns)
                 .ToSlug(Hyphenate));
+    }
+    
+    private static void AddApiDocumentation(this IServiceCollection services)
+    {
+        services.AddOpenApi();
+        services.ConfigureOptions<ScalarOptionsSetup>();
     }
 
     private static void AddStorage(this IServiceCollection services)

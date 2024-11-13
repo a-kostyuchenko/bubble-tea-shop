@@ -3,6 +3,7 @@ using Asp.Versioning.Builder;
 using Ordering.API;
 using Ordering.API.Extensions;
 using Ordering.API.Infrastructure.Database;
+using Scalar.AspNetCore;
 using ServiceDefaults;
 using ServiceDefaults.Endpoints;
 
@@ -27,6 +28,8 @@ RouteGroupBuilder versionedGroup = app
 
 if (app.Environment.IsDevelopment())
 {
+    app.MapOpenApi();
+    app.MapScalarApiReference();
     app.ApplyMigrations<OrderingDbContext>();
 }
 

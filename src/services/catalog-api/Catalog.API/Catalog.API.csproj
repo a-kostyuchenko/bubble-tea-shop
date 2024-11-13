@@ -29,6 +29,7 @@
         <PackageReference Include="Newtonsoft.Json" />
         <PackageReference Include="Scrutor" />
         <PackageReference Include="Ulid" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
     </ItemGroup>
 
     <ItemGroup>

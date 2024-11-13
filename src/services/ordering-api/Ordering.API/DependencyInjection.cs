@@ -16,6 +16,7 @@ using Ordering.API.Infrastructure.Outbox;
 using ServiceDefaults.Behaviors;
 using ServiceDefaults.Endpoints;
 using ServiceDefaults.Messaging;
+using ServiceDefaults.OpenApi;
 
 namespace Ordering.API;
 
@@ -32,8 +33,15 @@ internal static class DependencyInjection
         services.AddMessageQueue(configuration);
         services.AddApiVersioning();
         services.AddBackgroundJobs(configuration);
+        services.AddApiDocumentation();
 
         return services;
+    }
+    
+    private static void AddApiDocumentation(this IServiceCollection services)
+    {
+        services.AddOpenApi();
+        services.ConfigureOptions<ScalarOptionsSetup>();
     }
 
     private static void AddApplication(this IServiceCollection services)

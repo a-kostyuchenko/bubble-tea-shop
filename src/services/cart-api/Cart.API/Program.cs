@@ -3,6 +3,7 @@ using Asp.Versioning.Builder;
 using Cart.API;
 using Cart.API.Extensions;
 using Cart.API.Infrastructure.Database;
+using Scalar.AspNetCore;
 using ServiceDefaults;
 using ServiceDefaults.Endpoints;
 
@@ -27,6 +28,8 @@ RouteGroupBuilder versionedGroup = app
 
 if (app.Environment.IsDevelopment())
 {
+    app.MapOpenApi();
+    app.MapScalarApiReference();
     app.ApplyMigrations<CartDbContext>();
 }
 
