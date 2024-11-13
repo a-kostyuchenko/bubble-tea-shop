@@ -18,10 +18,10 @@ public sealed class RequestLoggingBehavior<TRequest, TResponse>(
     {
         string serviceName = GetServiceName(typeof(TRequest).FullName!);
         string requestName = typeof(TRequest).Name;
-        
+
         Activity.Current?.SetTag("request.service", serviceName);
         Activity.Current?.SetTag("request.name", requestName);
-        
+
         logger.LogInformation("Processing request {RequestName}", requestName);
 
         TResponse result = await next();
@@ -36,7 +36,6 @@ public sealed class RequestLoggingBehavior<TRequest, TResponse>(
         }
 
         return result;
-        
     }
 
     private static string GetServiceName(string requestName) => requestName.Split(".")[0];

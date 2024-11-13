@@ -8,8 +8,6 @@ public static class DependencyInjection
     public static IServiceCollection AddPresentation(this IServiceCollection services)
     {
         services.AddEndpointsApiExplorer();
-
-        services.AddSwaggerGen(options => options.CustomSchemaIds(s => s.FullName?.Replace("+", ".")));
         
         services.AddApiVersioning(options =>
         {

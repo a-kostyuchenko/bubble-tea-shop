@@ -7,8 +7,8 @@ public abstract class Enumeration<TEnum>() : IEquatable<Enumeration<TEnum>>
 
     private static readonly Lazy<Dictionary<int, TEnum>> EnumerationsDictionary =
         new(() => CreateEnumerationDictionary(typeof(TEnum)));
-    
-    protected Enumeration(int id, string name) 
+
+    protected Enumeration(int id, string name)
         : this()
     {
         Id = id;
@@ -35,7 +35,7 @@ public abstract class Enumeration<TEnum>() : IEquatable<Enumeration<TEnum>>
 
     public static bool operator !=(Enumeration<TEnum>? first, Enumeration<TEnum>? second) =>
         !(first == second);
-    
+
     public bool Equals(Enumeration<TEnum>? other)
     {
         if (other is null)
@@ -72,7 +72,7 @@ public abstract class Enumeration<TEnum>() : IEquatable<Enumeration<TEnum>>
             .Where(fieldInfo => enumType.IsAssignableFrom(fieldInfo.FieldType))
             .Select(fieldInfo => (TEnum)fieldInfo.GetValue(default)!);
 
-    public static IReadOnlyCollection<TEnum> GetValues() => EnumerationsDictionary.Value.Values.ToList();
+    public static IReadOnlyCollection<TEnum> GetValues() => [.. EnumerationsDictionary.Value.Values];
 
     public static TEnum? FromId(int id) =>
         EnumerationsDictionary.Value.GetValueOrDefault(id);

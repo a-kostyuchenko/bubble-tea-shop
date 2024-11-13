@@ -38,7 +38,7 @@ public static class Extensions
             // Turn on service discovery by default
             http.AddServiceDiscovery();
         });
-        
+
         builder.AddDefaultExceptionHandling();
 
         return builder;
@@ -91,12 +91,11 @@ public static class Extensions
     public static IHostApplicationBuilder AddDefaultHealthChecks(this IHostApplicationBuilder builder)
     {
         builder.Services.AddHealthChecks()
-            // Add a default liveness check to ensure app is responsive
             .AddCheck("self", () => HealthCheckResult.Healthy(), ["live"]);
 
         return builder;
     }
-    
+
     public static IHostApplicationBuilder AddDefaultExceptionHandling(this IHostApplicationBuilder builder)
     {
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -106,11 +105,11 @@ public static class Extensions
             {
                 context.ProblemDetails.Instance = 
                     $"{context.HttpContext.Request.Method} {context.HttpContext.Request.Path}";
-                
+
                 context.ProblemDetails.Extensions.TryAdd("requestId", context.HttpContext.TraceIdentifier);
 
                 Activity? activity = context.HttpContext.Features.Get<IHttpActivityFeature>()?.Activity;
-                
+
                 context.ProblemDetails.Extensions.TryAdd("traceId", activity?.Id);
             };
         });
@@ -136,7 +135,7 @@ public static class Extensions
 
         return app;
     }
-    
+
     public static void ApplyMigrations<TDbContext>(this WebApplication app) where TDbContext : DbContext
     {
         using IServiceScope scope = app.Services.CreateScope();

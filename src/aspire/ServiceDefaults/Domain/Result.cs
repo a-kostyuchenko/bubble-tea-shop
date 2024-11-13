@@ -21,11 +21,11 @@ public class Result
     public bool IsFailure => !IsSuccess;
 
     public Error Error { get; }
-    
+
     public static Result<TValue?> Create<TValue>(TValue? value, Error error)
         where TValue : class
         => (value is null ? Failure<TValue>(error) : Success(value))!;
-    
+
     public static Result<TValue?> Create<TValue>(TValue? value)
         where TValue : class
         => (value is null ? Failure<TValue>(Error.NullValue) : Success(value))!;
@@ -39,12 +39,12 @@ public class Result
 
     public static Result<TValue> Failure<TValue>(Error error) =>
         new(default, false, error);
-    
-    public static Result Inspect(params Result[] results) => 
+
+    public static Result Inspect(params Result[] results) =>
         results.Any(r => r.IsFailure) ? Failure(ValidationError.FromResults(results)) : Success();
 }
 
-public class Result<TValue>(TValue? value, bool isSuccess, Error error) 
+public class Result<TValue>(TValue? value, bool isSuccess, Error error)
     : Result(isSuccess, error)
 {
     [NotNull]

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using ServiceDefaults.Domain;
 
@@ -26,7 +27,8 @@ public static class ApiResults
                 ErrorType.Problem => error.Code,
                 ErrorType.NotFound => error.Code,
                 ErrorType.Conflict => error.Code,
-                _ => "Server failure"
+                ErrorType.Failure => "Server failure",
+                _ => throw new UnreachableException()
             };
 
         static string GetDetail(Error error) =>
@@ -36,7 +38,8 @@ public static class ApiResults
                 ErrorType.Problem => error.Description,
                 ErrorType.NotFound => error.Description,
                 ErrorType.Conflict => error.Description,
-                _ => "An unexpected error occurred"
+                ErrorType.Failure => "An unexpected error occurred",
+                _ => throw new UnreachableException()
             };
 
         static string GetType(ErrorType errorType) =>
@@ -46,7 +49,8 @@ public static class ApiResults
                 ErrorType.Problem => "https://tools.ietf.org/html/rfc7231#section-6.5.1",
                 ErrorType.NotFound => "https://tools.ietf.org/html/rfc7231#section-6.5.4",
                 ErrorType.Conflict => "https://tools.ietf.org/html/rfc7231#section-6.5.8",
-                _ => "https://tools.ietf.org/html/rfc7231#section-6.6.1"
+                ErrorType.Failure => "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+                _ => throw new UnreachableException()
             };
 
         static int GetStatusCode(ErrorType errorType) =>
@@ -56,7 +60,8 @@ public static class ApiResults
                 ErrorType.Problem => StatusCodes.Status400BadRequest,
                 ErrorType.NotFound => StatusCodes.Status404NotFound,
                 ErrorType.Conflict => StatusCodes.Status409Conflict,
-                _ => StatusCodes.Status500InternalServerError
+                ErrorType.Failure => StatusCodes.Status500InternalServerError,
+                _ => throw new UnreachableException()
             };
 
         static Dictionary<string, object?>? GetErrors(Result result)

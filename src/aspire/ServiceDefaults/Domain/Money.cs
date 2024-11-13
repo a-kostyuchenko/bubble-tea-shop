@@ -5,7 +5,7 @@ public sealed record Money
     private Money()
     {
     }
-    
+
     private Money(decimal amount, Currency currency)
     {
         Amount = amount;
@@ -22,7 +22,7 @@ public sealed record Money
     private static readonly Error InvalidCurrency = Error.Problem(
         "Money.InvalidCurrency",
         "Currency is invalid");
-    
+
     public static Result<Money> Create(decimal amount, Currency currency)
     {
         if (amount < decimal.Zero)
@@ -37,7 +37,7 @@ public sealed record Money
 
         return Result.Success(new Money(amount, currency));
     }
-    
+
     public static Money operator +(Money first, Money second)
     {
         if (!first.IsZero() && !second.IsZero() && first.Currency != second.Currency)
@@ -47,7 +47,7 @@ public sealed record Money
 
         return new Money(first.Amount + second.Amount, first.Currency == Currency.None ? second.Currency : first.Currency);
     }
-    
+
     public static Money operator -(Money first, Money second)
     {
         if (!first.IsZero() && !second.IsZero() && first.Currency != second.Currency)
@@ -69,7 +69,7 @@ public sealed record Money
     public Money Scale(decimal factor) =>
         factor < 0 ? throw new InvalidOperationException("Cannot multiply by a negative factor")
             : new Money(Amount * factor, Currency);
-    
+
     public Money Scale(int factor) =>
         factor < 0 ? throw new InvalidOperationException("Cannot multiply by a negative factor")
             : new Money(Amount * factor, Currency);

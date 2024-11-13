@@ -9,7 +9,6 @@ using ServiceDefaults.Endpoints;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options => options.CustomSchemaIds(s => s.FullName?.Replace("+", ".")));
 
 builder.AddDatabase();
 builder.Services.AddOrderingServices(builder.Configuration);
@@ -28,9 +27,6 @@ RouteGroupBuilder versionedGroup = app
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-    
     app.ApplyMigrations<OrderingDbContext>();
 }
 

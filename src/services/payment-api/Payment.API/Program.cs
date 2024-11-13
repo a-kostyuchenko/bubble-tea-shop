@@ -11,7 +11,6 @@ using ServiceDefaults.Endpoints;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 builder.AddServiceDefaults();
 
@@ -35,9 +34,6 @@ RouteGroupBuilder versionedGroup = app
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-    
     app.ApplyMigrations<PaymentDbContext>();
 }
 

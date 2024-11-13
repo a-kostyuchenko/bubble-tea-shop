@@ -17,7 +17,6 @@
         <PackageReference Include="MassTransit" />
         <PackageReference Include="MassTransit.RabbitMQ" />
         <PackageReference Include="MassTransit.Redis" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -28,7 +27,6 @@
         </PackageReference>
         <PackageReference Include="Newtonsoft.Json" />
         <PackageReference Include="Scrutor" />
-        <PackageReference Include="Swashbuckle.AspNetCore"/>
         <PackageReference Include="Ulid" />
     </ItemGroup>
 

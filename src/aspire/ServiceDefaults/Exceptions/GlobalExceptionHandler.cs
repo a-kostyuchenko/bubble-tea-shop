@@ -13,14 +13,14 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
         CancellationToken cancellationToken)
     {
         string traceId = Activity.Current?.Id ?? httpContext.TraceIdentifier;
-        
+
         logger.LogError(
             exception,
             "Unhandled exception occurred on {MachineName} with traceId {TraceId}",
             Environment.MachineName,
             traceId
         );
-        
+
         await Results.Problem(
             title: "Internal Server Error",
             statusCode: StatusCodes.Status500InternalServerError)
