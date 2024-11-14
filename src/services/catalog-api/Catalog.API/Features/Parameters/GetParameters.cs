@@ -1,6 +1,5 @@
 using System.Data.Common;
 using Catalog.API.Entities.Parameters;
-using Catalog.API.Features.Products;
 using Catalog.API.Infrastructure.Database;
 using Dapper;
 using MediatR;

@@ -1,4 +1,3 @@
-using Google.Protobuf.WellKnownTypes;
 using ServiceDefaults.Domain;
 
 namespace Cart.API.Entities.Carts;

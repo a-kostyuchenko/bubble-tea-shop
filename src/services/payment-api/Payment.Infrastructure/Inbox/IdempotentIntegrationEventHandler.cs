@@ -1,7 +1,6 @@
 ﻿using System.Data.Common;
 using Dapper;
 using Payment.Application.Abstractions.Data;
-using Payment.Infrastructure.Database;
 using ServiceDefaults.Messaging;
 
 namespace Payment.Infrastructure.Inbox;

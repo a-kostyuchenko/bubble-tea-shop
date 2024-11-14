@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using Payment.Application.Abstractions.Payments;
 using Payment.Domain.Payments;
 using ServiceDefaults.Domain;

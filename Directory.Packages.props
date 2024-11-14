@@ -41,7 +41,7 @@
     <PackageVersion Include="Asp.Versioning.Mvc.ApiExplorer" Version="$(AspVersioningVersion)" />
     <PackageVersion Include="Asp.Versioning.Http.Client" Version="$(AspVersioningVersion)" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageVersion Include="Scalar.AspNetCore" Version="1.2.35" />
+    <PackageVersion Include="Scalar.AspNetCore" Version="1.2.36" />
     <PackageVersion Include="Scrutor" Version="5.0.2" />
     <PackageVersion Include="Ulid" Version="1.3.4" />
     <PackageVersion Include="SonarAnalyzer.CSharp" Version="9.32.0.97167" />

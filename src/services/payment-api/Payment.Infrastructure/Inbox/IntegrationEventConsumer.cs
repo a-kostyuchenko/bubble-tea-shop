@@ -3,7 +3,6 @@ using Dapper;
 using MassTransit;
 using Newtonsoft.Json;
 using Payment.Application.Abstractions.Data;
-using Payment.Infrastructure.Database;
 using Payment.Infrastructure.Serialization;
 using ServiceDefaults.Messaging;
 

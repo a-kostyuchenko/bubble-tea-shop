@@ -1,4 +1,3 @@
-using Catalog.API.Entities.Ingredients;
 using Catalog.API.Entities.Parameters;
 using Catalog.API.Entities.Products;
 using Catalog.API.Infrastructure.Database;

@@ -17,7 +17,6 @@ using Payment.Domain.Payments;
 using Payment.Infrastructure.Database;
 using Payment.Infrastructure.Database.Constants;
 using Payment.Infrastructure.Database.Repositories;
-using Payment.Infrastructure.EventBus;
 using Payment.Infrastructure.Inbox;
 using Payment.Infrastructure.Outbox;
 using Payment.Infrastructure.Payments;
