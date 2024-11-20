@@ -50,6 +50,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.Infrastructure", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.Presentation", "src\services\payment-api\Payment.Presentation\Payment.Presentation.csproj", "{567C1E63-D8B5-4076-B8A0-BFFB40FA9244}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MigrationService", "src\aspire\MigrationService\MigrationService.csproj", "{61555400-17E5-4A72-8B9E-A9AE957FFE70}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +106,10 @@ Global
 		{567C1E63-D8B5-4076-B8A0-BFFB40FA9244}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{567C1E63-D8B5-4076-B8A0-BFFB40FA9244}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{567C1E63-D8B5-4076-B8A0-BFFB40FA9244}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61555400-17E5-4A72-8B9E-A9AE957FFE70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61555400-17E5-4A72-8B9E-A9AE957FFE70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61555400-17E5-4A72-8B9E-A9AE957FFE70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61555400-17E5-4A72-8B9E-A9AE957FFE70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8F4626A8-98C6-40D6-A0D9-1E75E6C6DE59} = {EB36040F-91FA-4925-B3C2-0AC2352BC016}
@@ -126,5 +132,6 @@ Global
 		{21B90FC8-B2B8-41B4-82D0-A508B64B97EB} = {B5223356-AFD5-41A2-B131-EC1F7A1C5406}
 		{AD44D536-567D-46CC-B115-104A6E95C00B} = {B5223356-AFD5-41A2-B131-EC1F7A1C5406}
 		{567C1E63-D8B5-4076-B8A0-BFFB40FA9244} = {B5223356-AFD5-41A2-B131-EC1F7A1C5406}
+		{61555400-17E5-4A72-8B9E-A9AE957FFE70} = {1887CAC3-4A9F-440A-8D4C-DF9F1C9280EC}
 	EndGlobalSection
 EndGlobal
