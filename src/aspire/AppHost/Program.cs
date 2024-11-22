@@ -2,12 +2,12 @@ using Aspire.Hosting.Azure;
 
 IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(args);
 
+IResourceBuilder<ParameterResource> pgUsername = builder.AddParameter("Username", secret: true);
 IResourceBuilder<ParameterResource> pgPassword = builder.AddParameter("Password", secret: true);
-
 
 IResourceBuilder<AzurePostgresFlexibleServerResource> postgres = builder
     .AddAzurePostgresFlexibleServer("postgres")
-    .WithPasswordAuthentication(pgPassword)
+    .WithPasswordAuthentication(pgUsername, pgPassword)
     .RunAsContainer(resourceBuilder =>
     {
         resourceBuilder
