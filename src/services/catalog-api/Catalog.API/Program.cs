@@ -2,7 +2,6 @@ using Asp.Versioning;
 using Asp.Versioning.Builder;
 using Catalog.API;
 using Catalog.API.Extensions;
-using Catalog.API.Infrastructure.Database;
 using Scalar.AspNetCore;
 using ServiceDefaults;
 using ServiceDefaults.Endpoints;
@@ -31,7 +30,6 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
-    app.ApplyMigrations<CatalogDbContext>();
 }
 
 app.UseBackgroundJobs();

@@ -2,7 +2,6 @@ using Asp.Versioning;
 using Asp.Versioning.Builder;
 using Ordering.API;
 using Ordering.API.Extensions;
-using Ordering.API.Infrastructure.Database;
 using Scalar.AspNetCore;
 using ServiceDefaults;
 using ServiceDefaults.Endpoints;
@@ -30,7 +29,6 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
-    app.ApplyMigrations<OrderingDbContext>();
 }
 
 app.UseBackgroundJobs();

@@ -2,14 +2,20 @@ using Aspire.Hosting.Azure;
 
 IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(args);
 
-IResourceBuilder<ParameterResource> pgUser = builder.AddParameter("DatabaseUser");
-IResourceBuilder<ParameterResource> pgPassword = builder.AddParameter("DatabasePassword", secret: true);
+IResourceBuilder<ParameterResource> pgPassword = builder.AddParameter("Password", secret: true);
 
-IResourceBuilder<PostgresServerResource> databaseServer = builder
-    .AddPostgres("database-server", pgUser, pgPassword)
-    .WithDataVolume()
-    .WithPgAdmin()
-    .WithLifetime(ContainerLifetime.Persistent);
+
+IResourceBuilder<AzurePostgresFlexibleServerResource> postgres = builder
+    .AddAzurePostgresFlexibleServer("postgres")
+    .WithPasswordAuthentication(pgPassword)
+    .RunAsContainer(resourceBuilder =>
+    {
+        resourceBuilder
+            .WithDataVolume()
+            .WithPgAdmin()
+            .WithLifetime(ContainerLifetime.Persistent);
+    });
+    
 
 IResourceBuilder<AzureStorageResource> storage = builder
     .AddAzureStorage("storage")
@@ -19,10 +25,10 @@ IResourceBuilder<AzureStorageResource> storage = builder
     
 IResourceBuilder<AzureBlobStorageResource> blobs = storage.AddBlobs("blobs");
     
-IResourceBuilder<PostgresDatabaseResource> catalogDb = databaseServer.AddDatabase("catalog-db");
-IResourceBuilder<PostgresDatabaseResource> cartDb = databaseServer.AddDatabase("cart-db");
-IResourceBuilder<PostgresDatabaseResource> orderDb = databaseServer.AddDatabase("order-db");
-IResourceBuilder<PostgresDatabaseResource> paymentDb = databaseServer.AddDatabase("payment-db");
+IResourceBuilder<AzurePostgresFlexibleServerDatabaseResource> catalogDb = postgres.AddDatabase("catalog-db");
+IResourceBuilder<AzurePostgresFlexibleServerDatabaseResource> cartDb = postgres.AddDatabase("cart-db");
+IResourceBuilder<AzurePostgresFlexibleServerDatabaseResource> orderDb = postgres.AddDatabase("order-db");
+IResourceBuilder<AzurePostgresFlexibleServerDatabaseResource> paymentDb = postgres.AddDatabase("payment-db");
 
 IResourceBuilder<RabbitMQServerResource> queue = builder
     .AddRabbitMQ("queue")
@@ -77,6 +83,7 @@ IResourceBuilder<ProjectResource> paymentApi = builder.AddProject<Projects.Payme
     .WaitForCompletion(migrator);
 
 builder.AddProject<Projects.BubbleTeaShop_Gateway>("gateway")
+    .WithExternalHttpEndpoints()
     .WithReference(catalogApi)
     .WithReference(cartApi)
     .WithReference(orderingApi)

@@ -4,7 +4,6 @@ using Payment.API;
 using Payment.API.Extensions;
 using Payment.Application;
 using Payment.Infrastructure;
-using Payment.Infrastructure.Database;
 using Scalar.AspNetCore;
 using ServiceDefaults;
 using ServiceDefaults.Endpoints;
@@ -37,7 +36,6 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
-    app.ApplyMigrations<PaymentDbContext>();
 }
 
 app.UseBackgroundJobs();
