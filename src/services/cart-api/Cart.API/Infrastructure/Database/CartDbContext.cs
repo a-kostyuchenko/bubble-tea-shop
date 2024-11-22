@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Cart.API.Infrastructure.Database;
 
-internal sealed class CartDbContext(DbContextOptions<CartDbContext> options) : DbContext(options)
+public sealed class CartDbContext(DbContextOptions<CartDbContext> options) : DbContext(options)
 {
     public DbSet<ShoppingCart> ShoppingCarts { get; set; }
     

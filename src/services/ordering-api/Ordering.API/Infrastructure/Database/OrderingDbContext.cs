@@ -5,7 +5,7 @@ using Ordering.API.Infrastructure.Database.Constants;
 
 namespace Ordering.API.Infrastructure.Database;
 
-internal sealed class OrderingDbContext(DbContextOptions<OrderingDbContext> options) : DbContext(options)
+public sealed class OrderingDbContext(DbContextOptions<OrderingDbContext> options) : DbContext(options)
 {
     public DbSet<Order> Orders { get; set; }
     
