@@ -12,6 +12,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Aspire.Azure.Storage.Blobs" Version="9.0.0" />
+    <PackageVersion Include="Aspire.Hosting.Azure.PostgreSQL" Version="9.0.0" />
     <PackageVersion Include="Aspire.Hosting.Azure.Storage" Version="9.0.0" />
     <PackageVersion Include="Aspire.Npgsql" Version="9.0.0" />
     <PackageVersion Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.2.2" />
