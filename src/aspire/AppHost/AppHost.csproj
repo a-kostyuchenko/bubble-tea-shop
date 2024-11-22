@@ -27,6 +27,7 @@
       <ProjectReference Include="..\..\gateway\BubbleTeaShop.Gateway\BubbleTeaShop.Gateway.csproj" />
       <ProjectReference Include="..\..\services\ordering-api\Ordering.API\Ordering.API.csproj" />
       <ProjectReference Include="..\..\services\payment-api\Payment.API\Payment.API.csproj" />
+      <ProjectReference Include="..\MigrationService\MigrationService.csproj" />
     </ItemGroup>
 
 </Project>

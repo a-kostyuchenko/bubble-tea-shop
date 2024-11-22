@@ -33,12 +33,23 @@ IResourceBuilder<RedisResource> cache = builder
     .WithRedisInsight()
     .WithDataVolume();
 
+IResourceBuilder<ProjectResource> migrator = builder.AddProject<Projects.MigrationService>("migrator")
+    .WithReference(catalogDb)
+    .WithReference(cartDb)
+    .WithReference(orderDb)
+    .WithReference(paymentDb)
+    .WaitFor(catalogDb)
+    .WaitFor(cartDb)
+    .WaitFor(orderDb)
+    .WaitFor(paymentDb);
+
 IResourceBuilder<ProjectResource> catalogApi = builder.AddProject<Projects.Catalog_API>("catalog-api")
     .WithReference(catalogDb)
     .WithReference(queue)
     .WithReference(blobs)
     .WaitFor(catalogDb)
-    .WaitFor(queue);
+    .WaitFor(queue)
+    .WaitForCompletion(migrator);
 
 IResourceBuilder<ProjectResource> cartApi = builder.AddProject<Projects.Cart_API>("cart-api")
     .WithReference(cartDb)
@@ -46,7 +57,8 @@ IResourceBuilder<ProjectResource> cartApi = builder.AddProject<Projects.Cart_API
     .WithReference(cache)
     .WaitFor(cartDb)
     .WaitFor(queue)
-    .WaitFor(cache);
+    .WaitFor(cache)
+    .WaitForCompletion(migrator);
 
 IResourceBuilder<ProjectResource> orderingApi = builder.AddProject<Projects.Ordering_API>("ordering-api")
     .WithReference(orderDb)
@@ -54,13 +66,15 @@ IResourceBuilder<ProjectResource> orderingApi = builder.AddProject<Projects.Orde
     .WithReference(cache)
     .WaitFor(orderDb)
     .WaitFor(queue)
-    .WaitFor(cache);
+    .WaitFor(cache)
+    .WaitForCompletion(migrator);
 
 IResourceBuilder<ProjectResource> paymentApi = builder.AddProject<Projects.Payment_API>("payment-api")
     .WithReference(paymentDb)
     .WithReference(queue)
     .WaitFor(paymentDb)
-    .WaitFor(queue);
+    .WaitFor(queue)
+    .WaitForCompletion(migrator);
 
 builder.AddProject<Projects.BubbleTeaShop_Gateway>("gateway")
     .WithReference(catalogApi)
