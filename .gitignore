@@ -6,3 +6,5 @@ riderModule.iml
 .idea/
 .azure/
 .DS_Store
+azure.yaml
+next-steps.md
