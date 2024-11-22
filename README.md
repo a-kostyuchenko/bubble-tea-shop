@@ -28,7 +28,7 @@ Bubble Tea Shop is a microservices-based application that allows managing a bubb
 ## Technologies Used
 
 - **C#**
-- **.NET**
+- **.NET 9**
 - **.NET Aspire (latest version)**
 - **XUnit:** Testing framework for unit tests.
 - **Database:** PostgreSQL for data storage.
