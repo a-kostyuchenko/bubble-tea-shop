@@ -2,7 +2,7 @@ using Aspire.Hosting.Azure;
 
 IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(args);
 
-IResourceBuilder<ParameterResource> pgUsername = builder.AddParameter("Username", secret: true);
+IResourceBuilder<ParameterResource> pgUsername = builder.AddParameter("Username");
 IResourceBuilder<ParameterResource> pgPassword = builder.AddParameter("Password", secret: true);
 
 IResourceBuilder<AzurePostgresFlexibleServerResource> postgres = builder
@@ -12,10 +12,8 @@ IResourceBuilder<AzurePostgresFlexibleServerResource> postgres = builder
     {
         resourceBuilder
             .WithDataVolume()
-            .WithPgAdmin()
-            .WithLifetime(ContainerLifetime.Persistent);
+            .WithPgAdmin();
     });
-    
 
 IResourceBuilder<AzureStorageResource> storage = builder
     .AddAzureStorage("storage")

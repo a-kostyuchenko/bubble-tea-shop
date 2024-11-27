@@ -56,6 +56,11 @@ public class CheckOutCartSaga : MassTransitStateMachine<CheckOutCartState>
             When(PaymentProcessedEvent)
                 .TransitionTo(PaymentProcessed));
         
+        DuringAny(
+            When(PaymentFailedEvent)
+                .TransitionTo(PaymentFailed)
+                .Finalize());
+        
         During(OrderCreated,
             When(PaymentProcessedEvent)
                 .TransitionTo(PaymentProcessed));
@@ -95,10 +100,6 @@ public class CheckOutCartSaga : MassTransitStateMachine<CheckOutCartState>
             OrderCreatedEvent, PaymentProcessedEvent, OrderPaidEvent);
         
         DuringAny(
-            When(PaymentFailedEvent)
-                .TransitionTo(PaymentFailed));
-        
-        DuringAny(
             When(OrderCheckOutCompleted)
                 .Publish(context =>
                     new CartCheckOutCompletedEvent(
@@ -106,5 +107,7 @@ public class CheckOutCartSaga : MassTransitStateMachine<CheckOutCartState>
                         DateTime.UtcNow,
                         context.Saga.CorrelationId))
                 .Finalize());
+        
+        SetCompletedWhenFinalized();
     }
 }
