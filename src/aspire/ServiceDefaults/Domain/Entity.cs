@@ -13,7 +13,7 @@ public abstract class Entity : IEntity
     {
     }
 
-    public Guid Id { get; protected init; }
+    public Guid Id { get; protected init; } = Ulid.NewUlid().ToGuid();
 
     public IReadOnlyCollection<IDomainEvent> DomainEvents => [.._domainEvents];
 
