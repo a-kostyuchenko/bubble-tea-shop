@@ -23,11 +23,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\services\cart-api\Cart.API\Cart.API.csproj" />
-      <ProjectReference Include="..\..\services\catalog-api\Catalog.API\Catalog.API.csproj" />
-      <ProjectReference Include="..\..\gateway\BubbleTeaShop.Gateway\BubbleTeaShop.Gateway.csproj" />
-      <ProjectReference Include="..\..\services\ordering-api\Ordering.API\Ordering.API.csproj" />
-      <ProjectReference Include="..\..\services\payment-api\Payment.API\Payment.API.csproj" />
+      <ProjectReference Include="..\..\src\gateway\BubbleTeaShop.Gateway\BubbleTeaShop.Gateway.csproj" />
+      <ProjectReference Include="..\..\src\services\cart-api\Cart.API\Cart.API.csproj" />
+      <ProjectReference Include="..\..\src\services\catalog-api\Catalog.API\Catalog.API.csproj" />
+      <ProjectReference Include="..\..\src\services\ordering-api\Ordering.API\Ordering.API.csproj" />
+      <ProjectReference Include="..\..\src\services\payment-api\Payment.API\Payment.API.csproj" />
       <ProjectReference Include="..\MigrationService\MigrationService.csproj" />
     </ItemGroup>
 
