@@ -56,6 +56,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{C00527
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleTea.Common.Domain", "src\Common\BubbleTea.Common.Domain\BubbleTea.Common.Domain.csproj", "{53ED1C87-C4B8-4622-B1C6-318576DE54D1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleTea.Common.Application", "src\Common\BubbleTea.Common.Application\BubbleTea.Common.Application.csproj", "{25B46554-899D-4833-90AC-CC4DB6FF2550}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleTea.Common.Infrastructure", "src\Common\BubbleTea.Common.Infrastructure\BubbleTea.Common.Infrastructure.csproj", "{30DC94E9-8728-42D4-A1A6-F538712CC42E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleTea.Common.Presentation", "src\Common\BubbleTea.Common.Presentation\BubbleTea.Common.Presentation.csproj", "{F52A0DAC-50C0-4F4C-B9D4-091F6F797896}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -118,6 +124,18 @@ Global
 		{53ED1C87-C4B8-4622-B1C6-318576DE54D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53ED1C87-C4B8-4622-B1C6-318576DE54D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53ED1C87-C4B8-4622-B1C6-318576DE54D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25B46554-899D-4833-90AC-CC4DB6FF2550}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25B46554-899D-4833-90AC-CC4DB6FF2550}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25B46554-899D-4833-90AC-CC4DB6FF2550}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25B46554-899D-4833-90AC-CC4DB6FF2550}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30DC94E9-8728-42D4-A1A6-F538712CC42E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30DC94E9-8728-42D4-A1A6-F538712CC42E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30DC94E9-8728-42D4-A1A6-F538712CC42E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30DC94E9-8728-42D4-A1A6-F538712CC42E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F52A0DAC-50C0-4F4C-B9D4-091F6F797896}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F52A0DAC-50C0-4F4C-B9D4-091F6F797896}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F52A0DAC-50C0-4F4C-B9D4-091F6F797896}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F52A0DAC-50C0-4F4C-B9D4-091F6F797896}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8F4626A8-98C6-40D6-A0D9-1E75E6C6DE59} = {EB36040F-91FA-4925-B3C2-0AC2352BC016}
@@ -142,5 +160,8 @@ Global
 		{744195AF-AD7B-4E85-80A5-8F676AD501E9} = {B5223356-AFD5-41A2-B131-EC1F7A1C5406}
 		{C0052797-A74C-4292-B33F-65F465CA69E5} = {EB36040F-91FA-4925-B3C2-0AC2352BC016}
 		{53ED1C87-C4B8-4622-B1C6-318576DE54D1} = {C0052797-A74C-4292-B33F-65F465CA69E5}
+		{25B46554-899D-4833-90AC-CC4DB6FF2550} = {C0052797-A74C-4292-B33F-65F465CA69E5}
+		{30DC94E9-8728-42D4-A1A6-F538712CC42E} = {C0052797-A74C-4292-B33F-65F465CA69E5}
+		{F52A0DAC-50C0-4F4C-B9D4-091F6F797896} = {C0052797-A74C-4292-B33F-65F465CA69E5}
 	EndGlobalSection
 EndGlobal
