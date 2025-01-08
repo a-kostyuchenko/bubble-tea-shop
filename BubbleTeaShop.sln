@@ -16,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cart", "Cart", "{272D7099-4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contracts", "Contracts", "{8F4626A8-98C6-40D6-A0D9-1E75E6C6DE59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleTeaShop.Contracts", "src\contracts\BubbleTeaShop.Contracts\BubbleTeaShop.Contracts.csproj", "{C1E64F4D-3455-41DB-BD02-A6A104DB0679}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleTea.Contracts", "src\contracts\BubbleTea.Contracts\BubbleTea.Contracts.csproj", "{C1E64F4D-3455-41DB-BD02-A6A104DB0679}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Orders", "Orders", "{0C03BC65-5663-4A83-86DC-547A2060C7DB}"
 EndProject
@@ -24,33 +24,37 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Payment", "Payment", "{B522
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{AE418947-F264-4C0D-AFBB-811CBCE3024C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleTeaShop.Gateway", "src\gateway\BubbleTeaShop.Gateway\BubbleTeaShop.Gateway.csproj", "{D515E07B-CDFE-40D4-BF22-814047ABBAAA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleTea.Gateway", "src\gateway\BubbleTea.Gateway\BubbleTea.Gateway.csproj", "{D515E07B-CDFE-40D4-BF22-814047ABBAAA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{89EF6334-75C7-437A-8025-3BD8B809B388}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aspire", "aspire", "{01E3C0D6-3610-42D7-84DB-6DC3F67A7F6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppHost", "aspire\AppHost\AppHost.csproj", "{4C9D082A-5391-4CB0-8DE8-D4FCDA5AD48F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleTea.AppHost", "aspire\BubbleTea.AppHost\BubbleTea.AppHost.csproj", "{4C9D082A-5391-4CB0-8DE8-D4FCDA5AD48F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MigrationService", "aspire\MigrationService\MigrationService.csproj", "{8E9FC399-1A1F-45DD-9837-98BCA749B341}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleTea.MigrationService", "aspire\BubbleTea.MigrationService\BubbleTea.MigrationService.csproj", "{8E9FC399-1A1F-45DD-9837-98BCA749B341}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceDefaults", "aspire\ServiceDefaults\ServiceDefaults.csproj", "{843D22C6-8A80-4A7D-B0AF-139FC2D63C42}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleTea.ServiceDefaults", "aspire\BubbleTea.ServiceDefaults\BubbleTea.ServiceDefaults.csproj", "{843D22C6-8A80-4A7D-B0AF-139FC2D63C42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cart.API", "src\Services\Cart\Cart.API\Cart.API.csproj", "{E81D4BD8-0319-4995-A855-9A00CAD27629}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleTea.Services.Cart.API", "src\Services\Cart\BubbleTea.Services.Cart.API\BubbleTea.Services.Cart.API.csproj", "{E81D4BD8-0319-4995-A855-9A00CAD27629}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.API", "src\Services\Catalog\Catalog.API\Catalog.API.csproj", "{2B423961-E6F5-46A7-867D-F5B87D90D007}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleTea.Services.Catalog.API", "src\Services\Catalog\BubbleTea.Services.Catalog.API\BubbleTea.Services.Catalog.API.csproj", "{2B423961-E6F5-46A7-867D-F5B87D90D007}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ordering.API", "src\Services\Orders\Ordering.API\Ordering.API.csproj", "{C09EC6E9-34DB-42B9-B124-65AB1CCD5A92}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleTea.Services.Orders.API", "src\Services\Orders\BubbleTea.Services.Orders.API\BubbleTea.Services.Orders.API.csproj", "{C09EC6E9-34DB-42B9-B124-65AB1CCD5A92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.Domain", "src\Services\Payment\Payment.Domain\Payment.Domain.csproj", "{C58380D9-3348-4710-B085-0A770D225DAB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleTea.Services.Payment.Domain", "src\Services\Payment\BubbleTea.Services.Payment.Domain\BubbleTea.Services.Payment.Domain.csproj", "{C58380D9-3348-4710-B085-0A770D225DAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.Application", "src\Services\Payment\Payment.Application\Payment.Application.csproj", "{CBD0407A-52D0-4FE7-952D-3C349530F3C1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleTea.Services.Payment.Application", "src\Services\Payment\BubbleTea.Services.Payment.Application\BubbleTea.Services.Payment.Application.csproj", "{CBD0407A-52D0-4FE7-952D-3C349530F3C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.Infrastructure", "src\Services\Payment\Payment.Infrastructure\Payment.Infrastructure.csproj", "{514B4D7F-8A74-43F2-8265-833BB3DC72DA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleTea.Services.Payment.Infrastructure", "src\Services\Payment\BubbleTea.Services.Payment.Infrastructure\BubbleTea.Services.Payment.Infrastructure.csproj", "{514B4D7F-8A74-43F2-8265-833BB3DC72DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.Presentation", "src\Services\Payment\Payment.Presentation\Payment.Presentation.csproj", "{7A61DA02-08B8-477C-BB8A-C782E9F71161}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleTea.Services.Payment.Presentation", "src\Services\Payment\BubbleTea.Services.Payment.Presentation\BubbleTea.Services.Payment.Presentation.csproj", "{7A61DA02-08B8-477C-BB8A-C782E9F71161}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.API", "src\Services\Payment\Payment.API\Payment.API.csproj", "{744195AF-AD7B-4E85-80A5-8F676AD501E9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleTea.Services.Payment.API", "src\Services\Payment\BubbleTea.Services.Payment.API\BubbleTea.Services.Payment.API.csproj", "{744195AF-AD7B-4E85-80A5-8F676AD501E9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{C0052797-A74C-4292-B33F-65F465CA69E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleTea.Common.Domain", "src\Common\BubbleTea.Common.Domain\BubbleTea.Common.Domain.csproj", "{53ED1C87-C4B8-4622-B1C6-318576DE54D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -110,6 +114,10 @@ Global
 		{744195AF-AD7B-4E85-80A5-8F676AD501E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{744195AF-AD7B-4E85-80A5-8F676AD501E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{744195AF-AD7B-4E85-80A5-8F676AD501E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53ED1C87-C4B8-4622-B1C6-318576DE54D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53ED1C87-C4B8-4622-B1C6-318576DE54D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53ED1C87-C4B8-4622-B1C6-318576DE54D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53ED1C87-C4B8-4622-B1C6-318576DE54D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8F4626A8-98C6-40D6-A0D9-1E75E6C6DE59} = {EB36040F-91FA-4925-B3C2-0AC2352BC016}
@@ -132,5 +140,7 @@ Global
 		{514B4D7F-8A74-43F2-8265-833BB3DC72DA} = {B5223356-AFD5-41A2-B131-EC1F7A1C5406}
 		{7A61DA02-08B8-477C-BB8A-C782E9F71161} = {B5223356-AFD5-41A2-B131-EC1F7A1C5406}
 		{744195AF-AD7B-4E85-80A5-8F676AD501E9} = {B5223356-AFD5-41A2-B131-EC1F7A1C5406}
+		{C0052797-A74C-4292-B33F-65F465CA69E5} = {EB36040F-91FA-4925-B3C2-0AC2352BC016}
+		{53ED1C87-C4B8-4622-B1C6-318576DE54D1} = {C0052797-A74C-4292-B33F-65F465CA69E5}
 	EndGlobalSection
 EndGlobal

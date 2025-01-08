@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+        <PackageReference Include="MediatR" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\contracts\BubbleTea.Contracts\BubbleTea.Contracts.csproj" />
+      <ProjectReference Include="..\..\..\..\aspire\BubbleTea.ServiceDefaults\BubbleTea.ServiceDefaults.csproj" />
+      <ProjectReference Include="..\BubbleTea.Services.Payment.Domain\BubbleTea.Services.Payment.Domain.csproj" />
+    </ItemGroup>
+
+</Project>

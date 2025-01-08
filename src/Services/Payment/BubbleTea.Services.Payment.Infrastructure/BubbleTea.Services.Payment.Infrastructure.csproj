@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\contracts\BubbleTea.Contracts\BubbleTea.Contracts.csproj" />
+      <ProjectReference Include="..\BubbleTea.Services.Payment.Application\BubbleTea.Services.Payment.Application.csproj" />
+      <ProjectReference Include="..\BubbleTea.Services.Payment.Presentation\BubbleTea.Services.Payment.Presentation.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Dapper" />
+      <PackageReference Include="EFCore.NamingConventions" />
+      <PackageReference Include="Hangfire.MemoryStorage" />
+      <PackageReference Include="Hangfire.NetCore" />
+      <PackageReference Include="MassTransit" />
+      <PackageReference Include="MassTransit.Abstractions" />
+      <PackageReference Include="MassTransit.RabbitMQ" />
+      <PackageReference Include="Newtonsoft.Json" />
+      <PackageReference Include="Scrutor" />
+    </ItemGroup>
+
+</Project>

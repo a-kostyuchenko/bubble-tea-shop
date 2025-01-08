@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    
+    <PropertyGroup>
+        <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Services\Cart\BubbleTea.Services.Cart.API\BubbleTea.Services.Cart.API.csproj" />
+      <ProjectReference Include="..\..\src\Services\Catalog\BubbleTea.Services.Catalog.API\BubbleTea.Services.Catalog.API.csproj" />
+      <ProjectReference Include="..\..\src\Services\Orders\BubbleTea.Services.Orders.API\BubbleTea.Services.Orders.API.csproj" />
+      <ProjectReference Include="..\..\src\Services\Payment\BubbleTea.Services.Payment.API\BubbleTea.Services.Payment.API.csproj" />
+      <ProjectReference Include="..\..\src\Services\Payment\BubbleTea.Services.Payment.Infrastructure\BubbleTea.Services.Payment.Infrastructure.csproj" />
+      <ProjectReference Include="..\BubbleTea.ServiceDefaults\BubbleTea.ServiceDefaults.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\contracts\BubbleTea.Contracts\BubbleTea.Contracts.csproj" />
+      <ProjectReference Include="..\..\..\..\aspire\BubbleTea.ServiceDefaults\BubbleTea.ServiceDefaults.csproj" />
+    </ItemGroup>
+
+</Project>

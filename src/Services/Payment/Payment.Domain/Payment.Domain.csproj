@@ -1,8 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-    <ItemGroup>
-      <ProjectReference Include="..\..\..\contracts\BubbleTeaShop.Contracts\BubbleTeaShop.Contracts.csproj" />
-      <ProjectReference Include="..\..\..\..\aspire\ServiceDefaults\ServiceDefaults.csproj" />
-    </ItemGroup>
-
-</Project>
