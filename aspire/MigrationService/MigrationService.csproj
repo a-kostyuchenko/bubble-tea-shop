@@ -18,9 +18,14 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\services\cart-api\Cart.API\Cart.API.csproj" />
+      <ProjectReference Include="..\..\src\Services\Cart\Cart.API\Cart.API.csproj" />
       <ProjectReference Include="..\..\src\services\catalog-api\Catalog.API\Catalog.API.csproj" />
+      <ProjectReference Include="..\..\src\Services\Catalog\Catalog.API\Catalog.API.csproj" />
       <ProjectReference Include="..\..\src\services\ordering-api\Ordering.API\Ordering.API.csproj" />
+      <ProjectReference Include="..\..\src\Services\Orders\Ordering.API\Ordering.API.csproj" />
       <ProjectReference Include="..\..\src\services\payment-api\Payment.Infrastructure\Payment.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\src\Services\Payment\Payment.API\Payment.API.csproj" />
+      <ProjectReference Include="..\..\src\Services\Payment\Payment.Infrastructure\Payment.Infrastructure.csproj" />
       <ProjectReference Include="..\ServiceDefaults\ServiceDefaults.csproj" />
     </ItemGroup>
 
