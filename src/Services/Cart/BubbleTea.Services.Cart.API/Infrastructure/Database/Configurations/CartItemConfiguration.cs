@@ -1,6 +1,6 @@
+using BubbleTea.Common.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using BubbleTea.ServiceDefaults.Domain;
 using BubbleTea.Services.Cart.API.Entities.Carts;
 using BubbleTea.Services.Cart.API.Infrastructure.Database.Constants;
 

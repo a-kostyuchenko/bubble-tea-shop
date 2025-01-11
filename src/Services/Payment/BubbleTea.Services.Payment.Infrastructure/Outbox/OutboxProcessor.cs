@@ -1,7 +1,7 @@
 using System.Data;
 using System.Data.Common;
-using BubbleTea.ServiceDefaults.Domain;
-using BubbleTea.ServiceDefaults.Messaging;
+using BubbleTea.Common.Application.Messaging;
+using BubbleTea.Common.Domain;
 using Dapper;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

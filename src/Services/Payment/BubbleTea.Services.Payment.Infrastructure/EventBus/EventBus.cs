@@ -1,4 +1,4 @@
-using BubbleTea.ServiceDefaults.Messaging;
+using BubbleTea.Common.Application.EventBus;
 using MassTransit;
 using BubbleTea.Services.Payment.Application.Abstractions.EventBus;
 

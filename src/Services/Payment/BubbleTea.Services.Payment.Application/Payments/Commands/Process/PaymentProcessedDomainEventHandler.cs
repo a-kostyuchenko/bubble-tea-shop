@@ -1,6 +1,6 @@
+using BubbleTea.Common.Application.Messaging;
 using BubbleTea.Contracts;
 using BubbleTea.Services.Payment.Domain.Payments;
-using BubbleTea.ServiceDefaults.Messaging;
 using BubbleTea.Services.Payment.Application.Abstractions.EventBus;
 
 namespace BubbleTea.Services.Payment.Application.Payments.Commands.Process;

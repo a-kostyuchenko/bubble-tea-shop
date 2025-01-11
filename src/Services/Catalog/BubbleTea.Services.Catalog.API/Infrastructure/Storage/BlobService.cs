@@ -1,7 +1,7 @@
 using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using BubbleTea.ServiceDefaults.Domain;
+using BubbleTea.Common.Domain;
 
 namespace BubbleTea.Services.Catalog.API.Infrastructure.Storage;
 

@@ -1,4 +1,4 @@
-using BubbleTea.ServiceDefaults.Domain;
+using BubbleTea.Common.Domain;
 using BubbleTea.Services.Payment.Infrastructure.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;

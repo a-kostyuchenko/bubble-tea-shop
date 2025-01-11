@@ -1,6 +1,6 @@
+using BubbleTea.Common.Application.Messaging;
+using BubbleTea.Common.Domain;
 using BubbleTea.Services.Payment.Domain.Invoices;
-using BubbleTea.ServiceDefaults.Domain;
-using BubbleTea.ServiceDefaults.Messaging;
 using BubbleTea.Services.Payment.Application.Abstractions.Data;
 
 namespace BubbleTea.Services.Payment.Application.Invoices.Commands.Create;

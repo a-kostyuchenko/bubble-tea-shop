@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using BubbleTea.ServiceDefaults.Exceptions;
 using BubbleTea.ServiceDefaults.OpenTelemetry;
 using MassTransit.Logging;
 using MassTransit.Monitoring;
@@ -100,7 +99,6 @@ public static class Extensions
 
     public static IHostApplicationBuilder AddDefaultExceptionHandling(this IHostApplicationBuilder builder)
     {
-        builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         builder.Services.AddProblemDetails(options =>
         {
             options.CustomizeProblemDetails = context =>

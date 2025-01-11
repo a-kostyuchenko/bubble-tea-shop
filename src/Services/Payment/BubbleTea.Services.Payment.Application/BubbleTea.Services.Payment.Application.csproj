@@ -9,6 +9,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\Common\BubbleTea.Common.Application\BubbleTea.Common.Application.csproj" />
       <ProjectReference Include="..\..\..\contracts\BubbleTea.Contracts\BubbleTea.Contracts.csproj" />
       <ProjectReference Include="..\..\..\..\aspire\BubbleTea.ServiceDefaults\BubbleTea.ServiceDefaults.csproj" />
       <ProjectReference Include="..\BubbleTea.Services.Payment.Domain\BubbleTea.Services.Payment.Domain.csproj" />

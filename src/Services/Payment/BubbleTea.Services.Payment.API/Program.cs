@@ -1,11 +1,11 @@
 using Asp.Versioning;
 using Asp.Versioning.Builder;
+using BubbleTea.Common.Presentation.Endpoints;
 using BubbleTea.Services.Payment.API;
 using BubbleTea.Services.Payment.API.Extensions;
 using BubbleTea.Services.Payment.Infrastructure;
 using Scalar.AspNetCore;
 using BubbleTea.ServiceDefaults;
-using BubbleTea.ServiceDefaults.Endpoints;
 using BubbleTea.Services.Payment.Application;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);

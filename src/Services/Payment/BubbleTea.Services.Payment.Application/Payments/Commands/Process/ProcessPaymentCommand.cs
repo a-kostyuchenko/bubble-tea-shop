@@ -1,5 +1,5 @@
+using BubbleTea.Common.Application.Messaging;
 using BubbleTea.Contracts;
-using BubbleTea.ServiceDefaults.Messaging;
 
 namespace BubbleTea.Services.Payment.Application.Payments.Commands.Process;
 

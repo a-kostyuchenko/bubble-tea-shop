@@ -1,7 +1,7 @@
+using BubbleTea.Common.Application.Messaging;
+using BubbleTea.Common.Domain;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using BubbleTea.ServiceDefaults.Domain;
-using BubbleTea.ServiceDefaults.Messaging;
 using BubbleTea.Services.Orders.API.Entities.Orders;
 using BubbleTea.Services.Orders.API.Infrastructure.Database;
 

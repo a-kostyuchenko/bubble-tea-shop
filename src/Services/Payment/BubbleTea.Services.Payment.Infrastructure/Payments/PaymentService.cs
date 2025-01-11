@@ -1,5 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
-using BubbleTea.ServiceDefaults.Domain;
+using BubbleTea.Common.Domain;
 using BubbleTea.Services.Payment.Application.Abstractions.Payments;
 using BubbleTea.Services.Payment.Domain.Payments;
 

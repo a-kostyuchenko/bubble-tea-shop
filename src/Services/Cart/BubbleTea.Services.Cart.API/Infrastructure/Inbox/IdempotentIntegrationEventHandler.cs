@@ -1,6 +1,6 @@
 ﻿using System.Data.Common;
+using BubbleTea.Common.Application.EventBus;
 using Dapper;
-using BubbleTea.ServiceDefaults.Messaging;
 using BubbleTea.Services.Cart.API.Infrastructure.Database;
 
 namespace BubbleTea.Services.Cart.API.Infrastructure.Inbox;

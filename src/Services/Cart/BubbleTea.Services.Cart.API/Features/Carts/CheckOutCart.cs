@@ -1,11 +1,11 @@
+using BubbleTea.Common.Application.Exceptions;
+using BubbleTea.Common.Application.Messaging;
+using BubbleTea.Common.Domain;
+using BubbleTea.Common.Presentation.Endpoints;
 using BubbleTea.Contracts;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using BubbleTea.ServiceDefaults.Domain;
-using BubbleTea.ServiceDefaults.Endpoints;
-using BubbleTea.ServiceDefaults.Exceptions;
-using BubbleTea.ServiceDefaults.Messaging;
 using BubbleTea.Services.Cart.API.Entities.Carts;
 using BubbleTea.Services.Cart.API.Entities.Carts.Events;
 using BubbleTea.Services.Cart.API.Infrastructure.Database;

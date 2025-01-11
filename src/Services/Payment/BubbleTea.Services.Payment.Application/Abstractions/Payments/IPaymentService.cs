@@ -1,5 +1,5 @@
+using BubbleTea.Common.Domain;
 using BubbleTea.Services.Payment.Domain.Payments;
-using BubbleTea.ServiceDefaults.Domain;
 
 namespace BubbleTea.Services.Payment.Application.Abstractions.Payments;
 

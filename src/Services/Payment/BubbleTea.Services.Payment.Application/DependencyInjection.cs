@@ -1,6 +1,6 @@
+using BubbleTea.Common.Application.Behaviors;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using BubbleTea.ServiceDefaults.Behaviors;
 
 namespace BubbleTea.Services.Payment.Application;
 

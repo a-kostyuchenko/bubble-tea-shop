@@ -1,7 +1,7 @@
 using System.Data.Common;
+using BubbleTea.Common.Application.Messaging;
+using BubbleTea.Common.Domain;
 using Dapper;
-using BubbleTea.ServiceDefaults.Domain;
-using BubbleTea.ServiceDefaults.Messaging;
 using BubbleTea.Services.Catalog.API.Infrastructure.Database;
 
 namespace BubbleTea.Services.Catalog.API.Infrastructure.Outbox;

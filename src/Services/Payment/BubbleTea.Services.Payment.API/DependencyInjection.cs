@@ -1,6 +1,6 @@
 using Asp.Versioning;
-using BubbleTea.ServiceDefaults.Endpoints;
-using BubbleTea.ServiceDefaults.OpenApi;
+using BubbleTea.Common.Presentation.Endpoints;
+using BubbleTea.Common.Presentation.OpenApi;
 
 namespace BubbleTea.Services.Payment.API;
 

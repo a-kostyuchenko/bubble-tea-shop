@@ -2,6 +2,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\aspire\BubbleTea.ServiceDefaults\BubbleTea.ServiceDefaults.csproj" />
+      <ProjectReference Include="..\..\Common\BubbleTea.Common.Application\BubbleTea.Common.Application.csproj" />
     </ItemGroup>
 
 </Project>

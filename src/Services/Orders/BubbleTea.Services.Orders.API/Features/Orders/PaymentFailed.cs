@@ -1,8 +1,8 @@
+using BubbleTea.Common.Application.EventBus;
+using BubbleTea.Common.Application.Exceptions;
+using BubbleTea.Common.Domain;
 using BubbleTea.Contracts;
 using MediatR;
-using BubbleTea.ServiceDefaults.Domain;
-using BubbleTea.ServiceDefaults.Exceptions;
-using BubbleTea.ServiceDefaults.Messaging;
 
 namespace BubbleTea.Services.Orders.API.Features.Orders;
 

@@ -1,8 +1,8 @@
 using System.Data.Common;
+using BubbleTea.Common.Application.EventBus;
 using Dapper;
 using MassTransit;
 using Newtonsoft.Json;
-using BubbleTea.ServiceDefaults.Messaging;
 using BubbleTea.Services.Catalog.API.Infrastructure.Database;
 using BubbleTea.Services.Catalog.API.Infrastructure.Serialization;
 

@@ -1,5 +1,6 @@
+using BubbleTea.Common.Application.EventBus;
+using BubbleTea.Common.Application.Messaging;
 using BubbleTea.Contracts;
-using BubbleTea.ServiceDefaults.Messaging;
 using Hangfire;
 using Hangfire.MemoryStorage;
 using MassTransit;

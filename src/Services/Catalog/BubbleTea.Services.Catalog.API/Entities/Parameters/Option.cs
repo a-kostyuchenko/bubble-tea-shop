@@ -1,4 +1,4 @@
-using BubbleTea.ServiceDefaults.Domain;
+using BubbleTea.Common.Domain;
 
 namespace BubbleTea.Services.Catalog.API.Entities.Parameters;
 

@@ -1,4 +1,4 @@
-using BubbleTea.ServiceDefaults.Domain;
+using BubbleTea.Common.Domain;
 using BubbleTea.Services.Orders.API.Entities.Orders.Events;
 
 namespace BubbleTea.Services.Orders.API.Entities.Orders;

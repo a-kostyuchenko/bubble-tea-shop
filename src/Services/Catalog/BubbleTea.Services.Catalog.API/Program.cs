@@ -1,10 +1,10 @@
 using Asp.Versioning;
 using Asp.Versioning.Builder;
+using BubbleTea.Common.Presentation.Endpoints;
 using BubbleTea.Services.Catalog.API;
 using BubbleTea.Services.Catalog.API.Extensions;
 using Scalar.AspNetCore;
 using BubbleTea.ServiceDefaults;
-using BubbleTea.ServiceDefaults.Endpoints;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 

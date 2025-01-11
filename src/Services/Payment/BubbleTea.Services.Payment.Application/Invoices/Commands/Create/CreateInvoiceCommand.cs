@@ -1,4 +1,4 @@
-using BubbleTea.ServiceDefaults.Messaging;
+using BubbleTea.Common.Application.Messaging;
 
 namespace BubbleTea.Services.Payment.Application.Invoices.Commands.Create;
 

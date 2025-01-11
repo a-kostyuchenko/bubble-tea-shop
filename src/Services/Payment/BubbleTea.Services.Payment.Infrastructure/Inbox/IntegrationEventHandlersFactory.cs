@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
 using System.Reflection;
-using BubbleTea.ServiceDefaults.Messaging;
+using BubbleTea.Common.Application.EventBus;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BubbleTea.Services.Payment.Infrastructure.Inbox;

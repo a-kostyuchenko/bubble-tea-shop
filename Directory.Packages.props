@@ -42,6 +42,7 @@
     <PackageVersion Include="Asp.Versioning.Mvc.ApiExplorer" Version="$(AspVersioningVersion)" />
     <PackageVersion Include="Asp.Versioning.Http.Client" Version="$(AspVersioningVersion)" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageVersion Include="Npgsql" Version="9.0.0" />
     <PackageVersion Include="Scalar.AspNetCore" Version="1.2.45" />
     <PackageVersion Include="Scrutor" Version="5.0.2" />
     <PackageVersion Include="Ulid" Version="1.3.4" />

@@ -1,5 +1,11 @@
 using System.Globalization;
 using Asp.Versioning;
+using BubbleTea.Common.Application.Behaviors;
+using BubbleTea.Common.Application.EventBus;
+using BubbleTea.Common.Application.Messaging;
+using BubbleTea.Common.Application.Slugs;
+using BubbleTea.Common.Presentation.Endpoints;
+using BubbleTea.Common.Presentation.OpenApi;
 using FluentValidation;
 using Hangfire;
 using Hangfire.MemoryStorage;
@@ -7,11 +13,6 @@ using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using BubbleTea.ServiceDefaults.Behaviors;
-using BubbleTea.ServiceDefaults.Common;
-using BubbleTea.ServiceDefaults.Endpoints;
-using BubbleTea.ServiceDefaults.Messaging;
-using BubbleTea.ServiceDefaults.OpenApi;
 using BubbleTea.Services.Catalog.API.Entities.Products;
 using BubbleTea.Services.Catalog.API.Infrastructure.Database;
 using BubbleTea.Services.Catalog.API.Infrastructure.Database.Constants;
@@ -19,8 +20,8 @@ using BubbleTea.Services.Catalog.API.Infrastructure.EventBus;
 using BubbleTea.Services.Catalog.API.Infrastructure.Inbox;
 using BubbleTea.Services.Catalog.API.Infrastructure.Outbox;
 using BubbleTea.Services.Catalog.API.Infrastructure.Storage;
-using static BubbleTea.ServiceDefaults.Common.HandleTransforms;
-using static BubbleTea.ServiceDefaults.Common.HandleToSlugConversions;
+using static BubbleTea.Common.Application.Slugs.HandleTransforms;
+using static BubbleTea.Common.Application.Slugs.HandleToSlugConversions;
 
 namespace BubbleTea.Services.Catalog.API;
 

@@ -1,6 +1,6 @@
+using BubbleTea.Common.Application.Messaging;
+using BubbleTea.Common.Domain;
 using BubbleTea.Services.Payment.Domain.Payments;
-using BubbleTea.ServiceDefaults.Domain;
-using BubbleTea.ServiceDefaults.Messaging;
 using BubbleTea.Services.Payment.Application.Abstractions.Data;
 using BubbleTea.Services.Payment.Application.Abstractions.Payments;
 

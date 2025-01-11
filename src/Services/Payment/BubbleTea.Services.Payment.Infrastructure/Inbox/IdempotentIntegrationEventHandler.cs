@@ -1,5 +1,5 @@
 ﻿using System.Data.Common;
-using BubbleTea.ServiceDefaults.Messaging;
+using BubbleTea.Common.Application.EventBus;
 using Dapper;
 using BubbleTea.Services.Payment.Application.Abstractions.Data;
 

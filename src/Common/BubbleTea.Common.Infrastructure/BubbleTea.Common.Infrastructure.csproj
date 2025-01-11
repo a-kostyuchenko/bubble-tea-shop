@@ -1,9 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="..\..\Services\Payment\BubbleTea.Services.Payment.Application\BubbleTea.Services.Payment.Application.csproj" />
+    <ProjectReference Include="..\BubbleTea.Common.Application\BubbleTea.Common.Application.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MassTransit.Abstractions" />
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="Npgsql" />
+  </ItemGroup>
 </Project>

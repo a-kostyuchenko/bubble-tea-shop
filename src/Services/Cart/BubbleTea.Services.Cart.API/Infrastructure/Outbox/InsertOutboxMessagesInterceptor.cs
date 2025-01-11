@@ -1,7 +1,7 @@
+using BubbleTea.Common.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Newtonsoft.Json;
-using BubbleTea.ServiceDefaults.Domain;
 using BubbleTea.Services.Cart.API.Infrastructure.Serialization;
 
 namespace BubbleTea.Services.Cart.API.Infrastructure.Outbox;

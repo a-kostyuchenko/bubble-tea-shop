@@ -1,8 +1,8 @@
+using BubbleTea.Common.Application.Messaging;
+using BubbleTea.Common.Domain;
+using BubbleTea.Common.Presentation.Endpoints;
 using FluentValidation;
 using MediatR;
-using BubbleTea.ServiceDefaults.Domain;
-using BubbleTea.ServiceDefaults.Endpoints;
-using BubbleTea.ServiceDefaults.Messaging;
 using BubbleTea.Services.Catalog.API.Entities.Ingredients;
 using BubbleTea.Services.Catalog.API.Infrastructure.Database;
 

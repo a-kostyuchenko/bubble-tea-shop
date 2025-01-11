@@ -1,11 +1,11 @@
+using BubbleTea.Common.Application.Messaging;
+using BubbleTea.Common.Application.Slugs;
+using BubbleTea.Common.Domain;
+using BubbleTea.Common.Presentation.Endpoints;
 using BubbleTea.Services.Catalog.API.Infrastructure.Database.Queries;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using BubbleTea.ServiceDefaults.Common;
-using BubbleTea.ServiceDefaults.Domain;
-using BubbleTea.ServiceDefaults.Endpoints;
-using BubbleTea.ServiceDefaults.Messaging;
 using BubbleTea.Services.Catalog.API.Entities.Products;
 using BubbleTea.Services.Catalog.API.Infrastructure.Database;
 using BubbleTea.Services.Catalog.API.Infrastructure.Storage;

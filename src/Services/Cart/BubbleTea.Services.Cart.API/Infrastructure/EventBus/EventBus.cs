@@ -1,5 +1,5 @@
+using BubbleTea.Common.Application.EventBus;
 using MassTransit;
-using BubbleTea.ServiceDefaults.Messaging;
 
 namespace BubbleTea.Services.Cart.API.Infrastructure.EventBus;
 

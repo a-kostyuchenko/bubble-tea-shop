@@ -1,4 +1,4 @@
-using BubbleTea.ServiceDefaults.Domain;
+using BubbleTea.Common.Domain;
 using BubbleTea.Services.Cart.API.Entities.Carts.Events;
 
 namespace BubbleTea.Services.Cart.API.Entities.Carts;

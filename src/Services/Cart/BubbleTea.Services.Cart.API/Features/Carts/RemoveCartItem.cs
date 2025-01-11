@@ -1,9 +1,9 @@
+using BubbleTea.Common.Application.Messaging;
+using BubbleTea.Common.Domain;
+using BubbleTea.Common.Presentation.Endpoints;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using BubbleTea.ServiceDefaults.Domain;
-using BubbleTea.ServiceDefaults.Endpoints;
-using BubbleTea.ServiceDefaults.Messaging;
 using BubbleTea.Services.Cart.API.Entities.Carts;
 using BubbleTea.Services.Cart.API.Infrastructure.Database;
 

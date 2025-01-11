@@ -1,6 +1,6 @@
 using System.Data.Common;
-using BubbleTea.ServiceDefaults.Domain;
-using BubbleTea.ServiceDefaults.Messaging;
+using BubbleTea.Common.Application.Messaging;
+using BubbleTea.Common.Domain;
 using Dapper;
 using BubbleTea.Services.Payment.Application.Abstractions.Data;
 

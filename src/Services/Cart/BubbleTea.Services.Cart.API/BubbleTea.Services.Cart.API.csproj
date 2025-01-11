@@ -32,6 +32,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\Common\BubbleTea.Common.Application\BubbleTea.Common.Application.csproj" />
+      <ProjectReference Include="..\..\..\Common\BubbleTea.Common.Domain\BubbleTea.Common.Domain.csproj" />
+      <ProjectReference Include="..\..\..\Common\BubbleTea.Common.Infrastructure\BubbleTea.Common.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\..\Common\BubbleTea.Common.Presentation\BubbleTea.Common.Presentation.csproj" />
       <ProjectReference Include="..\..\..\contracts\BubbleTea.Contracts\BubbleTea.Contracts.csproj" />
       <ProjectReference Include="..\..\..\..\aspire\BubbleTea.ServiceDefaults\BubbleTea.ServiceDefaults.csproj" />
     </ItemGroup>

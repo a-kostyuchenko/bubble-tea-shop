@@ -1,7 +1,7 @@
+using BubbleTea.Common.Application.EventBus;
+using BubbleTea.Common.Application.Exceptions;
+using BubbleTea.Common.Domain;
 using BubbleTea.Contracts;
-using BubbleTea.ServiceDefaults.Domain;
-using BubbleTea.ServiceDefaults.Exceptions;
-using BubbleTea.ServiceDefaults.Messaging;
 using MediatR;
 using BubbleTea.Services.Payment.Application.Abstractions.EventBus;
 using BubbleTea.Services.Payment.Application.Payments.Commands.Process;

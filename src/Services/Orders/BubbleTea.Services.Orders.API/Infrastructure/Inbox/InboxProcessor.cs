@@ -1,9 +1,9 @@
 using System.Data;
 using System.Data.Common;
+using BubbleTea.Common.Application.EventBus;
 using Dapper;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using BubbleTea.ServiceDefaults.Messaging;
 using BubbleTea.Services.Orders.API.Infrastructure.Database;
 using BubbleTea.Services.Orders.API.Infrastructure.Serialization;
 

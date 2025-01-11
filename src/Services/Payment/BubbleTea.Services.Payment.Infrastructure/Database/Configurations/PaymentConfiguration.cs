@@ -1,4 +1,4 @@
-using BubbleTea.ServiceDefaults.Domain;
+using BubbleTea.Common.Domain;
 using BubbleTea.Services.Payment.Domain.Payments;
 using BubbleTea.Services.Payment.Infrastructure.Database.Constants;
 using Microsoft.EntityFrameworkCore;

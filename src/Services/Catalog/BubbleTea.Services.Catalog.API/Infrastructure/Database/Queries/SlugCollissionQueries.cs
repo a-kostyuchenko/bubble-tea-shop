@@ -1,5 +1,5 @@
+using BubbleTea.Common.Application.Slugs;
 using Microsoft.EntityFrameworkCore;
-using BubbleTea.ServiceDefaults.Common;
 
 namespace BubbleTea.Services.Catalog.API.Infrastructure.Database.Queries;
 

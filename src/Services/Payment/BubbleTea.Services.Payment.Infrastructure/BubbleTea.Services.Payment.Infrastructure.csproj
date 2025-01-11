@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\Common\BubbleTea.Common.Infrastructure\BubbleTea.Common.Infrastructure.csproj" />
       <ProjectReference Include="..\..\..\contracts\BubbleTea.Contracts\BubbleTea.Contracts.csproj" />
       <ProjectReference Include="..\BubbleTea.Services.Payment.Application\BubbleTea.Services.Payment.Application.csproj" />
       <ProjectReference Include="..\BubbleTea.Services.Payment.Presentation\BubbleTea.Services.Payment.Presentation.csproj" />
