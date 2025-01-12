@@ -1,3 +1,4 @@
+using BubbleTea.Common.Application.EventBus;
 using BubbleTea.Common.Application.Exceptions;
 using BubbleTea.Common.Application.Messaging;
 using BubbleTea.Common.Domain;
@@ -9,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using BubbleTea.Services.Cart.API.Entities.Carts;
 using BubbleTea.Services.Cart.API.Entities.Carts.Events;
 using BubbleTea.Services.Cart.API.Infrastructure.Database;
-using BubbleTea.Services.Cart.API.Infrastructure.EventBus;
 
 namespace BubbleTea.Services.Cart.API.Features.Carts;
 

@@ -1,11 +1,11 @@
 using BubbleTea.Common.Application.Caching;
 using BubbleTea.Common.Application.Clock;
 using BubbleTea.Common.Application.Data;
+using BubbleTea.Common.Application.EventBus;
 using BubbleTea.Common.Infrastructure.Caching;
 using BubbleTea.Common.Infrastructure.Clock;
 using BubbleTea.Common.Infrastructure.Data;
 using BubbleTea.Common.Infrastructure.Outbox;
-using BubbleTea.Services.Payment.Application.Abstractions.EventBus;
 using Hangfire;
 using Hangfire.PostgreSql;
 using MassTransit;

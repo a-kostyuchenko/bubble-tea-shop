@@ -1,6 +1,4 @@
-using BubbleTea.Common.Application.EventBus;
-
-namespace BubbleTea.Services.Cart.API.Infrastructure.EventBus;
+namespace BubbleTea.Common.Application.EventBus;
 
 public interface IEventBus
 {

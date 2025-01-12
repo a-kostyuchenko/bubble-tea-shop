@@ -1,5 +1,4 @@
 ﻿using BubbleTea.Common.Application.EventBus;
-using BubbleTea.Services.Payment.Application.Abstractions.EventBus;
 using MassTransit;
 
 namespace BubbleTea.Common.Infrastructure.EventBus;

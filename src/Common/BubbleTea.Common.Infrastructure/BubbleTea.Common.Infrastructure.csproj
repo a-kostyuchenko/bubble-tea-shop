@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <ProjectReference Include="..\..\Services\Payment\BubbleTea.Services.Payment.Application\BubbleTea.Services.Payment.Application.csproj" />
     <ProjectReference Include="..\BubbleTea.Common.Application\BubbleTea.Common.Application.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -12,5 +11,7 @@
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="Npgsql" />
     <PackageReference Include="MassTransit.RabbitMQ" />
+    <PackageReference Include="Aspire.Npgsql" />
+    <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
   </ItemGroup>
 </Project>
