@@ -1,18 +1,39 @@
 using Asp.Versioning;
 using Asp.Versioning.Builder;
+using BubbleTea.Common.Application;
+using BubbleTea.Common.Infrastructure;
+using BubbleTea.Common.Infrastructure.Configuration;
 using BubbleTea.Common.Presentation.Endpoints;
 using BubbleTea.Services.Cart.API;
 using BubbleTea.Services.Cart.API.Extensions;
 using Scalar.AspNetCore;
 using BubbleTea.ServiceDefaults;
+using BubbleTea.Services.Cart.API.Infrastructure.Database;
+using BubbleTea.Services.Cart.API.Infrastructure.Database.Constants;
+using BubbleTea.Services.Cart.API.OpenTelemetry;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 
-builder.AddDatabase();
 builder.AddServiceDefaults();
-builder.Services.AddCartServices(builder.Configuration);
+
+builder.Services.AddApplication([AssemblyReference.Assembly]);
+
+string databaseConnection = builder.Configuration.GetConnectionStringOrThrow("cart-db");
+string redisConnection = builder.Configuration.GetConnectionStringOrThrow("cache");
+string queueConnection = builder.Configuration.GetConnectionStringOrThrow("queue");
+
+builder.Services.AddInfrastructure(
+    DiagnosticsConfig.ServiceName,
+    [CartModule.ConfigureConsumers(redisConnection)],
+    databaseConnection,
+    redisConnection,
+    queueConnection);
+
+builder.AddDatabase<CartDbContext>("cart-db", Schemas.Cart);
+
+builder.Services.AddCartModule(builder.Configuration);
 
 WebApplication app = builder.Build();
 
