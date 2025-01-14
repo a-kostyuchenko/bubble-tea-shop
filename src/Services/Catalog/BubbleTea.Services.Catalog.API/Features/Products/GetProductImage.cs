@@ -1,11 +1,11 @@
 using System.Data.Common;
+using BubbleTea.Common.Application.Data;
 using BubbleTea.Common.Application.Messaging;
 using BubbleTea.Common.Domain;
 using BubbleTea.Common.Presentation.Endpoints;
 using Dapper;
 using MediatR;
 using BubbleTea.Services.Catalog.API.Entities.Products;
-using BubbleTea.Services.Catalog.API.Infrastructure.Database;
 using BubbleTea.Services.Catalog.API.Infrastructure.Storage;
 
 namespace BubbleTea.Services.Catalog.API.Features.Products;

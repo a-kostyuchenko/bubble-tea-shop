@@ -1,19 +1,41 @@
 using Asp.Versioning;
 using Asp.Versioning.Builder;
+using BubbleTea.Common.Application;
+using BubbleTea.Common.Infrastructure;
+using BubbleTea.Common.Infrastructure.Configuration;
 using BubbleTea.Common.Presentation.Endpoints;
 using BubbleTea.Services.Catalog.API;
 using BubbleTea.Services.Catalog.API.Extensions;
 using Scalar.AspNetCore;
 using BubbleTea.ServiceDefaults;
+using BubbleTea.Services.Catalog.API.Infrastructure.Database;
+using BubbleTea.Services.Catalog.API.Infrastructure.Database.Constants;
+using BubbleTea.Services.Catalog.API.OpenTelemetry;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 
-builder.AddDatabase();
 builder.AddServiceDefaults();
-builder.Services.AddCatalogServices(builder.Configuration);
+
+builder.Services.AddApplication([AssemblyReference.Assembly]);
+
+string databaseConnection = builder.Configuration.GetConnectionStringOrThrow("cart-db");
+string redisConnection = builder.Configuration.GetConnectionStringOrThrow("cache");
+string queueConnection = builder.Configuration.GetConnectionStringOrThrow("queue");
+
+builder.Services.AddInfrastructure(
+    DiagnosticsConfig.ServiceName,
+    [],
+    databaseConnection,
+    redisConnection,
+    queueConnection);
+
+builder.AddDatabase<CatalogDbContext>("cart-db", Schemas.Catalog);
+
 builder.AddAzureBlobClient("blobs");
+
+builder.Services.AddCatalogModule(builder.Configuration);
 
 WebApplication app = builder.Build();
 
