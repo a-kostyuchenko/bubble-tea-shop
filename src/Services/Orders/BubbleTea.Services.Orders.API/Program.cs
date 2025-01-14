@@ -11,6 +11,7 @@ using BubbleTea.ServiceDefaults;
 using BubbleTea.Services.Orders.API.Infrastructure.Database;
 using BubbleTea.Services.Orders.API.Infrastructure.Database.Constants;
 using BubbleTea.Services.Orders.API.OpenTelemetry;
+using AssemblyReference = BubbleTea.Services.Orders.API.AssemblyReference;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 

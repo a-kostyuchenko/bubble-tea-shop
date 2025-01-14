@@ -15,6 +15,8 @@ public sealed class PaymentDbContext(DbContextOptions<PaymentDbContext> options)
     {
         modelBuilder.HasDefaultSchema(Schemas.Payment);
         
+        modelBuilder.ApplyConfigurationsFromAssembly(Common.Infrastructure.AssemblyReference.Assembly);
+        
         modelBuilder.ApplyConfigurationsFromAssembly(AssemblyReference.Assembly);
         
         modelBuilder.Model.GetEntityTypes()

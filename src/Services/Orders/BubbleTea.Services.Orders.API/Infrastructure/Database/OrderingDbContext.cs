@@ -13,6 +13,8 @@ public sealed class OrderingDbContext(DbContextOptions<OrderingDbContext> option
     {
         modelBuilder.HasDefaultSchema(Schemas.Order);
         
+        modelBuilder.ApplyConfigurationsFromAssembly(Common.Infrastructure.AssemblyReference.Assembly);
+        
         modelBuilder.ApplyConfigurationsFromAssembly(AssemblyReference.Assembly);
         
         modelBuilder.Model.GetEntityTypes()

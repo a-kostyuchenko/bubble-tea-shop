@@ -100,10 +100,6 @@ namespace BubbleTea.Services.Orders.API.Infrastructure.Database.Migrations
                     product_name = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
                     quantity = table.Column<int>(type: "integer", nullable: false),
                     order_id = table.Column<Guid>(type: "uuid", nullable: true),
-                    ice_level = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    size = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    sugar_level = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    temperature = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     amount = table.Column<decimal>(type: "numeric(10,2)", precision: 10, scale: 2, nullable: false),
                     currency = table.Column<string>(type: "character varying(3)", maxLength: 3, nullable: false)
                 },
@@ -119,6 +115,36 @@ namespace BubbleTea.Services.Orders.API.Infrastructure.Database.Migrations
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "order_item_parameters",
+                schema: "ordering",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    name = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
+                    option = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
+                    order_item_id = table.Column<Guid>(type: "uuid", nullable: true),
+                    extra_price = table.Column<decimal>(type: "numeric(10,2)", precision: 10, scale: 2, nullable: false),
+                    currency = table.Column<string>(type: "character varying(3)", maxLength: 3, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_order_item_parameters", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_order_item_parameters_order_items_order_item_id",
+                        column: x => x.order_item_id,
+                        principalSchema: "ordering",
+                        principalTable: "order_items",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "ix_order_item_parameters_order_item_id",
+                schema: "ordering",
+                table: "order_item_parameters",
+                column: "order_item_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_order_items_order_id",
@@ -139,7 +165,7 @@ namespace BubbleTea.Services.Orders.API.Infrastructure.Database.Migrations
                 schema: "ordering");
 
             migrationBuilder.DropTable(
-                name: "order_items",
+                name: "order_item_parameters",
                 schema: "ordering");
 
             migrationBuilder.DropTable(
@@ -148,6 +174,10 @@ namespace BubbleTea.Services.Orders.API.Infrastructure.Database.Migrations
 
             migrationBuilder.DropTable(
                 name: "outbox_messages",
+                schema: "ordering");
+
+            migrationBuilder.DropTable(
+                name: "order_items",
                 schema: "ordering");
 
             migrationBuilder.DropTable(

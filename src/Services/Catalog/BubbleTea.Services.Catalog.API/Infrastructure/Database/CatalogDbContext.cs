@@ -16,6 +16,8 @@ public sealed class CatalogDbContext(DbContextOptions<CatalogDbContext> options)
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema(Schemas.Catalog);
+
+        modelBuilder.ApplyConfigurationsFromAssembly(Common.Infrastructure.AssemblyReference.Assembly);
         
         modelBuilder.ApplyConfigurationsFromAssembly(AssemblyReference.Assembly);
         

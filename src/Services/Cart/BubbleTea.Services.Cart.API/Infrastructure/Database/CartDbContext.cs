@@ -13,6 +13,8 @@ public sealed class CartDbContext(DbContextOptions<CartDbContext> options) : DbC
     {
         modelBuilder.HasDefaultSchema(Schemas.Cart);
         
+        modelBuilder.ApplyConfigurationsFromAssembly(Common.Infrastructure.AssemblyReference.Assembly);
+        
         modelBuilder.ApplyConfigurationsFromAssembly(AssemblyReference.Assembly);
         
         modelBuilder.Model.GetEntityTypes()

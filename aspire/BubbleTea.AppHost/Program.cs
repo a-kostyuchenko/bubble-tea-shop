@@ -5,15 +5,10 @@ IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(ar
 IResourceBuilder<ParameterResource> pgUsername = builder.AddParameter("Username");
 IResourceBuilder<ParameterResource> pgPassword = builder.AddParameter("Password", secret: true);
 
-IResourceBuilder<AzurePostgresFlexibleServerResource> postgres = builder
-    .AddAzurePostgresFlexibleServer("postgres")
-    .WithPasswordAuthentication(pgUsername, pgPassword)
-    .RunAsContainer(resourceBuilder =>
-    {
-        resourceBuilder
-            .WithDataVolume()
-            .WithPgAdmin();
-    });
+IResourceBuilder<PostgresServerResource> postgres = builder
+    .AddPostgres("postgres", pgUsername, pgPassword)
+    .WithDataVolume()
+    .WithPgAdmin();
 
 IResourceBuilder<AzureStorageResource> storage = builder
     .AddAzureStorage("storage")
@@ -23,10 +18,10 @@ IResourceBuilder<AzureStorageResource> storage = builder
     
 IResourceBuilder<AzureBlobStorageResource> blobs = storage.AddBlobs("blobs");
     
-IResourceBuilder<AzurePostgresFlexibleServerDatabaseResource> catalogDb = postgres.AddDatabase("catalog-db");
-IResourceBuilder<AzurePostgresFlexibleServerDatabaseResource> cartDb = postgres.AddDatabase("cart-db");
-IResourceBuilder<AzurePostgresFlexibleServerDatabaseResource> orderDb = postgres.AddDatabase("order-db");
-IResourceBuilder<AzurePostgresFlexibleServerDatabaseResource> paymentDb = postgres.AddDatabase("payment-db");
+IResourceBuilder<PostgresDatabaseResource> catalogDb = postgres.AddDatabase("catalog-db");
+IResourceBuilder<PostgresDatabaseResource> cartDb = postgres.AddDatabase("cart-db");
+IResourceBuilder<PostgresDatabaseResource> orderDb = postgres.AddDatabase("order-db");
+IResourceBuilder<PostgresDatabaseResource> paymentDb = postgres.AddDatabase("payment-db");
 
 IResourceBuilder<RabbitMQServerResource> queue = builder
     .AddRabbitMQ("queue")
@@ -51,8 +46,11 @@ IResourceBuilder<ProjectResource> catalogApi = builder.AddProject<Projects.Bubbl
     .WithReference(catalogDb)
     .WithReference(queue)
     .WithReference(blobs)
+    .WithReference(cache)
     .WaitFor(catalogDb)
     .WaitFor(queue)
+    .WaitFor(blobs)
+    .WaitFor(catalogDb)
     .WaitForCompletion(migrator);
 
 IResourceBuilder<ProjectResource> cartApi = builder.AddProject<Projects.BubbleTea_Services_Cart_API>("cart-api")
@@ -76,8 +74,10 @@ IResourceBuilder<ProjectResource> orderingApi = builder.AddProject<Projects.Bubb
 IResourceBuilder<ProjectResource> paymentApi = builder.AddProject<Projects.BubbleTea_Services_Payment_API>("payment-api")
     .WithReference(paymentDb)
     .WithReference(queue)
+    .WithReference(cache)
     .WaitFor(paymentDb)
     .WaitFor(queue)
+    .WaitFor(cache)
     .WaitForCompletion(migrator);
 
 builder.AddProject<Projects.BubbleTea_Gateway>("gateway")

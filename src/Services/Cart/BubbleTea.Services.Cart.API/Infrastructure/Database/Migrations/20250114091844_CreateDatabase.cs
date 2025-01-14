@@ -82,7 +82,7 @@ namespace BubbleTea.Services.Cart.API.Infrastructure.Database.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     customer = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    note = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    note = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
                     status = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
@@ -99,10 +99,6 @@ namespace BubbleTea.Services.Cart.API.Infrastructure.Database.Migrations
                     product_id = table.Column<Guid>(type: "uuid", nullable: false),
                     product_name = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
                     quantity = table.Column<int>(type: "integer", nullable: false),
-                    size = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    sugar_level = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    ice_level = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    temperature = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     cart_id = table.Column<Guid>(type: "uuid", nullable: true),
                     amount = table.Column<decimal>(type: "numeric(10,2)", precision: 10, scale: 2, nullable: false),
                     currency = table.Column<string>(type: "character varying(3)", maxLength: 3, nullable: false)
@@ -110,13 +106,73 @@ namespace BubbleTea.Services.Cart.API.Infrastructure.Database.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_cart_items", x => x.id);
+                    table.CheckConstraint("CK_Quantity_GreaterThanZero", "quantity > 0");
                     table.ForeignKey(
                         name: "fk_cart_items_shopping_carts_cart_id",
                         column: x => x.cart_id,
                         principalSchema: "cart",
                         principalTable: "shopping_carts",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "cart_item_parameters",
+                schema: "cart",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    cart_item_id = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_cart_item_parameters", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_cart_item_parameters_cart_items_cart_item_id",
+                        column: x => x.cart_item_id,
+                        principalSchema: "cart",
+                        principalTable: "cart_items",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "cart_item_options",
+                schema: "cart",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    value = table.Column<double>(type: "double precision", nullable: false),
+                    parameter_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    extra_price = table.Column<decimal>(type: "numeric(10,2)", precision: 10, scale: 2, nullable: false),
+                    currency = table.Column<string>(type: "character varying(3)", maxLength: 3, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_cart_item_options", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_cart_item_options_cart_item_parameters_parameter_id",
+                        column: x => x.parameter_id,
+                        principalSchema: "cart",
+                        principalTable: "cart_item_parameters",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "ix_cart_item_options_parameter_id",
+                schema: "cart",
+                table: "cart_item_options",
+                column: "parameter_id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "ix_cart_item_parameters_cart_item_id",
+                schema: "cart",
+                table: "cart_item_parameters",
+                column: "cart_item_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_cart_items_cart_id",
@@ -129,7 +185,7 @@ namespace BubbleTea.Services.Cart.API.Infrastructure.Database.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "cart_items",
+                name: "cart_item_options",
                 schema: "cart");
 
             migrationBuilder.DropTable(
@@ -146,6 +202,14 @@ namespace BubbleTea.Services.Cart.API.Infrastructure.Database.Migrations
 
             migrationBuilder.DropTable(
                 name: "outbox_messages",
+                schema: "cart");
+
+            migrationBuilder.DropTable(
+                name: "cart_item_parameters",
+                schema: "cart");
+
+            migrationBuilder.DropTable(
+                name: "cart_items",
                 schema: "cart");
 
             migrationBuilder.DropTable(
