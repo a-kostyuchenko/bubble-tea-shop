@@ -1,4 +1,4 @@
-namespace BubbleTea.Services.Catalog.API.Infrastructure.Inbox;
+namespace BubbleTea.Common.Infrastructure.Inbox;
 
 public interface IInboxProcessor
 {

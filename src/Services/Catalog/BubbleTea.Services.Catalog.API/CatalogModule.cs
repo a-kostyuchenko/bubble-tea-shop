@@ -3,6 +3,8 @@ using Asp.Versioning;
 using BubbleTea.Common.Application.EventBus;
 using BubbleTea.Common.Application.Messaging;
 using BubbleTea.Common.Application.Slugs;
+using BubbleTea.Common.Infrastructure.Inbox;
+using BubbleTea.Common.Infrastructure.Outbox;
 using BubbleTea.Common.Presentation.Endpoints;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using BubbleTea.Services.Catalog.API.Entities.Products;

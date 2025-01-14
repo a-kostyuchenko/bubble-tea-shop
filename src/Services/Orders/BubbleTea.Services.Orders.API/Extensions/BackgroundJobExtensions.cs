@@ -1,5 +1,5 @@
-using BubbleTea.Services.Orders.API.Infrastructure.Inbox;
-using BubbleTea.Services.Orders.API.Infrastructure.Outbox;
+using BubbleTea.Common.Infrastructure.Inbox;
+using BubbleTea.Common.Infrastructure.Outbox;
 using Hangfire;
 
 namespace BubbleTea.Services.Orders.API.Extensions;

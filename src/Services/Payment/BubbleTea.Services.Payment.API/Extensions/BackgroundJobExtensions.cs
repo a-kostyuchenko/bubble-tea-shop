@@ -1,6 +1,6 @@
+using BubbleTea.Common.Infrastructure.Inbox;
+using BubbleTea.Common.Infrastructure.Outbox;
 using Hangfire;
-using BubbleTea.Services.Payment.Infrastructure.Inbox;
-using BubbleTea.Services.Payment.Infrastructure.Outbox;
 
 namespace BubbleTea.Services.Payment.API.Extensions;
 

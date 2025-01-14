@@ -1,4 +1,4 @@
-namespace BubbleTea.Services.Cart.API.Infrastructure.Outbox;
+namespace BubbleTea.Common.Infrastructure.Outbox;
 
 public interface IOutboxProcessor
 {

@@ -1,5 +1,5 @@
-using BubbleTea.Services.Cart.API.Infrastructure.Inbox;
-using BubbleTea.Services.Cart.API.Infrastructure.Outbox;
+using BubbleTea.Common.Infrastructure.Inbox;
+using BubbleTea.Common.Infrastructure.Outbox;
 using Hangfire;
 
 namespace BubbleTea.Services.Cart.API.Extensions;
