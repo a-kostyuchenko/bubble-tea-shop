@@ -1,6 +1,6 @@
 namespace BubbleTea.Services.Payment.Infrastructure.Database.Constants;
 
-internal static class Schemas
+public static class Schemas
 {
-    internal const string Payment = "payment";
+    public const string Payment = "payment";
 }

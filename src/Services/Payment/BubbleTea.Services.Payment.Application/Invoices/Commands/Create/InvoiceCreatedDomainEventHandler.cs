@@ -1,7 +1,7 @@
+using BubbleTea.Common.Application.EventBus;
 using BubbleTea.Common.Application.Messaging;
 using BubbleTea.Contracts;
 using BubbleTea.Services.Payment.Domain.Invoices;
-using BubbleTea.Services.Payment.Application.Abstractions.EventBus;
 
 namespace BubbleTea.Services.Payment.Application.Invoices.Commands.Create;
 

@@ -1,12 +1,17 @@
 using Asp.Versioning;
 using Asp.Versioning.Builder;
+using BubbleTea.Common.Application;
+using BubbleTea.Common.Infrastructure;
+using BubbleTea.Common.Infrastructure.Configuration;
 using BubbleTea.Common.Presentation.Endpoints;
-using BubbleTea.Services.Payment.API;
 using BubbleTea.Services.Payment.API.Extensions;
-using BubbleTea.Services.Payment.Infrastructure;
 using Scalar.AspNetCore;
 using BubbleTea.ServiceDefaults;
-using BubbleTea.Services.Payment.Application;
+using BubbleTea.Services.Payment.API.OpenTelemetry;
+using BubbleTea.Services.Payment.Infrastructure;
+using BubbleTea.Services.Payment.Infrastructure.Database;
+using BubbleTea.Services.Payment.Infrastructure.Database.Constants;
+using AssemblyReference = BubbleTea.Services.Payment.Application.AssemblyReference;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -14,12 +19,34 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.AddServiceDefaults();
 
-builder.AddDatabase();
+builder.Services.AddApplication([AssemblyReference.Assembly]);
 
-builder.Services
-    .AddApplication()
-    .AddInfrastructure(builder.Configuration)
-    .AddPresentation();
+string databaseConnection = builder.Configuration.GetConnectionStringOrThrow("payment-db");
+string redisConnection = builder.Configuration.GetConnectionStringOrThrow("cache");
+string queueConnection = builder.Configuration.GetConnectionStringOrThrow("queue");
+
+builder.Services.AddInfrastructure(
+    DiagnosticsConfig.ServiceName,
+    [PaymentModule.ConfigureConsumers],
+    databaseConnection,
+    redisConnection,
+    queueConnection);
+
+builder.AddDatabase<PaymentDbContext>("payment-db", Schemas.Payment);
+
+builder.Services.AddPaymentModule(builder.Configuration);
+
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1);
+    options.ApiVersionReader = new UrlSegmentApiVersionReader();
+}).AddApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'V";
+    options.SubstituteApiVersionInUrl = true;
+});
+
+builder.Services.AddDocumentation();
 
 WebApplication app = builder.Build();
 

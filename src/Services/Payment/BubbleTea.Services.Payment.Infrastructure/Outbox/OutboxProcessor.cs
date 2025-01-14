@@ -1,14 +1,15 @@
 using System.Data;
 using System.Data.Common;
+using BubbleTea.Common.Application.Data;
 using BubbleTea.Common.Application.Messaging;
 using BubbleTea.Common.Domain;
+using BubbleTea.Common.Infrastructure.Outbox;
+using BubbleTea.Common.Infrastructure.Serialization;
 using Dapper;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using BubbleTea.Services.Payment.Application.Abstractions.Data;
-using BubbleTea.Services.Payment.Infrastructure.Serialization;
 
 namespace BubbleTea.Services.Payment.Infrastructure.Outbox;
 
@@ -45,7 +46,7 @@ internal sealed class OutboxProcessor(
                 IEnumerable<IDomainEventHandler> handlers = DomainEventHandlersFactory.GetHandlers(
                     domainEvent.GetType(),
                     scope.ServiceProvider,
-                    BubbleTea.Services.Payment.Application.AssemblyReference.Assembly);
+                    Application.AssemblyReference.Assembly);
                 
                 foreach (IDomainEventHandler handler in handlers)
                 {

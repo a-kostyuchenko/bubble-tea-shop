@@ -3,7 +3,6 @@ using BubbleTea.Common.Application.Exceptions;
 using BubbleTea.Common.Domain;
 using BubbleTea.Contracts;
 using MediatR;
-using BubbleTea.Services.Payment.Application.Abstractions.EventBus;
 using BubbleTea.Services.Payment.Application.Payments.Commands.Process;
 
 namespace BubbleTea.Services.Payment.Presentation;

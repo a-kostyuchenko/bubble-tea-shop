@@ -1,13 +1,14 @@
 using System.Data;
 using System.Data.Common;
+using BubbleTea.Common.Application.Data;
 using BubbleTea.Common.Application.EventBus;
+using BubbleTea.Common.Infrastructure.Inbox;
+using BubbleTea.Common.Infrastructure.Serialization;
 using Dapper;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using BubbleTea.Services.Payment.Application.Abstractions.Data;
-using BubbleTea.Services.Payment.Infrastructure.Serialization;
 
 namespace BubbleTea.Services.Payment.Infrastructure.Inbox;
 

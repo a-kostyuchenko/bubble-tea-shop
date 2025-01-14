@@ -1,8 +1,9 @@
 using System.Data.Common;
+using BubbleTea.Common.Application.Data;
 using BubbleTea.Common.Application.Messaging;
 using BubbleTea.Common.Domain;
+using BubbleTea.Common.Infrastructure.Outbox;
 using Dapper;
-using BubbleTea.Services.Payment.Application.Abstractions.Data;
 
 namespace BubbleTea.Services.Payment.Infrastructure.Outbox;
 
