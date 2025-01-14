@@ -1,18 +1,39 @@
 using Asp.Versioning;
 using Asp.Versioning.Builder;
+using BubbleTea.Common.Application;
+using BubbleTea.Common.Infrastructure;
+using BubbleTea.Common.Infrastructure.Configuration;
 using BubbleTea.Common.Presentation.Endpoints;
 using BubbleTea.Services.Orders.API;
 using BubbleTea.Services.Orders.API.Extensions;
 using Scalar.AspNetCore;
 using BubbleTea.ServiceDefaults;
+using BubbleTea.Services.Orders.API.Infrastructure.Database;
+using BubbleTea.Services.Orders.API.Infrastructure.Database.Constants;
+using BubbleTea.Services.Orders.API.OpenTelemetry;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 
-builder.AddDatabase();
-builder.Services.AddOrderingServices(builder.Configuration);
 builder.AddServiceDefaults();
+
+builder.Services.AddApplication([AssemblyReference.Assembly]);
+
+string databaseConnection = builder.Configuration.GetConnectionStringOrThrow("cart-db");
+string redisConnection = builder.Configuration.GetConnectionStringOrThrow("cache");
+string queueConnection = builder.Configuration.GetConnectionStringOrThrow("queue");
+
+builder.Services.AddInfrastructure(
+    DiagnosticsConfig.ServiceName,
+    [OrdersModule.ConfigureConsumers(redisConnection)],
+    databaseConnection,
+    redisConnection,
+    queueConnection);
+
+builder.AddDatabase<OrderingDbContext>("order-db", Schemas.Order);
+
+builder.Services.AddOrdersModule(builder.Configuration);
 
 WebApplication app = builder.Build();
 

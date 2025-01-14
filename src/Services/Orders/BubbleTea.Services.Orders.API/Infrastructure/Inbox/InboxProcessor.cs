@@ -1,11 +1,12 @@
 using System.Data;
 using System.Data.Common;
+using BubbleTea.Common.Application.Data;
 using BubbleTea.Common.Application.EventBus;
+using BubbleTea.Common.Infrastructure.Inbox;
+using BubbleTea.Common.Infrastructure.Serialization;
 using Dapper;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using BubbleTea.Services.Orders.API.Infrastructure.Database;
-using BubbleTea.Services.Orders.API.Infrastructure.Serialization;
 
 namespace BubbleTea.Services.Orders.API.Infrastructure.Inbox;
 

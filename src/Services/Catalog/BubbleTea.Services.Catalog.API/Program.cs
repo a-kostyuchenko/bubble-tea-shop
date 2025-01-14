@@ -20,7 +20,7 @@ builder.AddServiceDefaults();
 
 builder.Services.AddApplication([AssemblyReference.Assembly]);
 
-string databaseConnection = builder.Configuration.GetConnectionStringOrThrow("cart-db");
+string databaseConnection = builder.Configuration.GetConnectionStringOrThrow("catalog-db");
 string redisConnection = builder.Configuration.GetConnectionStringOrThrow("cache");
 string queueConnection = builder.Configuration.GetConnectionStringOrThrow("queue");
 

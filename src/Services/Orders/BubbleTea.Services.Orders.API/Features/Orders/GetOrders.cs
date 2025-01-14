@@ -1,4 +1,5 @@
 using System.Data.Common;
+using BubbleTea.Common.Application.Data;
 using BubbleTea.Common.Application.Messaging;
 using BubbleTea.Common.Application.Paging;
 using BubbleTea.Common.Domain;
@@ -6,7 +7,6 @@ using BubbleTea.Common.Presentation.Endpoints;
 using Dapper;
 using MediatR;
 using BubbleTea.Services.Orders.API.Entities.Orders;
-using BubbleTea.Services.Orders.API.Infrastructure.Database;
 
 namespace BubbleTea.Services.Orders.API.Features.Orders;
 
