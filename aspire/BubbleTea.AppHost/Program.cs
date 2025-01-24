@@ -53,7 +53,8 @@ IResourceBuilder<ProjectResource> catalogApi = builder.AddProject<Projects.Bubbl
     .WaitFor(queue)
     .WaitFor(blobs)
     .WaitFor(catalogDb)
-    .WaitForCompletion(migrator);
+    .WaitForCompletion(migrator)
+    .WithOpenApiDocs("scalar", "Scalar API Documentation", "scalar/v1");
 
 IResourceBuilder<ProjectResource> cartApi = builder.AddProject<Projects.BubbleTea_Services_Cart_API>("cart-api")
     .WithReference(cartDb)
@@ -62,7 +63,8 @@ IResourceBuilder<ProjectResource> cartApi = builder.AddProject<Projects.BubbleTe
     .WaitFor(cartDb)
     .WaitFor(queue)
     .WaitFor(cache)
-    .WaitForCompletion(migrator);
+    .WaitForCompletion(migrator)
+    .WithOpenApiDocs("scalar", "Scalar API Documentation", "scalar/v1");
 
 IResourceBuilder<ProjectResource> orderingApi = builder.AddProject<Projects.BubbleTea_Services_Orders_API>("ordering-api")
     .WithReference(orderDb)
@@ -71,7 +73,8 @@ IResourceBuilder<ProjectResource> orderingApi = builder.AddProject<Projects.Bubb
     .WaitFor(orderDb)
     .WaitFor(queue)
     .WaitFor(cache)
-    .WaitForCompletion(migrator);
+    .WaitForCompletion(migrator)
+    .WithOpenApiDocs("scalar", "Scalar API Documentation", "scalar/v1");
 
 IResourceBuilder<ProjectResource> paymentApi = builder.AddProject<Projects.BubbleTea_Services_Payment_API>("payment-api")
     .WithReference(paymentDb)
@@ -80,7 +83,8 @@ IResourceBuilder<ProjectResource> paymentApi = builder.AddProject<Projects.Bubbl
     .WaitFor(paymentDb)
     .WaitFor(queue)
     .WaitFor(cache)
-    .WaitForCompletion(migrator);
+    .WaitForCompletion(migrator)
+    .WithOpenApiDocs("scalar", "Scalar API Documentation", "scalar/v1");
 
 builder.AddProject<Projects.BubbleTea_Gateway>("gateway")
     .WithExternalHttpEndpoints()

@@ -11,7 +11,7 @@ public sealed class ScalarOptionsSetup(IConfiguration configuration) : IConfigur
         options
             .WithTitle(configuration["OpenApi:Title"]!)
             .WithTheme(ScalarTheme.DeepSpace)
-            .WithOpenApiRoutePattern(configuration["OpenApi:RoutePattern"]!)
+            // .WithOpenApiRoutePattern(configuration["OpenApi:RoutePattern"]!)
             .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
     }
 }
