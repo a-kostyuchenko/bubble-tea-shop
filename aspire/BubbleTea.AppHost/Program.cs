@@ -1,4 +1,5 @@
 using Aspire.Hosting.Azure;
+using BubbleTea.AppHost.Extensions;
 
 IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(args);
 
@@ -30,7 +31,8 @@ IResourceBuilder<RabbitMQServerResource> queue = builder
 IResourceBuilder<RedisResource> cache = builder
     .AddRedis("cache")
     .WithRedisInsight()
-    .WithDataVolume();
+    .WithDataVolume()
+    .WithClearCommand();
 
 IResourceBuilder<ProjectResource> migrator = builder.AddProject<Projects.BubbleTea_MigrationService>("migrator")
     .WithReference(catalogDb)
